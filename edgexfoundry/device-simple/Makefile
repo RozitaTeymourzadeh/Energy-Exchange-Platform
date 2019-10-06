@@ -15,7 +15,7 @@ build: $(MICROSERVICES)
 	$(GO) install -tags=safe
 
 cmd/device-simple/device-simple:
-  $(GO) build $(GOFLAGS) -o $@ ./cmd/device-simple
+	$(GO) build $(GOFLAGS) -o $@ ./cmd/device-simple
 
 docker:
 	docker build \
