@@ -2,20 +2,20 @@
 
 GO=CGO_ENABLED=0 GO111MODULE=on go
 
-MICROSERVICES=example/cmd/device-simple/device-simple
+MICROSERVICES=cmd/device-simple/device-simple
 .PHONY: $(MICROSERVICES)
 
 VERSION=$(shell cat ./VERSION)
 
-GOFLAGS=-ldflags "-X github.com/edgexfoundry/device-sdk-go.Version=$(VERSION)"
+GOFLAGS=-ldflags "-X github.com/edgexfoundry/device-simple.Version=$(VERSION)"
 
 GIT_SHA=$(shell git rev-parse HEAD)
 
 build: $(MICROSERVICES)
 	$(GO) install -tags=safe
 
-example/cmd/device-simple/device-simple:
-	$(GO) build $(GOFLAGS) -o $@ ./example/cmd/device-simple
+cmd/device-simple/device-simple:
+  $(GO) build $(GOFLAGS) -o $@ ./cmd/device-simple
 
 docker:
 	docker build \
