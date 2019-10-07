@@ -12,3 +12,5 @@ require (
 	github.com/ugorji/go v1.1.4
 	gopkg.in/yaml.v2 v2.2.2
 )
+
+go 1.13

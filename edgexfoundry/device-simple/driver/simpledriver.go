@@ -13,15 +13,15 @@ package driver
 import (
 	"bytes"
 	"fmt"
-	"image"
-	"image/jpeg"
-	"image/png"
-	"os"
-	"time"
-
 	dsModels "github.com/edgexfoundry/device-sdk-go/pkg/models"
 	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
 	contract "github.com/edgexfoundry/go-mod-core-contracts/models"
+	"image"
+	"image/jpeg"
+	"image/png"
+	"math/rand"
+	"os"
+	"time"
 )
 
 type SimpleDriver struct {
@@ -72,7 +72,7 @@ func (s *SimpleDriver) Initialize(lc logger.LoggingClient, asyncCh chan<- *dsMod
 
 // HandleReadCommands triggers a protocol Read operation for the specified device.
 func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[string]contract.ProtocolProperties, reqs []dsModels.CommandRequest) (res []*dsModels.CommandValue, err error) {
-
+	//fmt.Fprintf(os.Stdout,  "....... %s .......\n", reqs[0].DeviceResourceName)
 	if len(reqs) != 1 {
 		err = fmt.Errorf("SimpleDriver.HandleReadCommands; too many command requests; only one supported")
 		return
@@ -81,6 +81,11 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 
 	res = make([]*dsModels.CommandValue, 1)
 	now := time.Now().UnixNano()
+
+	if reqs[0].DeviceResourceName == "randomnumber" {
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(100)))
+		res[0] = cv
+	}
 	if reqs[0].DeviceResourceName == "SwitchButton" {
 		cv, _ := dsModels.NewBoolValue(reqs[0].DeviceResourceName, now, s.switchButton)
 		res[0] = cv

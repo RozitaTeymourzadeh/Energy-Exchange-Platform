@@ -1,9 +1,10 @@
+# configuration file for each device service
 [Writable]
 LogLevel = 'INFO'
 
 [Service]
 Host = "localhost"
-Port = 49990
+Port = 49992
 ConnectRetries = 20
 Labels = []
 OpenMsg = "device simple started"
@@ -66,7 +67,7 @@ File = "./device-simple.log"
       Port = "300"
   [[DeviceList.AutoEvents]]
     Frequency = "10s"
-    OnChange = false
+    OnChange = false #change to true for our device
     Resource = "Switch"
   [[DeviceList.AutoEvents]]
     Frequency = "30s"
