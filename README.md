@@ -49,8 +49,8 @@ services:
 **Run the docker compose:**
 
 ```linux
-docker-compose up -d
-docker-compose down
+sudo docker-compose up -d
+sudo docker-compose down
 ```
 
 ## Dependancy
