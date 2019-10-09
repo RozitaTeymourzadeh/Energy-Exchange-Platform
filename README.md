@@ -10,22 +10,22 @@ docker run --rm hello-world
 
 If permission error is observed, run the following options:
 
-**Option #1
+**Option #1**
 ```linux
 sudo docker run --rm hello-world
 ```
-**Option #2
+**Option #2**
 ```linux
 usermod -aG docker <your_user>
 ```
 
-**Install Python modules:
+**Install Python modules:**
 ```linux
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && sudo python3 get-pip.py
 sudo apt-get install libssl-dev
 sudo apt-get install libffi-dev
 ```
-**Install vim:
+**Install vim:**
 ```linux
 sudo apt-get update && sudo apt-get install vim -y
 ```
@@ -35,7 +35,23 @@ sudo apt-get update && sudo apt-get install vim -y
 sudo pip3 install docker-compose
 vim docker-compose.yml
 ```
-You can add your device in docke-compose.yml file
+You can add your device in docke-compose.yml file.
+
+```linux
+version: '3'
+services:
+  webapp:
+    ports:
+      - 5000:8000
+    image: python:3.7-alpine
+    command: "python -m http.server 8000"
+```
+**Run the docker compose:**
+
+```linux
+docker-compose up -d
+docker-compose down
+```
 
 ## Dependancy
 
