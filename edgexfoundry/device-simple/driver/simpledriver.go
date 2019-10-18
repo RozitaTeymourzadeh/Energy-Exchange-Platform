@@ -86,6 +86,20 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(100)))
 		res[0] = cv
 	}
+
+	if reqs[0].DeviceResourceName == "RandomProviderNumber" {
+		fmt.Println("in provider device - RandomProviderNumber")
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(100)))
+		res[0] = cv
+	}
+
+	if reqs[0].DeviceResourceName == "RandomProviderExchangeRateNumber" {
+		fmt.Println("in provider device - RandomProviderExchangeRateNumber")
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(100)))
+		res[0] = cv
+	}
+
+	// breaks when we comment it
 	if reqs[0].DeviceResourceName == "SwitchButton" {
 		cv, _ := dsModels.NewBoolValue(reqs[0].DeviceResourceName, now, s.switchButton)
 		res[0] = cv

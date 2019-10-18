@@ -1,17 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="GOROOT" path="/usr/local/go" />
-  <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="1280" />
-    <option name="height" value="800" />
+  <component name="ChangeListManager">
+    <list default="true" id="2ba9abb2-4334-4585-bf8b-16f06234e6dc" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/edgexfoundry/device-simple/cmd/device-simple/res/configuration_original.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/edgexfoundry/device-simple/cmd/device-simple/res/consumer-device.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/edgexfoundry/device-simple/cmd/device-simple/res/provider-device.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/edgexfoundry/device-simple/main/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/edgexfoundry/device-simple/src/ReadFile.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/edgexfoundry/device-simple/cmd/device-simple/res/configuration.toml" beforeDir="false" afterPath="$PROJECT_DIR$/edgexfoundry/device-simple/cmd/device-simple/res/configuration.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/edgexfoundry/device-simple/driver/simpledriver.go" beforeDir="false" afterPath="$PROJECT_DIR$/edgexfoundry/device-simple/driver/simpledriver.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/edgexfoundry/device-simple/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/edgexfoundry/device-simple/go.mod" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" path="/usr/local/Cellar/go/1.13/libexec" />
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="a0861ea61b32e52872218ebc89b4db844002d0e5" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="ProjectId" id="1SMhSVzaw9EcKk4WuPjcTR75G0b" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.gopath.indexing.explicitly.defined" value="true" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/edgexfoundry/device-simple/main" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/edgexfoundry/device-simple/main" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/edgexfoundry/device-simple/main" />
+      <recent name="$PROJECT_DIR$/edgexfoundry/device-simple/cmd/device-simple/res" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="go build github.com/edgexfoundry/device-simple/main" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="Energy-Trading-Platform" />
+      <working_directory value="$PROJECT_DIR$/edgexfoundry/device-simple" />
+      <kind value="PACKAGE" />
+      <filePath value="$PROJECT_DIR$/edgexfoundry/device-simple/main/main.go" />
+      <package value="github.com/edgexfoundry/device-simple/main" />
+      <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build github.com/edgexfoundry/device-simple/main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
   </component>
 </project>

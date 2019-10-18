@@ -1,0 +1,70 @@
+name: "Energy-Provider-Device"
+manufacturer: ""
+model: "1"
+labels:
+  - "provider"
+  - "test"
+description: "Energy-Provider-Device to simulate a device"
+
+deviceResources:
+  -
+    name: "RandomProviderNumber"
+    description: "generated random number"
+    attributes:
+      { type: "random" }
+    properties:
+      value:
+        { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "100.00"  }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+
+#  -
+#    name: "RandomProviderExchangeRateNumber"
+#    description: "generated random number"
+#    attributes:
+#      { type: "random" }
+#    properties:
+#      value:
+#        { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "100.00"  }
+#      units:
+#        { type: "String", readWrite: "R", defaultValue: "" }
+
+
+deviceCommands:
+  -
+    name: "ProviderRandom"
+    get:
+      -
+        { operation: "get", object: "RandomProviderNumber", property: "value", parameter: "Random" }
+#    name: "ProviderRandomRate"
+#    get:
+#      -
+#        { operation: "get", object: "RandomProviderExchangeRateNumber", property: "value", parameter: "RandomRate" }
+
+coreCommands:
+  -
+    name: "ProviderRandom"
+    get:
+      path: "/api/v1/device/{deviceId}/ProviderRandom"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["Random"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+#  -
+#    name: "ProviderRandomRate"
+#    get:
+#      path: "/api/v1/device/{deviceId}/ProviderRandomRate"
+#      responses:
+#        -
+#          code: "200"
+#          description: ""
+#          expectedValues: ["Random"]
+#        -
+#          code: "503"
+#          description: "service unavailable"
+#          expectedValues: []

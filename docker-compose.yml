@@ -328,6 +328,24 @@ services:
 #       - data
 #       - command
 
+  device-energy-provider:
+    image: edgexfoundry/docker-device-random-go:1.0.0
+    ports:
+      - "50000:50000"
+    container_name: edgex-device-energy-provider
+    hostname: edgex-device-energy-provider
+    networks:
+      - edgex-network
+    volumes:
+      - db-data:/data/db
+      - log-data:/edgex/logs
+      - consul-config:/consul/config
+      - consul-data:/consul/data
+    depends_on:
+      - data
+      - command
+
+  # energy device - provider
   device-random:
     image: edgexfoundry/docker-device-random-go:1.0.0
     ports:

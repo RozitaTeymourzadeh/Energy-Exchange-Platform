@@ -4,10 +4,10 @@ LogLevel = 'INFO'
 
 [Service]
 Host = "localhost"
-Port = 50001
+Port = 49992
 ConnectRetries = 20
 Labels = []
-OpenMsg = "Energy-Provider-Device started"
+OpenMsg = "device simple started"
 Timeout = 5000
 EnableAsyncReadings = true
 AsyncBufferSize = 16
@@ -53,23 +53,23 @@ FailWaitTime = 10
 
 [Logging]
 EnableRemote = false
-File = "./energy-provider-device.log"
+File = "./device-simple.log"
 
 # Pre-define Devices
 [[DeviceList]]
-  Name = "Provider-Device01"
-  Profile = "Energy-Provider-Device"
-  Description = "Example of Energy-Provider-Device"
+  Name = "Simple-Device01"
+  Profile = "Simple-Device"
+  Description = "Example of Simple Device"
   Labels = [ "industrial" ]
   [DeviceList.Protocols]
     [DeviceList.Protocols.other]
-      Address = "provider01"
+      Address = "simple01"
       Port = "300"
   [[DeviceList.AutoEvents]]
-    Frequency = "1s"
-    OnChange = true
+    Frequency = "10s"
+    OnChange = false #change to true for our device
     Resource = "Switch"
   [[DeviceList.AutoEvents]]
-    Frequency = "15s"
+    Frequency = "30s"
     OnChange = false
     Resource = "Image"
