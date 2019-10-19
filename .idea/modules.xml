@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Energy-Trading-Platform.iml" filepath="$PROJECT_DIR$/.idea/Energy-Trading-Platform.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Energy-Exchange-Platform.iml" filepath="$PROJECT_DIR$/.idea/Energy-Exchange-Platform.iml" />
     </modules>
   </component>
 </project>

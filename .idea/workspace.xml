@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="2ba9abb2-4334-4585-bf8b-16f06234e6dc" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/edgexfoundry/device-simple/cmd/device-simple/res/configuration_original.toml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/edgexfoundry/device-simple/cmd/device-simple/res/consumer-device.yaml" afterDir="false" />
@@ -12,6 +13,47 @@
       <change beforePath="$PROJECT_DIR$/edgexfoundry/device-simple/cmd/device-simple/res/configuration.toml" beforeDir="false" afterPath="$PROJECT_DIR$/edgexfoundry/device-simple/cmd/device-simple/res/configuration.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/edgexfoundry/device-simple/driver/simpledriver.go" beforeDir="false" afterPath="$PROJECT_DIR$/edgexfoundry/device-simple/driver/simpledriver.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/edgexfoundry/device-simple/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/edgexfoundry/device-simple/go.mod" afterDir="false" />
+=======
+    <list default="true" id="4ca3c91d-8f34-49b2-868f-709e4b3d8ad6" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/Makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Version" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/device-simple/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/device-simple/consume-device.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/device-simple/device-simple" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/device-simple/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/device-simple/res/Simple-Driver.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/device-simple/res/configuration.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/device-simple/res/consume-device.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/device-simple/res/docker/configuration.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/device-simple/res/off.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/device-simple/res/on.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/device-simple/res/random-generator-device.l" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/device-simple/res/supply-device.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/device-simple/supply-device.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/driver/simpledriver.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/version.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Energy-Trading-Platform.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose_copy.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/edgexfoundry/device-sdk-go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/edgexfoundry/device-simple/Makefile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/edgexfoundry/device-simple/Version" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/edgexfoundry/device-simple/cmd/device-simple/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/edgexfoundry/device-simple/cmd/device-simple/main.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/edgexfoundry/device-simple/cmd/device-simple/res/Simple-Driver.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/edgexfoundry/device-simple/cmd/device-simple/res/configuration.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/edgexfoundry/device-simple/cmd/device-simple/res/docker/configuration.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/edgexfoundry/device-simple/cmd/device-simple/res/off.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/edgexfoundry/device-simple/cmd/device-simple/res/on.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/edgexfoundry/device-simple/driver/simpledriver.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/edgexfoundry/device-simple/version.go" beforeDir="false" />
+>>>>>>> Stashed changes
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,6 +61,7 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+<<<<<<< Updated upstream
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -34,11 +77,21 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+=======
+  <component name="GOROOT" path="/usr/local/Cellar/go/1.13/libexec" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="SYNC" />
+>>>>>>> Stashed changes
   </component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
   </component>
+<<<<<<< Updated upstream
   <component name="ProjectId" id="1SMhSVzaw9EcKk4WuPjcTR75G0b" />
+=======
+  <component name="ProjectId" id="1SOtFh06TwbxpvAY4kKr0kH7W27" />
+>>>>>>> Stashed changes
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="DefaultGoTemplateProperty" value="Go File" />
@@ -47,9 +100,70 @@
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
+<<<<<<< Updated upstream
     <property name="last_opened_file_path" value="$PROJECT_DIR$/edgexfoundry/device-simple/main" />
+=======
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+>>>>>>> Stashed changes
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
+      <module name="Energy-Exchange-Platform" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <go_parameters value="-i" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/" />
+      <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
+      <module name="Energy-Exchange-Platform" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <go_parameters value="-i" />
+      <framework value="gotest" />
+      <kind value="DIRECTORY" />
+      <directory value="$PROJECT_DIR$/" />
+      <filePath value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$/edgexfoundry/device-sdk-go" />
+    </ignored-roots>
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+    <proxy>direct</proxy>
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">

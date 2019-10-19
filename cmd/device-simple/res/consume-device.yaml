@@ -1,0 +1,41 @@
+name: "Consume-Device"
+manufacturer: "usfVmware"
+model: "1"
+labels:
+  - "random"
+  - "test"
+description: "random number generator to simulate a device"
+
+deviceResources:
+  -
+    name: "randomconsumenumber"
+    description: "generated random number"
+    attributes:
+      { type: "random" }
+    properties:
+      value:
+        { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "5.00"  }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+
+deviceCommands:
+  -
+    name: "Random"
+    get:
+      -
+        { operation: "get", object: "randomconsumenumber", property: "value", parameter: "Random" }
+
+coreCommands:
+  -
+    name: "Random"
+    get:
+      path: "/api/v1/device/{deviceId}/Random"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["Random"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []

@@ -1,0 +1,117 @@
+<<<<<<< Updated upstream:edgexfoundry/device-simple/cmd/device-simple/res/configuration.toml
+# configuration file for each device service
+[Writable]
+LogLevel = 'INFO'
+
+[Service]
+Host = "localhost"
+Port = 50001
+ConnectRetries = 20
+Labels = []
+OpenMsg = "Energy-Provider-Device started"
+=======
+[Service]
+Host = "localhost"
+Port = 49992
+ConnectRetries = 3
+Labels = []
+OpenMsg = "device simple started"
+MaxResultCount = 50000
+>>>>>>> Stashed changes:cmd/device-simple/res/configuration.toml
+Timeout = 5000
+EnableAsyncReadings = true
+AsyncBufferSize = 16
+
+[Registry]
+Host = "localhost"
+Port = 8500
+CheckInterval = "10s"
+FailLimit = 3
+FailWaitTime = 10
+
+[Clients]
+  [Clients.Data]
+  Name = "edgex-core-data"
+  Protocol = "http"
+  Host = "localhost"
+  Port = 48080
+  Timeout = 5000
+
+  [Clients.Metadata]
+  Name = "edgex-core-metadata"
+  Protocol = "http"
+  Host = "localhost"
+  Port = 48081
+  Timeout = 5000
+
+  [Clients.Logging]
+  Name = "edgex-support-logging"
+  Protocol = "http"
+  Host = "localhost"
+  Port = 48061
+
+[Device]
+  DataTransform = true
+  InitCmd = ""
+  InitCmdArgs = ""
+  MaxCmdOps = 128
+  MaxCmdValueLen = 256
+  RemoveCmd = ""
+  RemoveCmdArgs = ""
+  ProfilesDir = "./res"
+
+[Logging]
+EnableRemote = false
+<<<<<<< Updated upstream:edgexfoundry/device-simple/cmd/device-simple/res/configuration.toml
+File = "./energy-provider-device.log"
+
+# Pre-define Devices
+[[DeviceList]]
+  Name = "Provider-Device01"
+  Profile = "Energy-Provider-Device"
+  Description = "Example of Energy-Provider-Device"
+  Labels = [ "industrial" ]
+  [DeviceList.Protocols]
+    [DeviceList.Protocols.other]
+      Address = "provider01"
+      Port = "300"
+  [[DeviceList.AutoEvents]]
+    Frequency = "1s"
+    OnChange = true
+    Resource = "Switch"
+  [[DeviceList.AutoEvents]]
+    Frequency = "15s"
+    OnChange = false
+    Resource = "Image"
+=======
+File = "./device-simple.log"
+Level = "DEBUG"
+
+# Pre-define Devices
+[[DeviceList]]
+  Name = "Supply-Device-01"
+  Profile = "Supply-Device"
+  Description = "Supply - Random Number Generator Device"
+  Labels = [ "random", "test" ]
+  [DeviceList.Protocols]
+    [DeviceList.Protocols.Other]
+      Address = "random"
+      Port = "300"
+  [[DeviceList.AutoEvents]]
+    Resource = "Random"
+    OnChange = false
+    Frequency = "8s"
+[[DeviceList]]
+  Name = "Consume-Device01"
+  Profile = "Consume-Device"
+  Description = "Example of Consume Device"
+  Labels = [ "industrial" ]
+  [DeviceList.Protocols]
+    [DeviceList.Protocols.other]
+      Address = "simple01"
+      Port = "310"
+  [[DeviceList.AutoEvents]]
+     Resource = "Random"
+     OnChange = false
+     Frequency = "8s"
+>>>>>>> Stashed changes:cmd/device-simple/res/configuration.toml

@@ -1,0 +1,41 @@
+name: "Energy-Consumer-Device"
+manufacturer: ""
+model: "2"
+labels:
+  - "consumer"
+  - "test"
+description: "Energy-Consumer-Device to simulate a device"
+
+deviceResources:
+  -
+    name: "RandomConsumerNumber"
+    description: "generated random number"
+    attributes:
+      { type: "consumerRandom" }
+    properties:
+      value:
+        { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "100.00"  }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+
+deviceCommands:
+  -
+    name: "Consumer"
+    get:
+      -
+        { operation: "get", object: "randomConsumerNumber", property: "value", parameter: "Random" }
+
+coreCommands:
+  -
+    name: "ConsumerRandom"
+    get:
+      path: "/api/v1/device/{deviceId}/ConsumerRandom"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["Random"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []

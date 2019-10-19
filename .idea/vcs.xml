@@ -2,6 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/edgexfoundry/device-sdk-go" vcs="Git" />
+    <mapping directory="$USER_HOME$/go/src/github.com/edgexfoundry/device-sdk-go" vcs="Git" />
   </component>
 </project>
