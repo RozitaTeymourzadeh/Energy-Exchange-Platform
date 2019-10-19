@@ -7,11 +7,7 @@ MICROSERVICES=cmd/device-simple/device-simple
 
 VERSION=$(shell cat ./VERSION)
 
-<<<<<<< Updated upstream:edgexfoundry/device-simple/Makefile
-GOFLAGS=-ldflags "-X github.com/edgexfoundry/device-simple.Version=$(VERSION)"
-=======
 GOFLAGS=-ldflags "-X github.com/edgexfoundry/device-simple-example.Version=$(VERSION)"
->>>>>>> Stashed changes:Makefile
 
 GIT_SHA=$(shell git rev-parse HEAD)
 

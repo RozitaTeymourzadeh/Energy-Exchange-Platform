@@ -82,26 +82,6 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 	res = make([]*dsModels.CommandValue, 1)
 	now := time.Now().UnixNano()
 
-<<<<<<< Updated upstream:edgexfoundry/device-simple/driver/simpledriver.go
-	if reqs[0].DeviceResourceName == "randomnumber" {
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(100)))
-		res[0] = cv
-	}
-
-	if reqs[0].DeviceResourceName == "RandomProviderNumber" {
-		fmt.Println("in provider device - RandomProviderNumber")
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(100)))
-		res[0] = cv
-	}
-
-	if reqs[0].DeviceResourceName == "RandomProviderExchangeRateNumber" {
-		fmt.Println("in provider device - RandomProviderExchangeRateNumber")
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(100)))
-		res[0] = cv
-	}
-
-	// breaks when we comment it
-=======
 	if reqs[0].DeviceResourceName == "randomsuppliernumber" {
 		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(100)))
 		res[0] = cv
@@ -110,7 +90,6 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(50)))
 		res[0] = cv
 	}
->>>>>>> Stashed changes:driver/simpledriver.go
 	if reqs[0].DeviceResourceName == "SwitchButton" {
 		cv, _ := dsModels.NewBoolValue(reqs[0].DeviceResourceName, now, s.switchButton)
 		res[0] = cv

@@ -1,15 +1,3 @@
-<<<<<<< Updated upstream:edgexfoundry/device-simple/cmd/device-simple/res/configuration.toml
-# configuration file for each device service
-[Writable]
-LogLevel = 'INFO'
-
-[Service]
-Host = "localhost"
-Port = 50001
-ConnectRetries = 20
-Labels = []
-OpenMsg = "Energy-Provider-Device started"
-=======
 [Service]
 Host = "localhost"
 Port = 49992
@@ -17,7 +5,6 @@ ConnectRetries = 3
 Labels = []
 OpenMsg = "device simple started"
 MaxResultCount = 50000
->>>>>>> Stashed changes:cmd/device-simple/res/configuration.toml
 Timeout = 5000
 EnableAsyncReadings = true
 AsyncBufferSize = 16
@@ -62,28 +49,6 @@ FailWaitTime = 10
 
 [Logging]
 EnableRemote = false
-<<<<<<< Updated upstream:edgexfoundry/device-simple/cmd/device-simple/res/configuration.toml
-File = "./energy-provider-device.log"
-
-# Pre-define Devices
-[[DeviceList]]
-  Name = "Provider-Device01"
-  Profile = "Energy-Provider-Device"
-  Description = "Example of Energy-Provider-Device"
-  Labels = [ "industrial" ]
-  [DeviceList.Protocols]
-    [DeviceList.Protocols.other]
-      Address = "provider01"
-      Port = "300"
-  [[DeviceList.AutoEvents]]
-    Frequency = "1s"
-    OnChange = true
-    Resource = "Switch"
-  [[DeviceList.AutoEvents]]
-    Frequency = "15s"
-    OnChange = false
-    Resource = "Image"
-=======
 File = "./device-simple.log"
 Level = "DEBUG"
 
@@ -114,4 +79,3 @@ Level = "DEBUG"
      Resource = "Random"
      OnChange = false
      Frequency = "8s"
->>>>>>> Stashed changes:cmd/device-simple/res/configuration.toml

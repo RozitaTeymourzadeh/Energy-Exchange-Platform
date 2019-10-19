@@ -328,42 +328,6 @@ services:
        - data
        - command
 
-<<<<<<< Updated upstream
-  device-energy-provider:
-    image: edgexfoundry/docker-device-random-go:1.0.0
-    ports:
-      - "50000:50000"
-    container_name: edgex-device-energy-provider
-    hostname: edgex-device-energy-provider
-    networks:
-      - edgex-network
-    volumes:
-      - db-data:/data/db
-      - log-data:/edgex/logs
-      - consul-config:/consul/config
-      - consul-data:/consul/data
-    depends_on:
-      - data
-      - command
-
-  # energy device - provider
-  device-random:
-    image: edgexfoundry/docker-device-random-go:1.0.0
-    ports:
-      - "49988:49988"
-    container_name: edgex-device-random
-    hostname: edgex-device-random
-    networks:
-      - edgex-network
-    volumes:
-      - db-data:/data/db
-      - log-data:/edgex/logs
-      - consul-config:/consul/config
-      - consul-data:/consul/data
-    depends_on:
-      - data
-      - command
-=======
 #  device-random:
 #    image: edgexfoundry/docker-device-random-go:1.0.0
 #    ports:
@@ -380,7 +344,6 @@ services:
 #    depends_on:
 #      - data
 #      - command
->>>>>>> Stashed changes
   #
   # device-mqtt:
   #   image: edgexfoundry/docker-device-mqtt-go:1.0.0

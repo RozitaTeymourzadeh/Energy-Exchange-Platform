@@ -9,18 +9,11 @@
 package main
 
 import (
-<<<<<<< Updated upstream:edgexfoundry/device-simple/cmd/device-simple/main.go
-	"github.com/edgexfoundry/device-sdk-go"
-	"github.com/edgexfoundry/device-sdk-go/pkg/startup"
-	//"github.com/edgexfoundry/device-sdk-go/example/driver"
-	"github.com/edgexfoundry/device-simple/driver"
-=======
 	"fmt"
+	"github.com/edgexfoundry/device-sdk-go/pkg/startup"
 	"github.com/edgexfoundry/device-simple"
 	"github.com/edgexfoundry/device-simple/driver"
-	"github.com/edgexfoundry/device-sdk-go/pkg/startup"
 	"os"
->>>>>>> Stashed changes:cmd/device-simple/main.go
 )
 
 const (
