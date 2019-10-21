@@ -113,15 +113,23 @@ cd cmd
 cd simple-device
 ./simple-device
 ```
-## Kill or delete the generated devices
+## Kill or Delete Opened Containers
 
 For re-run the application, it is required to kill or delete the devices that is running in docker background to avoid panic error in docker while is running to do so, do the following:
 
-***Delete using Postman  
+***Delete Using Postman  
 
 ```linux
 DELETE clocalhost:48081/api/v1/device/id/DEVICE_ID
 ```
 ```linux
-docker-compose up -d --remove-orphans
+docker container ls -a
+docker container stop $(docker container ls -aq)
+docker container rm $(docker container ls -aq)
+```
+while docker-compose down, we can run in with --remove-orphans
+
+```linux
+docker-compose up -d
+docker-compose down --remove-orphans
 ```
