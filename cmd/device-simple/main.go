@@ -10,9 +10,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/edgexfoundry/device-sdk-go/pkg/startup"
 	"github.com/edgexfoundry/device-simple"
 	"github.com/edgexfoundry/device-simple/driver"
-	"github.com/edgexfoundry/device-sdk-go/pkg/startup"
 	"os"
 )
 
