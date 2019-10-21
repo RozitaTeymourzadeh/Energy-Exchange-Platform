@@ -117,7 +117,7 @@ cd simple-device
 
 For re-run the application, it is required to kill or delete the devices that is running in docker background to avoid panic error in docker while is running to do so, do the following:
 
-***Delete Using Postman  
+**Delete Using Postman** 
 
 ```linux
 DELETE clocalhost:48081/api/v1/device/id/DEVICE_ID
