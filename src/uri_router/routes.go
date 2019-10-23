@@ -62,4 +62,19 @@ var routes = Routes{
 		//	localhost:6686/showLatestDeviceData/Supply-Device-01/randomsuppliernumber
 		//	localhost:6686/showLatestDeviceData/Consume-Device01/randomconsumenumber
 	},
+	Route{
+		"ShowAllLatestDeviceData",
+		"GET",
+		"/showAllLatestDeviceData",
+		ShowAllLatestDeviceData,
+		//	localhost:6686/showAllLatestDeviceData
+	},
+	//Route{
+	//	"MakeDecision",
+	//	"GET",
+	//	"/makeDecision",
+	//	MakeDecision,
+	//	//	localhost:6686/makeDecision
+	//},
+
 }

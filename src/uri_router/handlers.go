@@ -25,7 +25,7 @@ var Devices = ds.NewDevices()
 
 // Start handler
 func Start(w http.ResponseWriter, r *http.Request) {
-	_, _ = w.Write([]byte("in start handler"))
+	_, _ = w.Write([]byte("PowerFlow : Energy Exchange Platform"))
 }
 
 func GetAllDevices(w http.ResponseWriter, r *http.Request) {
@@ -121,15 +121,16 @@ func ReadDeviceData(w http.ResponseWriter, r *http.Request) {
 		DeviceEventsDS.AddToDeviceEvents(coreDataEvent)
 	}
 
-	// todo: remove below code to  different endpoint
-	latestCde, err := DeviceEventsDS.GetLatestDeviceResourceNameEventForDevice("Supply-Device-01", "randomsuppliernumber")
-	if err != nil {
-		fmt.Println("Error in getting latest CoreEventData for a device")
-	}
+	//// todo: remove below code to  different endpoint
+	//latestCde, err := DeviceEventsDS.GetLatestDeviceResourceNameEventForDevice("Supply-Device-01", "randomsuppliernumber")
+	//if err != nil {
+	//	fmt.Println("Error in getting latest CoreEventData for a device")
+	//}
+	//
+	//_, _ = w.Write(([]byte)(latestCde.Readings[0].Device + " : " + latestCde.Readings[0].Value))
 
-	_, _ = w.Write(([]byte)(latestCde.Readings[0].Device + " : " + latestCde.Readings[0].Value))
-
-	//_ , _ = w.Write(DeviceEventsDS.Events["Supply-Device-01"].DeviceResourceNameEventsToJson() ) //not working
+	//_ , _ = w.Write([]byte(DeviceEventsDS.ShowDevice(vars["deviceName"])))
+	_, _ = w.Write([]byte(DeviceEventsDS.ShowDeviceEvents(vars["deviceName"])))
 
 }
 
@@ -149,3 +150,13 @@ func ShowLatestDeviceData(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
+
+func ShowAllLatestDeviceData(w http.ResponseWriter, r *http.Request) {
+
+	_, _ = w.Write([]byte(DeviceEventsDS.Show()))
+
+}
+
+//func MakeDecision(w http.ResponseWriter, r *http.Request) {
+//
+//}

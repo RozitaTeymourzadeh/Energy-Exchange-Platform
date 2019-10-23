@@ -35,13 +35,16 @@ func (drnes *DeviceResourceNameEvents) AddToDeviceResourceNameEvents(cde CoreDat
 	deviceResourceReadings := cde.Readings
 	for _, deviceResourceReading := range deviceResourceReadings {
 		fmt.Println("Adding - deviceResourceReading : " + deviceResourceReading.Device + ", " + deviceResourceReading.Name + ", " + deviceResourceReading.Value)
-		resourceEventsValue := drnes.resourceEvents[deviceResourceReading.Name]
-		if len(resourceEventsValue.DataEvents) == 0 {
-			fmt.Println("resourceEventsValue.DataEvents is zero")
+		fmt.Println("Adding : CDE ")
+		if drnes.resourceEvents[deviceResourceReading.Name].DataEvents == nil {
+			fmt.Println("Instantiating New coreDataEvents, Adding new CDE to coreDataEvents, assigning it back to DeviceResourceNameEvents")
+			coreDataEvents := NewCoreDataEvents() //drnes.resourceEvents[deviceResourceReading.Name].DataEvents
+			coreDataEvents.DataEvents = append(coreDataEvents.DataEvents, cde)
+			drnes.resourceEvents[deviceResourceReading.Name] = coreDataEvents.Sort()
 		} else {
-			resourceEventsValue.DataEvents = append(resourceEventsValue.DataEvents, cde)
-
-			drnes.resourceEvents[deviceResourceReading.Name] = resourceEventsValue
+			coreDataEvents := drnes.resourceEvents[deviceResourceReading.Name]
+			coreDataEvents.DataEvents = append(coreDataEvents.DataEvents, cde)
+			drnes.resourceEvents[deviceResourceReading.Name] = coreDataEvents.Sort()
 		}
 
 	}

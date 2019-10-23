@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"strings"
+	"time"
 )
 
 // map of key = device and value = map of key = Readings.name & value = *CoreDataEvents
@@ -44,13 +46,49 @@ func (de *DeviceEvents) GetLatestDeviceResourceNameEventForDevice(deviceName str
 }
 
 func (des *DeviceEvents) DeviceEventsToJson() []byte { //todo : correct this method
-	desJson, err := json.Marshal(des)
+	desJson, err := json.Marshal(&des)
 	if err != nil {
 		fmt.Println("Error in ToJson of reading.go")
 	}
-	desJsonStr := (string(desJson))
-	fmt.Println(desJsonStr)
+	desJsonStr := string(desJson)
+	fmt.Println("DeviceEventsToJson" + desJsonStr)
 	return desJson
+}
+
+func (de *DeviceEvents) Show() string {
+	sb := strings.Builder{}
+	sb.WriteString("Device Events:\n")
+	for k, v := range de.Events {
+		sb.WriteString("\t" + k + "\n")
+		for k1, v1 := range v.resourceEvents {
+			sb.WriteString("\t\t" + k1 + "\n")
+			for _, val := range v1.DataEvents[0].Readings {
+				sb.WriteString("\t\t\t" + val.Value + "\n")
+			}
+		}
+	}
+	return sb.String()
+}
+
+func (de *DeviceEvents) ShowDeviceEvents(deviceName string) string {
+	sb := strings.Builder{}
+	sb.WriteString("Device Events:\n")
+	for k, v := range de.Events {
+		if strings.Compare(k, deviceName) != 0 {
+			continue
+		}
+		sb.WriteString("\t" + k + "\n")
+		for k1, v1 := range v.resourceEvents {
+			sb.WriteString("\t\t" + k1 + "\n")
+			for _, val := range v1.DataEvents {
+				sb.WriteString("\t\t\t" + time.Unix(val.Created, 0).String() + "\n")
+				for _, val := range v1.DataEvents[0].Readings {
+					sb.WriteString("\t\t\t" + val.Value + "\n")
+				}
+			}
+		}
+	}
+	return sb.String()
 }
 
 ///////////////
