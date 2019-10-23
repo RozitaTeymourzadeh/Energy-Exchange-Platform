@@ -14,3 +14,5 @@
 cmd/device-simple/device-simple
 
 .DS_Store
+
+*.log
