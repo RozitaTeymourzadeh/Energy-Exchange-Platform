@@ -56,6 +56,12 @@ sudo docker-compose down
 ## Dependancy
 
 1. Goland IDE environment
+
+```linux
+sudo apt-get install golang
+go version
+```
+
 2. Git 
 3. EdgeX Foundary 
 
