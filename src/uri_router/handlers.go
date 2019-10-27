@@ -3,6 +3,7 @@ package uri_router
 import (
 	"fmt"
 	ds "github.com/edgexfoundry/device-simple/src/data"
+
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"

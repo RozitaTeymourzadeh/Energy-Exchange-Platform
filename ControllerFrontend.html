@@ -1,0 +1,64 @@
+<HTML>
+
+<HEAD>
+
+    <TITLE>Energy Exchange Platform</TITLE>
+
+</HEAD>
+
+<BODY BGCOLOR="FFFFFF">
+
+<CENTER><IMG SRC="clouds.jpg" ALIGN="BOTTOM"> </CENTER>
+
+<HR>
+
+<a href="http://localhost:6686/register">Register For Identity </a>
+
+<H1>Device List: </H1>
+
+<H2>Device Need Energy:</H2>
+
+<H2>Device Purchase Energy:</H2>
+
+<H2>Device Sell Energy:</H2>
+
+<template>
+  <h2>Exchange:</h2>
+  <img src="EnergyExchange.jpg" width="214" height="204">
+</template>
+
+<script>
+function showContent() {
+  var temp = document.getElementsByTagName("template")[0];
+  var clon = temp.content.cloneNode(true);
+  document.body.appendChild(clon);
+}
+</script>
+
+
+
+
+<div>
+    <form method="POST" action="/postevent">
+        <P> <B></B>
+            <label>Name: </label><input name="eventName" type="text" value="IEEE" />
+        <P> <B></B>
+            <label>Date: </label><input name="date" type="text" value="18/04/2020" />
+        <P> <B></B>
+            <label>Description: </label><input name="eventDescription" type="text" value="Computer Science" />
+        <P> <B></B>
+            <input type="submit" value="Publish">
+    </form>
+</div>
+
+Send email at: <a href="support@eventpublisher.com">
+
+    support@eventpublisher.com</a>
+
+<BR> <B><I>@CS686 Blockchain</I></B>
+
+<HR>
+
+</BODY>
+
+</HTML>
