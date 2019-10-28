@@ -8,35 +8,92 @@
 
 <BODY BGCOLOR="FFFFFF">
 
-<CENTER><IMG SRC="clouds.jpg" ALIGN="BOTTOM"> </CENTER>
+
+<CENTER><IMG SRC="EnergyExchange.jpg" ALIGN="BOTTOM"> </CENTER>
 
 <HR>
+<STYLE>
+    .myClass {
+        color: white;
+        background-color: DodgerBlue;
+        padding: 20px;
+        text-align: left;
+        margin: 10px;
+    }
+</STYLE>
 
+
+<H1>Energy Exchange Platform</H1>
 <a href="http://localhost:6686/register">Register For Identity </a>
 
-<H1>Device List: </H1>
+<H4>Device Need Energy?</H4>
 
-<H2>Device Need Energy:</H2>
+<p>|--- Device -------------------|</p>
 
-<H2>Device Purchase Energy:</H2>
-
-<H2>Device Sell Energy:</H2>
-
+<button onclick="showContent()">Device Need Energy</button>
 <template>
-  <h2>Exchange:</h2>
-  <img src="EnergyExchange.jpg" width="214" height="204">
+    <div class="myClass">Device Need Energy: </div>
 </template>
 
 <script>
-function showContent() {
-  var temp = document.getElementsByTagName("template")[0];
-  var clon = temp.content.cloneNode(true);
-  document.body.appendChild(clon);
-}
+    var myArrNeed = ["A", "B"];
+
+    function showContent() {
+        var temp, item, a, i;
+        temp = document.getElementsByTagName("template")[0];
+        item = temp.content.querySelector("div");
+        for (i = 0; i < myArrNeed.length; i++) {
+            a = document.importNode(item, true);
+            a.textContent += myArrNeed[i];
+            document.body.appendChild(a);
+        }
+    }
 </script>
 
 
+<H4>Device Purchased Energy?</H4>
 
+<p>|--- Device -------------------|</p>
+
+<button onclick="{{ parser.DevicePurchasedEnergy() }}">Device Purchased Energy</button>
+<template>
+    <div class="myClass">Device Purchased Energy: </div>
+</template>
+
+<script>
+    var myArrPurchased = ["A"];
+
+
+</script>
+
+<H4>Device Sold Energy?</H4>
+
+<p>|--- Device -------------------|</p>
+
+<button onclick="showContent()">Device Sold Energy</button>
+<template>
+    <div class="myClass">Device Sold Energy: </div>
+</template>
+
+<script>
+    var myArrSold = ["B"];
+
+    function showContent() {
+        var temp, item, a, i;
+        temp = document.getElementsByTagName("template")[0];
+        item = temp.content.querySelector("div");
+        for (i = 0; i < myArrSold.length; i++) {
+            a = document.importNode(item, true);
+            a.textContent += myArrSold[i];
+            document.body.appendChild(a);
+        }
+    }
+</script>
+
+<template>
+      <h2>Exchange:</h2>
+      <img src="EnergyExchange.jpg" width="214" height="204">
+</template>
 
 <div>
     <form method="POST" action="/postevent">
@@ -51,11 +108,11 @@ function showContent() {
     </form>
 </div>
 
-Send email at: <a href="support@eventpublisher.com">
+Send email at: <a href="support@rozitaanurag.com">
 
-    support@eventpublisher.com</a>
+    support@rozitaanurag.com</a>
 
-<BR> <B><I>@CS686 Blockchain</I></B>
+<BR> <B><I>@CS690 Master Project</I></B>
 
 <HR>
 

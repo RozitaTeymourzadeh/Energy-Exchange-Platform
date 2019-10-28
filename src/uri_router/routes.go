@@ -77,4 +77,19 @@ var routes = Routes{
 	//	//	localhost:6686/makeDecision
 	//},
 
+	Route{
+		"GetTaskManager",
+		"GET",
+		"/gettaskmanager",
+		TaskManagerFrontend,
+		//	localhost:6686/gettaskmanager
+	},
+	Route{
+		"PostEvent",
+		"POST",
+		"/posttaskmanager",
+		TaskManagerFrontend,
+		//	localhost:6686/posttaskmanager
+	},
+
 }

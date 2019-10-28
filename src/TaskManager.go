@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-
+	fmt.Println("Task Manager is listening ....")
 	router := uri_router.NewRouter()
 	if len(os.Args) > 1 {
 		log.Fatal(http.ListenAndServe(":"+os.Args[1], router))

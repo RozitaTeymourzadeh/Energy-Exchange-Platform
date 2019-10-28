@@ -135,8 +135,14 @@ func (device *Device) printDeviceInfo() {
 }
 
 
-func main() {
+func DevicePurchasedEnergy() {
+fmt.Print("List of device(s) need energy!!")
+}
 
+func DeviceNeedEnergy() {
+	fmt.Print("List of device(s) purchased energy!!")
+}
 
-
+func DeviceSoldEnergy() {
+	fmt.Print("List of device(s) sold energy!!")
 }
