@@ -1,8 +1,13 @@
 package uri_router
 
 import (
+	//"bytes"
 	"fmt"
 	ds "github.com/edgexfoundry/device-simple/src/data"
+	"log"
+	//"os"
+	//"time"
+
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
@@ -216,6 +221,77 @@ func MakeDecision(w http.ResponseWriter, r *http.Request) {
 	} // end of else
 
 }
+
+/* Event()
+*
+* /getevent API
+* /postevent API
+* To enter the event info
+ */
+func TaskManagerFrontend(w http.ResponseWriter, r *http.Request) {
+
+	log.Println(".....Task Manager Frontend Method .....")
+
+	switch r.Method {
+	case "GET":
+		//dir, err := os.Getwd()
+		resp, err := http.Get("http://taskmanager.com/")
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("response:",resp)
+		http.ServeFile(w, r, "ControllerFrontend.html")
+	case "POST":
+		if err := r.ParseForm(); err != nil {
+			fmt.Fprintf(w, "ParseForm() err: %v", err)
+			return
+		}
+		fmt.Fprintf(w, "HTTP Post = %v\n", r.PostForm)
+		fmt.Fprintf(w, "Hello astaxie!") // write data to response
+		//eventName := r.FormValue("eventName")
+		//eventDate := r.FormValue("eventDate")
+		//eventDescription := r.FormValue("eventDescription")
+		//fmt.Fprintf(w, "Event ID: %s\n", eventId)
+		//fmt.Fprintf(w, "Event Name: %s\n", eventName)
+		//fmt.Fprintf(w, "Event Date: %d\n", eventDate)
+		//fmt.Fprintf(w, "Event Description: %s\n", eventDescription)
+
+		//eventId := p4.StringRandom(16)
+		//newTimestamp := time.Now().Unix()
+		//buf := bytes.Buffer{}
+		//buf.WriteString(eventId)
+		//buf.WriteString(eventName)
+		//buf.WriteString(eventDescription)
+
+		//result := buf.String()
+		//transactionFee:= data.TransactionFeeCalculation(result)
+		///*Block Validation */
+		//if userBalance - transactionFee >= 0 {
+		//	userBalance = userBalance - transactionFee
+		//	//minershortKey:= rsa.PublicKey{}
+		//	newTransactionObject := data.NewTransaction(eventId, &minerKey.PublicKey, eventName, newTimestamp, eventDescription, transactionFee, userBalance)
+		//	fmt.Println("Transaction:", newTransactionObject)
+		//	transactionJSON, _ := newTransactionObject.EncodeToJson()
+		//	fmt.Println("Transaction JSON:", transactionJSON)
+		//	if transactionReady {
+		//		encryptedPKCS1v15 := data.EncryptPKCS(&minerKey.PublicKey, transactionJSON)
+		//		fmt.Println("encryptedPKCS1v15 is:", encryptedPKCS1v15)
+		//		encryptedPKCS1v15Str := string(encryptedPKCS1v15)
+		//		h, hashed, signature := data.SignPKCS(encryptedPKCS1v15Str, minerKey) //Private Key
+		//		fmt.Println("User Signature is:", signature)
+		//		fmt.Println("h is:", h)
+		//		fmt.Println("hashed is:", hashed)
+		//	}
+		//	go TxPool.AddToTransactionPool(newTransactionObject)
+		//
+		//} else {
+		//	fmt.Fprintf(w, "User's has not got enough balance to add Transaction! Sorry!Balance = %d\n", userBalance)
+		//}
+	default:
+		fmt.Fprintf(w, "FATAL: Wrong HTTP Request!")
+	}
+}
+
 
 func Register(w http.ResponseWriter, r *http.Request) { //todo
 
