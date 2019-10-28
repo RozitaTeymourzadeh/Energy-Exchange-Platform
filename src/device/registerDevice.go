@@ -1,0 +1,5 @@
+package device
+
+func RegisterDevice() {
+
+}

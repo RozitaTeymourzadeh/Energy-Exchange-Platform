@@ -83,7 +83,8 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 	now := time.Now().UnixNano()
 
 	if reqs[0].DeviceResourceName == "randomsuppliernumber" {
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(100)))
+		random := int32(rand.Intn(100))
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, random)
 		res[0] = cv
 	}
 	if reqs[0].DeviceResourceName == "randomsupplierrate" {

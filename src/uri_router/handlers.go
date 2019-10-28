@@ -12,7 +12,7 @@ import (
 
 //var INIT_SERVER_ADDRESS = "http://localhost:6686"
 //changes in init for arg of port provided
-var SELFID = ds.NewtNodeId("localhost", 6686)
+//var SELFID = ds.NewtNodeId("localhost", 6686)
 
 // data structure to hold readings
 var DeviceEventsDS = ds.NewDeviceEvents()
@@ -214,5 +214,9 @@ func MakeDecision(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write([]byte(sb.String()))
 
 	} // end of else
+
+}
+
+func Register(w http.ResponseWriter, r *http.Request) { //todo
 
 }

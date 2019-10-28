@@ -1,24 +1,43 @@
 package data
 
-import "strings"
+import (
+	"sync"
+)
 
-type NodeId struct {
+type nodeId struct {
 	Address   string
 	Port      string
 	Separator string
 }
 
-// constructor for NodeId
-func NewtNodeId(address string, port int) NodeId {
-	nid := NodeId{}
-	nid.Separator = ":"
-	nid.Address = address
-	nid.Port = string(port)
-	return nid
+var instanceNodeId *nodeId
+var onceNodeId sync.Once
+
+func SetNodeId(address string, port string) *nodeId {
+	onceNodeId.Do(func() {
+		instanceNodeId = &nodeId{
+			Address:   address,
+			Port:      port,
+			Separator: ":",
+		}
+	})
+	return instanceNodeId
 }
 
-// address and port
-func splitAddressAndPort(addressAndPort string, separator string) []string {
-	addressAndPort = ""
-	return strings.Split(addressAndPort, separator)
+func GetNodeId() *nodeId {
+	return instanceNodeId
 }
+
+//// constructor for NodeId
+//func NewtNodeId(address string, port int) NodeId {
+//	nid := NodeId{}
+//	nid.Separator = ":"
+//	nid.Address = address
+//	nid.Port = string(port)
+//	return nid
+//}
+
+//// address and port
+//func (nid *NodeId)SplitAddressAndPort() []string {
+//	return strings.Split(addressAndPort, separator)
+//}

@@ -7,28 +7,31 @@ import (
 	"strings"
 )
 
-type Device struct {
-	Id             string           `json:"id"`
-	Name           string           `json:"name"`
-	AdminState     string           `json:"adminState"`
-	OperatingState string           `json:"operatingState"`
-	LastConnected  string           `json:"lastConnected"`
-	LastReported   string           `json:"lastReported"`
-	Labels         []string         `json:"labels"`
-	Location       string           `json:"location"`
-	Commands       []models.Command `json:"commands"`
-}
-
+//
+//type Device struct {
+//	Id             string           `json:"id"`
+//	Name           string           `json:"name"`
+//	AdminState     string           `json:"adminState"`
+//	OperatingState string           `json:"operatingState"`
+//	LastConnected  string           `json:"lastConnected"`
+//	LastReported   string           `json:"lastReported"`
+//	Labels         []string         `json:"labels"`
+//	Location       string           `json:"location"`
+//	Commands       []models.Command `json:"commands"`
+//}
+//
 type DeviceList struct {
-	Devices []Device
+	Devices []models.Device
 }
 
+//
 func NewDeviceList() DeviceList {
 	return DeviceList{
-		Devices: make([]Device, 0),
+		Devices: make([]models.Device, 0),
 	}
 }
 
+//
 func DeviceListFromJson(jsonBytes []byte) DeviceList {
 	dl := NewDeviceList()
 	err := json.Unmarshal(jsonBytes, &dl.Devices)
@@ -38,6 +41,7 @@ func DeviceListFromJson(jsonBytes []byte) DeviceList {
 	return dl
 }
 
+//
 func (dl *DeviceList) ShowDeviceInList() string {
 	sb := strings.Builder{}
 	sb.WriteString("Device List: \n")

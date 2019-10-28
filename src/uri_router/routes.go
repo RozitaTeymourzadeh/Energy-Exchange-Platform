@@ -19,6 +19,12 @@ var routes = Routes{
 		Start,
 	},
 	Route{
+		"Register",
+		"POST",
+		"/register",
+		Register,
+	},
+	Route{
 		"GetAllDevices",
 		"GET",
 		"/getalldevices",
@@ -69,12 +75,11 @@ var routes = Routes{
 		ShowAllLatestDeviceData,
 		//	localhost:6686/showAllLatestDeviceData
 	},
-	//Route{
-	//	"MakeDecision",
-	//	"GET",
-	//	"/makeDecision",
-	//	MakeDecision,
-	//	//	localhost:6686/makeDecision
-	//},
-
+	Route{
+		"MakeDecision",
+		"GET",
+		"/makeDecision",
+		MakeDecision,
+		//	localhost:6686/makeDecision
+	},
 }
