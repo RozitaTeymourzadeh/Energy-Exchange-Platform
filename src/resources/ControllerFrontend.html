@@ -1,0 +1,124 @@
+<HTML>
+
+<HEAD>
+
+    <TITLE>Energy Exchange Platform</TITLE>
+
+</HEAD>
+
+<BODY BGCOLOR="FFFFFF">
+
+
+<CENTER><IMG SRC="EnergyExchange.jpg" ALIGN="BOTTOM"> </CENTER>
+
+<HR>
+<STYLE>
+    .myClass {
+        color: white;
+        background-color: DodgerBlue;
+        padding: 20px;
+        text-align: left;
+        margin: 10px;
+    }
+</STYLE>
+
+
+<H1>Energy Exchange Platform</H1>
+<a href="http://localhost:6686/register">Register For Identity </a>
+
+<H4>Device Need Energy?</H4>
+
+<p>|--- Device -------------------|</p>
+<div class="myClass">Device Need Energy: </div>
+{{/*<form action="/deviceFront" method="get">*/}}
+    <button onclick="{{parser.DeviceNeedEnergy()}}">Device Need Energy</button>
+{{/*</form>*/}}
+<template>
+    <div class="myClass">Device Purchased Energy: </div>
+</template>
+
+
+<script>
+    var myArrNeed = ["A", "B"];
+
+    function showContent() {
+        var temp, item, a, i;
+        temp = document.getElementsByTagName("template")[0];
+        item = temp.content.querySelector("div");
+        for (i = 0; i < myArrNeed.length; i++) {
+            a = document.importNode(item, true);
+            a.textContent += myArrNeed[i];
+            document.body.appendChild(a);
+        }
+    }
+</script>
+
+
+<H4>Device Purchased Energy?</H4>
+
+<p>|--- Device -------------------|</p>
+
+<button onclick="{{ parser.DevicePurchasedEnergy() }}">Device Purchased Energy</button>
+<template>
+    <div class="myClass">Device Purchased Energy: </div>
+</template>
+
+<script>
+    var myArrPurchased = ["A"];
+
+
+</script>
+
+<H4>Device Sold Energy?</H4>
+
+<p>|--- Device -------------------|</p>
+
+<button onclick="showContent()">Device Sold Energy</button>
+<template>
+    <div class="myClass">Device Sold Energy: </div>
+</template>
+
+<script>
+    var myArrSold = ["B"];
+
+    function showContent() {
+        var temp, item, a, i;
+        temp = document.getElementsByTagName("template")[0];
+        item = temp.content.querySelector("div");
+        for (i = 0; i < myArrSold.length; i++) {
+            a = document.importNode(item, true);
+            a.textContent += myArrSold[i];
+            document.body.appendChild(a);
+        }
+    }
+</script>
+
+<template>
+      <h2>Exchange:</h2>
+      <img src="EnergyExchange.jpg" width="214" height="204">
+</template>
+
+<div>
+    <form method="POST" action="/postevent">
+        <P> <B></B>
+            <label>Name: </label><input name="eventName" type="text" value="IEEE" />
+        <P> <B></B>
+            <label>Date: </label><input name="date" type="text" value="18/04/2020" />
+        <P> <B></B>
+            <label>Description: </label><input name="eventDescription" type="text" value="Computer Science" />
+        <P> <B></B>
+            <input type="submit" value="Publish">
+    </form>
+</div>
+
+Send email at: <a href="support@rozitaanurag.com">
+
+    support@rozitaanurag.com</a>
+
+<BR> <B><I>@CS690 Master Project</I></B>
+
+<HR>
+
+</BODY>
+
+</HTML>

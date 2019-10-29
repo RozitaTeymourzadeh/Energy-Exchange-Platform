@@ -4,7 +4,11 @@ import (
 	//"bytes"
 	"fmt"
 	ds "github.com/edgexfoundry/device-simple/src/data"
+	"github.com/edgexfoundry/device-simple/src/resources"
+	"html/template"
 	"log"
+	"os"
+
 	//"os"
 	//"time"
 
@@ -15,13 +19,12 @@ import (
 	"strings"
 )
 
-//var INIT_SERVER_ADDRESS = "http://localhost:6686"
-//changes in init for arg of port provided
-//var SELFID = ds.NewtNodeId("localhost", 6686)
-
 // data structure to hold readings
 var DeviceEventsDS = ds.NewDeviceEvents()
-var Devices = ds.NewDevices()
+
+//var Devices = ds.NewDevices()
+var DeviceList = ds.NewDeviceList()
+var PageVars = resources.PageVars{}
 
 //func init() {
 //	// This function will be executed before everything else.
@@ -35,6 +38,36 @@ func Start(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write([]byte("PowerFlow : Energy Exchange Platform"))
 }
 
+// Index handler
+func Index(w http.ResponseWriter, r *http.Request) {
+	//pageVars := resources.PageVars{
+	//	Title: "Energy Trading Platform",
+	//}
+	PageVars.Title = "Energy Trading Platform"
+
+	PageVars.DeviceList = DeviceList.Devices //append(PageVars.DeviceList, "A", "B")
+	render(w, "home.html", PageVars)
+}
+
+// render func to serve html in templates dir
+func render(w http.ResponseWriter, tmpl string, pageVars resources.PageVars) {
+
+	tmpl = fmt.Sprintf("src/resources/templates/%s", tmpl) // prefix the name passed in with templates/
+	t, err := template.ParseFiles(tmpl)                    //parse the template file held in the templates folder
+
+	if err != nil { // if there is an error
+		pwd, _ := os.Getwd()
+		log.Println("Current working dir : " + pwd)
+		log.Print("template parsing error: ", err) // log it
+	}
+
+	err = t.Execute(w, pageVars) //execute the template and pass in the variables to fill the gaps
+
+	if err != nil { // if there is an error
+		log.Print("template executing error: ", err) //log it
+	}
+}
+
 func GetAllDevices(w http.ResponseWriter, r *http.Request) {
 	uri := "http://localhost:48082/api/v1/device"
 
@@ -46,6 +79,8 @@ func GetAllDevices(w http.ResponseWriter, r *http.Request) {
 	bytesRead, _ := ioutil.ReadAll(resp.Body)
 
 	deviceList := ds.DeviceListFromJson(bytesRead)
+	DeviceList = deviceList
+	//deviceList.AddAllToDevices(&Devices)
 
 	w.Write([]byte(deviceList.ShowDeviceInList()))
 
@@ -62,7 +97,7 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 	// fetching response
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println("error in reading response body in startreading")
+		fmt.Println("error in reading response body in DeleteDevice")
 	}
 	defer resp.Body.Close()
 
@@ -239,7 +274,7 @@ func TaskManagerFrontend(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println("response:",resp)
+		fmt.Println("response:", resp)
 		http.ServeFile(w, r, "ControllerFrontend.html")
 	case "POST":
 		if err := r.ParseForm(); err != nil {
@@ -292,7 +327,28 @@ func TaskManagerFrontend(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-
 func Register(w http.ResponseWriter, r *http.Request) { //todo
 
 }
+
+func DeviceFront(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("ok in device Front"))
+}
+
+//func DevicesInSys() {
+//
+//
+//	uri := "http://localhost:48082/api/v1/device"
+//
+//	resp, err := http.Get(uri)
+//	if err != nil {
+//		fmt.Println("Error in getting all devices")
+//	}
+//	defer resp.Body.Close()
+//	bytesRead, _ := ioutil.ReadAll(resp.Body)
+//
+//	deviceProfiles := ds.DeviceProfilesFromJson(bytesRead)
+//
+//
+//	w.Write([]byte(deviceProfiles.ShowDeviceProfiles()))
+//}

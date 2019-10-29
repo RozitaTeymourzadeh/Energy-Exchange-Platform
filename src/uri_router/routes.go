@@ -13,6 +13,12 @@ type Routes []Route
 
 var routes = Routes{
 	Route{
+		"Index",
+		"GET",
+		"/",
+		Index,
+	},
+	Route{
 		"Start",
 		"GET",
 		"/start",
@@ -88,6 +94,13 @@ var routes = Routes{
 		"GET",
 		"/gettaskmanager",
 		TaskManagerFrontend,
+		//	localhost:6686/gettaskmanager
+	},
+	Route{
+		"GetDeviceFront",
+		"GET",
+		"/deviceFront",
+		DeviceFront,
 		//	localhost:6686/gettaskmanager
 	},
 	Route{

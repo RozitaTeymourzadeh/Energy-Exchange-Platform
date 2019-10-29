@@ -12,19 +12,24 @@ import (
 func main() {
 	fmt.Println("Task Manager is listening ....")
 	router := uri_router.NewRouter()
+
 	ip := uri_router.GetIP()
 	port := ""
 	if len(os.Args) > 1 {
 		port = os.Args[1]
-		log.Fatal(http.ListenAndServe(":"+os.Args[1], router))
-		fmt.Println("Task Manager is listening from port: ", os.Args[1])
 	} else {
 		port = "6686"
-		log.Fatal(http.ListenAndServe(":6686", router))
-		fmt.Println("Task Manager is listening from port: 6686")
 	}
 	data.SetNodeId(ip, port)
-	fmt.Println(ip + " : " + port)
+	fmt.Println("http://" + ip + ":" + port)
 
+	// serve everything in the css folder, the img folder and mp3 folder as a file
+	pwd, _ := os.Getwd()
+	fmt.Println("Current working dir : ", pwd)
+	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("css"))))
+	//http.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("img"))))
+	//http.Handle("/mp3/", http.StripPrefix("/mp3/", http.FileServer(http.Dir("mp3"))))
+
+	// listen and serve at ip and port
 	log.Fatal(http.ListenAndServe(data.GetNodeId().Address+":"+data.GetNodeId().Port, router))
 }

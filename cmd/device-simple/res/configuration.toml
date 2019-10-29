@@ -67,7 +67,7 @@ Level = "DEBUG"
     OnChange = false
     Frequency = "8s"
 [[DeviceList]]
-  Name = "Consume-Device01"
+  Name = "Consume-Device-01"
   Profile = "Consume-Device"
   Description = "Example of Consume Device"
   Labels = [ "industrial" ]
