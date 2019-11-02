@@ -1,4 +1,4 @@
-package devicePkg
+package devicepkg
 
 import (
 	"fmt"

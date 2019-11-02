@@ -18,3 +18,5 @@ cmd/device-simple/device-simple
 *.log
 
 cmd/device-simple/randomsuppliernumberValue.txt
+
+cmd/device-simple/randomconsumenumberValue.txt
