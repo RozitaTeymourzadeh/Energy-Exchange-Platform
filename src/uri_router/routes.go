@@ -118,4 +118,35 @@ var routes = Routes{
 		MakeDecision,
 		//	localhost:6686/makeDecision
 	},
+	///////////////////// !!!!!!!!! ///////////////////
+	//device manager apis
+	///////////////////// !!!!!!!!! ///////////////////
+	Route{
+		"On",
+		"GET",
+		"/on",
+		On,
+		//	localhost:9999/on
+	},
+	Route{
+		"SendDeviceList",
+		"GET",
+		"/sendDeviceList",
+		SendDeviceList,
+		//	localhost:9999/sendDeviceList
+	},
+	Route{
+		"SupplierTx",
+		"POST",
+		"/suppliertx",
+		SupplierTx,
+		//	localhost:9999/suppliertx
+	},
+	Route{
+		"ConsumerTx",
+		"POST",
+		"/consumertx",
+		ConsumerTx,
+		//	localhost:9999/consumertx
+	},
 }

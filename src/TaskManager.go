@@ -13,7 +13,7 @@ func main() {
 	fmt.Println("Task Manager is listening ....")
 	router := uri_router.NewRouter()
 
-	ip := uri_router.GetIP()
+	ip := "localhost" //uri_router.GetIP() //
 	port := ""
 	if len(os.Args) > 1 {
 		port = os.Args[1]
