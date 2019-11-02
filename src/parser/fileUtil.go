@@ -1,10 +1,12 @@
 package parser
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
+	"strconv"
 )
 
 func ReadFile(pathToFile string) string {
@@ -54,6 +56,17 @@ func OverWriteFile(pathToFile string, toWrite string) {
 	//if err := f.Close(); err != nil {
 	//	log.Fatal(err)
 	//}
+}
+
+func UpdateValueInFile(pathToFile string, change int) {
+	fileValue := ReadFile(pathToFile)
+	oldValue, err := strconv.Atoi(fileValue)
+	if err != nil {
+		log.Println(errors.New("Cannot read from value File: " + pathToFile))
+	}
+
+	newValue := oldValue + change
+	OverWriteFile(pathToFile, strconv.Itoa(newValue))
 }
 
 func DeleteFile(filePath string) {
