@@ -72,20 +72,3 @@ File = "/edgex/logs/device-simple.log"
     Frequency = "30s"
     OnChange = true
     Resource = "Image"
-[[DeviceList]]
-  Name = "Consume-Device01"
-  Profile = "Consume-Device"
-  Description = "Example of Consume Device"
-  Labels = [ "industrial" ]
-  [DeviceList.Protocols]
-    [DeviceList.Protocols.other]
-      Address = "simple01"
-      Port = "310"
-  [[DeviceList.AutoEvents]]
-    Frequency = "10s"
-    OnChange = true
-    Resource = "Switch"
-  [[DeviceList.AutoEvents]]
-    Frequency = "30s"
-    OnChange = true
-    Resource = "Image"

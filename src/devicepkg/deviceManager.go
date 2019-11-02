@@ -1,4 +1,4 @@
-package main
+package devicepkg
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-func main() {
+func RunDeviceManager() {
 	fmt.Println("Task Manager is listening ....")
 	router := uri_router.NewRouter()
 
@@ -18,10 +18,10 @@ func main() {
 	if len(os.Args) > 1 {
 		port = os.Args[1]
 	} else {
-		port = "6686"
+		port = "9999"
 	}
 	data.SetNodeId(ip, port)
-	fmt.Println("http://" + ip + ":" + port)
+	fmt.Println("http://" + ip + ":" + port + "/on")
 
 	// serve everything in the css folder, the img folder and mp3 folder as a file
 	pwd, _ := os.Getwd()

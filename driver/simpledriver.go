@@ -12,15 +12,19 @@ package driver
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	dsModels "github.com/edgexfoundry/device-sdk-go/pkg/models"
+	"github.com/edgexfoundry/device-simple/src/parser"
 	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
 	contract "github.com/edgexfoundry/go-mod-core-contracts/models"
 	"image"
 	"image/jpeg"
 	"image/png"
+	"log"
 	"math/rand"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -29,6 +33,15 @@ type SimpleDriver struct {
 	asyncCh      chan<- *dsModels.AsyncValues
 	switchButton bool
 }
+
+// counters
+type counters struct {
+	randomsuppliernumber int32
+	randomsupplierrate   int32
+	randomconsumenumber  int32
+}
+
+var Counters = counters{}
 
 func getImageBytes(imgFile string, buf *bytes.Buffer) error {
 	// Read existing image from file
@@ -82,19 +95,25 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 	res = make([]*dsModels.CommandValue, 1)
 	now := time.Now().UnixNano()
 
-	if reqs[0].DeviceResourceName == "randomsuppliernumber" {
-		random := int32(rand.Intn(100))
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, random)
+	if reqs[0].DeviceResourceName == "randomsuppliernumber" { // supply device
+		Counters.randomsuppliernumber++
+		reading := generateOnceAndReadFromFileAfter(Counters.randomsuppliernumber, 100, "randomsuppliernumberValue.txt", 1)
+		log.Println("randomsuppliernumber value: ", reading)
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(reading))
 		res[0] = cv
 	}
 	if reqs[0].DeviceResourceName == "randomsupplierrate" {
 		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(10)))
 		res[0] = cv
 	}
-	if reqs[0].DeviceResourceName == "randomconsumenumber" {
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(50)))
+	if reqs[0].DeviceResourceName == "randomconsumenumber" { // consume device
+		Counters.randomconsumenumber++
+		reading := generateOnceAndReadFromFileAfter(Counters.randomconsumenumber, 50, "randomconsumenumberValue.txt", -1)
+		log.Println("randomconsumenumber value: ", int32(reading))
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(reading))
 		res[0] = cv
 	}
+
 	if reqs[0].DeviceResourceName == "SwitchButton" {
 		cv, _ := dsModels.NewBoolValue(reqs[0].DeviceResourceName, now, s.switchButton)
 		res[0] = cv
@@ -169,4 +188,34 @@ func (s *SimpleDriver) UpdateDevice(deviceName string, protocols map[string]cont
 func (s *SimpleDriver) RemoveDevice(deviceName string, protocols map[string]contract.ProtocolProperties) error {
 	s.lc.Debug(fmt.Sprintf("Device %s is removed", deviceName))
 	return nil
+}
+
+// GenerateOnceAndReadFromFileAfter
+func generateOnceAndReadFromFileAfter(count int32, maxVal int, filename string, change int) int {
+	fmt.Println("in generateOnceAndReadFromFileAfter, count is : ", count)
+	var val int
+	if count <= 1 {
+		parser.DeleteFile(filename)
+		val = rand.Intn(maxVal)
+		fmt.Println("Writing to file generated value : ", strconv.Itoa(val))
+		parser.WriteFile(filename, strconv.Itoa(val))
+
+	} else {
+
+		fileValue := parser.ReadFile(filename)
+		fmt.Println("fileValue : ", fileValue)
+		fileVal, err := strconv.Atoi(fileValue)
+		if err != nil {
+			fmt.Println(errors.New("cannot convert file reading to int"))
+		}
+		if fileVal+change >= 0 {
+			val = fileVal + change
+		}
+
+		fmt.Println("Writing to added value : ", int32(val))
+		parser.OverWriteFile(filename, strconv.Itoa(val)) //(fmt.Sprint(reading)/*strconv.Itoa(reading)*/)
+
+		//return reading
+	}
+	return val
 }

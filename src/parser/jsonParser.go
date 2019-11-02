@@ -5,23 +5,20 @@ import (
 	"fmt"
 )
 
-
 /* Device Struct
 *
 * Data structure for Device info
 *
  */
 type Device struct {
-	Id       string 	`json:"id"`
-	Created  int64  		`json:"created"`
-	Origin   int64  	`json:"origin"`
-	Modified int64   	`json:"modified"`
-	Device   string 	`json:"device"`
-	Name     string 	`json:"name"`
-	Value    int32 		`json:"value"`
+	Id       string `json:"id"`
+	Created  int64  `json:"created"`
+	Origin   int64  `json:"origin"`
+	Modified int64  `json:"modified"`
+	Device   string `json:"device"`
+	Name     string `json:"name"`
+	Value    int32  `json:"value"`
 }
-
-
 
 /* NewTransaction()
 *
@@ -30,16 +27,15 @@ type Device struct {
  */
 func NewDevice(id string, created int64, origin int64, modified int64, device string, name string, value int32) Device {
 	return Device{
-		Id: id,
-		Created: created,
-		Origin: origin,
+		Id:       id,
+		Created:  created,
+		Origin:   origin,
 		Modified: modified,
-		Device: device,
-		Name: name,
-		Value: value,
+		Device:   device,
+		Name:     name,
+		Value:    value,
 	}
 }
-
 
 /* EncodeToJson()
 *
@@ -60,13 +56,12 @@ func (device *Device) DecodeFromJson(jsonString string) error {
 	return json.Unmarshal([]byte(jsonString), device)
 }
 
-
 /* GetId
 *
 * To Get device Id
 *
  */
-func (device *Device) getId() string{
+func (device *Device) getId() string {
 	return device.Id
 }
 
@@ -75,7 +70,7 @@ func (device *Device) getId() string{
 * To Get device Created date
 *
  */
-func (device *Device) getCreated() int64{
+func (device *Device) getCreated() int64 {
 	return device.Created
 }
 
@@ -84,7 +79,7 @@ func (device *Device) getCreated() int64{
 * To Get device Origin date
 *
  */
-func (device *Device) getOrigin() int64{
+func (device *Device) getOrigin() int64 {
 	return device.Origin
 }
 
@@ -93,7 +88,7 @@ func (device *Device) getOrigin() int64{
 * To Get Modified date
 *
  */
-func (device *Device) getModified() int64{
+func (device *Device) getModified() int64 {
 	return device.Modified
 }
 
@@ -102,7 +97,7 @@ func (device *Device) getModified() int64{
 * To Get Device info
 *
  */
-func (device *Device) getDevice() string{
+func (device *Device) getDevice() string {
 	return device.Device
 }
 
@@ -111,7 +106,7 @@ func (device *Device) getDevice() string{
 * To Get Device Name
 *
  */
-func (device *Device) getDeviceName() string{
+func (device *Device) getDeviceName() string {
 	return device.Name
 }
 
@@ -120,7 +115,7 @@ func (device *Device) getDeviceName() string{
 * To Get Device Value
 *
  */
-func (device *Device) getDeviceValue() int32{
+func (device *Device) getDeviceValue() int32 {
 	return device.Value
 }
 
@@ -131,12 +126,11 @@ func (device *Device) getDeviceValue() int32{
  */
 func (device *Device) printDeviceInfo() {
 
-	fmt.Print("Device ID: " , device.getId() , "Device Created Time: " , device.getCreated() , "Device Origin: " , device.getOrigin() , "Device Modified: " , device.getModified() , "Device Device: " , device.getDevice() , "Device Device Name: " , device.getDeviceName() , "Device Value: " , device.getDeviceValue())
+	fmt.Print("Device ID: ", device.getId(), "Device Created Time: ", device.getCreated(), "Device Origin: ", device.getOrigin(), "Device Modified: ", device.getModified(), "Device Device: ", device.getDevice(), "Device Device Name: ", device.getDeviceName(), "Device Value: ", device.getDeviceValue())
 }
 
-
 func DevicePurchasedEnergy() {
-fmt.Print("List of device(s) need energy!!")
+	fmt.Print("List of device(s) need energy!!")
 }
 
 func DeviceNeedEnergy() {

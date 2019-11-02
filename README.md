@@ -50,19 +50,12 @@ services:
 
 ```linux
 sudo docker-compose up -d
-sudo docker-compose ps
 sudo docker-compose down
 ```
 
 ## Dependancy
 
 1. Goland IDE environment
-
-```linux
-sudo apt-get install golang
-go version
-```
-
 2. Git 
 3. EdgeX Foundary 
 
@@ -110,4 +103,33 @@ Alternatively, the go.mod from existing SDK device can be used in simple device 
 Make file is used to build the project. Build command in the build directory is:
 ```linux
 make build
+```
+## Run the Project
+
+Run the binery generated in the follwing directory, in this example simple-device
+
+```linux
+cd cmd
+cd simple-device
+./simple-device
+```
+## Kill or Delete Opened Containers
+
+For re-run the application, it is required to kill or delete the devices that is running in docker background to avoid panic error in docker while is running to do so, do the following:
+
+**Delete Using Postman** 
+
+```linux
+DELETE clocalhost:48081/api/v1/device/id/DEVICE_ID
+```
+```linux
+docker container ls -a
+docker container stop $(docker container ls -aq)
+docker container rm $(docker container ls -aq)
+```
+while docker-compose down, we can run in with --remove-orphans
+
+```linux
+docker-compose up -d
+docker-compose down --remove-orphans
 ```
