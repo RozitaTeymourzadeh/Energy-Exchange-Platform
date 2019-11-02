@@ -3,11 +3,13 @@ package uri_router
 import (
 	//"bytes"
 	"fmt"
-	ds "github.com/edgexfoundry/device-simple/src/data"
+	"github.com/edgexfoundry/device-simple/src/data"
 	"github.com/edgexfoundry/device-simple/src/resources"
 	"html/template"
 	"log"
+	"math/rand"
 	"os"
+	"time"
 
 	//"os"
 	//"time"
@@ -20,11 +22,15 @@ import (
 )
 
 // data structure to hold readings
-var DeviceEventsDS = ds.NewDeviceEvents()
+var DeviceEventsDS = data.NewDeviceEvents()
 
 //var Devices = ds.NewDevices()
-var DeviceList = ds.NewDeviceList()
-var PageVars = resources.PageVars{}
+var DeviceList = data.NewDeviceList()
+var SupplyDeviceDetails = make([]data.DeviceTypeDetails, 0)
+var ConsumeDeviceDetails = make([]data.DeviceTypeDetails, 0)
+var Transactions = make([]data.Transaction, 0)
+
+//var PageVars = resources.NewPageVars()
 
 //func init() {
 //	// This function will be executed before everything else.
@@ -43,10 +49,24 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	//pageVars := resources.PageVars{
 	//	Title: "Energy Trading Platform",
 	//}
-	PageVars.Title = "Energy Trading Platform"
+	title := "Energy Trading Platform"
+	DeviceList = getAllDevices( /*data.GetNodeId().ConnectingAddress*/ )
+	SupplyDeviceDetails = generateDeviceTypeBoard("supply")
+	ConsumeDeviceDetails = generateDeviceTypeBoard("consume")
 
-	PageVars.DeviceList = DeviceList.Devices //append(PageVars.DeviceList, "A", "B")
-	render(w, "home.html", PageVars)
+	p := resources.PageVars{
+		Title:                 title,
+		DeviceList:            DeviceList.Devices,
+		SupplyDevicesDetails:  SupplyDeviceDetails,
+		ConsumeDevicesDetails: ConsumeDeviceDetails,
+		Transactions:          Transactions,
+		Body:                  "",
+	}
+	//PageVars.DeviceList = DeviceList.Devices //append(PageVars.DeviceList, "A", "B")
+
+	x := p.SupplyDevicesDetails
+	fmt.Println(len(x))
+	render(w, "home.html", p)
 }
 
 // render func to serve html in templates dir
@@ -78,7 +98,7 @@ func GetAllDevices(w http.ResponseWriter, r *http.Request) {
 	defer resp.Body.Close()
 	bytesRead, _ := ioutil.ReadAll(resp.Body)
 
-	deviceList := ds.DeviceListFromJson(bytesRead)
+	deviceList := data.DeviceListFromJson(bytesRead)
 	DeviceList = deviceList
 	//deviceList.AddAllToDevices(&Devices)
 
@@ -116,7 +136,7 @@ func GetAllDeviceProfiles(w http.ResponseWriter, r *http.Request) {
 	defer resp.Body.Close()
 	bytesRead, _ := ioutil.ReadAll(resp.Body)
 
-	deviceProfiles := ds.DeviceProfilesFromJson(bytesRead)
+	deviceProfiles := data.DeviceProfilesFromJson(bytesRead)
 
 	w.Write([]byte(deviceProfiles.ShowDeviceProfiles()))
 
@@ -155,7 +175,7 @@ func ReadDeviceData(w http.ResponseWriter, r *http.Request) {
 	bytesRead, _ := ioutil.ReadAll(resp.Body)
 	//fmt.Println(string(bytesRead))
 
-	cdes := ds.CoreDataEventsFromJson(bytesRead)
+	cdes := data.CoreDataEventsFromJson(bytesRead)
 
 	fmt.Println("coreDataEvent:")
 	for _, coreDataEvent := range cdes.DataEvents {
@@ -201,53 +221,74 @@ func ShowAllLatestDeviceData(w http.ResponseWriter, r *http.Request) {
 
 func MakeDecision(w http.ResponseWriter, r *http.Request) {
 
-	forDecisionSupply := make(map[string]string)
-	forDecisionConsume := make(map[string]string)
+	//forDecisionSupply := make(map[string]string)
+	//forDecisionConsume := make(map[string]string)
 
-	forDevices := [2]string{"Supply-Device-01/randomsuppliernumber", "Consume-Device01/randomconsumenumber"}
-	for _, ford := range forDevices {
-		resp, err := http.Get("http://localhost:6686/showLatestDeviceData/" + ford /*/Supply-Device-01/randomsuppliernumber"*/)
-		if err != nil {
-			fmt.Println("Could not fetch data for Supply-Device-01")
-		}
-		defer resp.Body.Close()
-
-		value, _ := ioutil.ReadAll(resp.Body)
-		values := string(value[:])
-		vals := strings.Split(values, "=")
-		if len(vals) > 1 {
-			if strings.Contains(vals[0], "Supply") {
-				forDecisionSupply[vals[0]] = vals[1]
-			} else if strings.Contains(vals[0], "Consume") {
-				forDecisionConsume[vals[0]] = vals[1]
-			}
-		}
-	}
+	//forDevices := [2]string{"Supply-Device-01/randomsuppliernumber", "Consume-Device01/randomconsumenumber"}
+	//for _, ford := range forDevices {
+	//	resp, err := http.Get("http://localhost:6686/showLatestDeviceData/" + ford /*/Supply-Device-01/randomsuppliernumber"*/)
+	//	if err != nil {
+	//		fmt.Println("Could not fetch data for Supply-Device-01")
+	//	}
+	//	defer resp.Body.Close()
+	//
+	//	value, _ := ioutil.ReadAll(resp.Body)
+	//	values := string(value[:])
+	//	vals := strings.Split(values, "=")
+	//	if len(vals) > 1 {
+	//		if strings.Contains(vals[0], "Supply") {
+	//			forDecisionSupply[vals[0]] = vals[1]
+	//		} else if strings.Contains(vals[0], "Consume") {
+	//			forDecisionConsume[vals[0]] = vals[1]
+	//		}
+	//	}
+	//}
 
 	// making decision
-	if len(forDecisionConsume) < 1 {
+	if len(ConsumeDeviceDetails) < 1 {
 		_, _ = w.Write([]byte("No consume device"))
 
-	} else if len(forDecisionSupply) < 1 {
-		_, _ = w.Write([]byte("No consume device"))
+	} else if len(SupplyDeviceDetails) < 1 {
+		_, _ = w.Write([]byte("No supply device"))
 
 	} else {
 		sb := strings.Builder{}
 		sb.WriteString("Pairing consume and supply devices:\n")
-		for ck, cv := range forDecisionConsume {
+		for _, cv := range ConsumeDeviceDetails {
 			matched := false
-			sb.WriteString(">>>\n")
-			for sk, sv := range forDecisionSupply {
-				sval, _ := strconv.Atoi(sv)
-				cval, _ := strconv.Atoi(cv)
-				if sval >= cval { // one supply device supplying all energy needed by the consume device
+			sb.WriteString(">>> \n")
+			for _, sv := range SupplyDeviceDetails {
+				sval, _ := strconv.Atoi(sv.Reading)
+				cval, _ := strconv.Atoi(cv.Reading)
+				//if sval >= cval { // one supply device supplying all energy needed by the consume device
+				if cval <= 40 && sval >= 40 {
 					matched = true
-					forDecisionSupply[sk] = string(sval - cval)
-					sb.WriteString(ck + "will receive " + cv + " units from " + sk)
+					//SupplyDeviceDetails[sk] = string(sval - cval)
+
+					//generate random number between 15 and 30
+					rand.Seed(time.Now().UnixNano())
+					min := 10
+					max := 30
+					//rand.Intn(max - min + 1) + min)
+					randPowerUnits := rand.Intn(max-min+1) + min
+					newTx := data.Transaction{
+						SupplierName:    sv.DeviceName,
+						SupplierId:      sv.Id,
+						SupplierAddress: sv.DeviceAddress,
+						ConsumerName:    cv.DeviceName,
+						ConsumerId:      cv.Id,
+						ConsumerAddress: cv.DeviceAddress,
+						PowerUnits:      strconv.Itoa(randPowerUnits),
+					}
+					Transactions = append(Transactions, newTx)
+					sb.WriteString(cv.DeviceName + " will receive " + strconv.Itoa(randPowerUnits) + " units from " + sv.DeviceName)
+
+					go sendTransactionToSupplier(newTx)
+
 				}
 			}
 			if matched == false {
-				sb.WriteString("Could not match" + ck + "to any Supply device")
+				sb.WriteString("Could not match " + cv.DeviceName + " to any Supply device")
 			}
 		}
 
@@ -328,7 +369,15 @@ func TaskManagerFrontend(w http.ResponseWriter, r *http.Request) {
 }
 
 func Register(w http.ResponseWriter, r *http.Request) { //todo
-
+	fmt.Println("In registration service")
+	if r.Method == http.MethodPost {
+		defer r.Body.Close()
+		bytesRead, _ := ioutil.ReadAll(r.Body)
+		peerObj := data.PeerFromJson(bytesRead)
+		data.GetNodeId().AddPeer(peerObj)
+		w.WriteHeader(200)
+	}
+	w.WriteHeader(405)
 }
 
 func DeviceFront(w http.ResponseWriter, r *http.Request) {
