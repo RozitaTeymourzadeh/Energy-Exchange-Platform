@@ -60,12 +60,13 @@ Level = "DEBUG"
   Labels = [ "random", "test" ]
   [DeviceList.Protocols]
     [DeviceList.Protocols.Other]
-      Address = "simple01s"
+      Address = "random"
       Port = "300"
   [[DeviceList.AutoEvents]]
     Resource = "Random"
     OnChange = false
     Frequency = "8s"
+
 [[DeviceList]]
   Name = "Consume-Device-01"
   Profile = "Consume-Device"
@@ -73,7 +74,7 @@ Level = "DEBUG"
   Labels = [ "industrial" ]
   [DeviceList.Protocols]
     [DeviceList.Protocols.other]
-      Address = "simple01c"
+      Address = "simple01"
       Port = "310"
   [[DeviceList.AutoEvents]]
      Resource = "Random"

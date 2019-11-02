@@ -21,6 +21,7 @@ import (
 	"image"
 	"image/jpeg"
 	"image/png"
+	"log"
 	"math/rand"
 	"os"
 	"strconv"
@@ -96,7 +97,8 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 
 	if reqs[0].DeviceResourceName == "randomsuppliernumber" { // supply device
 		Counters.randomsuppliernumber++
-		reading := generateOnceAndReadFromFileAfter(Counters.randomsuppliernumber, 100, "randomsuppliernumberValue.txt")
+		reading := generateOnceAndReadFromFileAfter(Counters.randomsuppliernumber, 100, "randomsuppliernumberValue.txt", 1)
+		log.Println("randomsuppliernumber value: ", reading)
 		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(reading))
 		res[0] = cv
 	}
@@ -106,10 +108,12 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 	}
 	if reqs[0].DeviceResourceName == "randomconsumenumber" { // consume device
 		Counters.randomconsumenumber++
-		reading := generateOnceAndReadFromFileAfter(Counters.randomconsumenumber, 50, "randomconsumenumberValue.txt")
+		reading := generateOnceAndReadFromFileAfter(Counters.randomconsumenumber, 50, "randomconsumenumberValue.txt", -1)
+		log.Println("randomconsumenumber value: ", int32(reading))
 		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(reading))
 		res[0] = cv
 	}
+
 	if reqs[0].DeviceResourceName == "SwitchButton" {
 		cv, _ := dsModels.NewBoolValue(reqs[0].DeviceResourceName, now, s.switchButton)
 		res[0] = cv
@@ -187,29 +191,31 @@ func (s *SimpleDriver) RemoveDevice(deviceName string, protocols map[string]cont
 }
 
 // GenerateOnceAndReadFromFileAfter
-func generateOnceAndReadFromFileAfter(count int32, maxVal int, filename string) int {
+func generateOnceAndReadFromFileAfter(count int32, maxVal int, filename string, change int) int {
 	fmt.Println("in generateOnceAndReadFromFileAfter, count is : ", count)
-	var reading int
+	var val int
 	if count <= 1 {
 		parser.DeleteFile(filename)
-		reading = rand.Intn(maxVal)
-		fmt.Println("Writing to file generated value : ", strconv.Itoa(reading))
-		parser.WriteFile(filename, strconv.Itoa(reading))
+		val = rand.Intn(maxVal)
+		fmt.Println("Writing to file generated value : ", strconv.Itoa(val))
+		parser.WriteFile(filename, strconv.Itoa(val))
 
 	} else {
 
 		fileValue := parser.ReadFile(filename)
 		fmt.Println("fileValue : ", fileValue)
-		reading, err := strconv.Atoi(fileValue)
+		fileVal, err := strconv.Atoi(fileValue)
 		if err != nil {
 			fmt.Println(errors.New("cannot convert file reading to int"))
 		}
-		if reading > 0 {
-			reading = reading - 1
+		if fileVal+change >= 0 {
+			val = fileVal + change
 		}
 
-		fmt.Println("Writing to added value : ", reading)
-		parser.OverWriteFile(filename, strconv.Itoa(reading)) //(fmt.Sprint(reading)/*strconv.Itoa(reading)*/)
+		fmt.Println("Writing to added value : ", int32(val))
+		parser.OverWriteFile(filename, strconv.Itoa(val)) //(fmt.Sprint(reading)/*strconv.Itoa(reading)*/)
+
+		//return reading
 	}
-	return reading
+	return val
 }
