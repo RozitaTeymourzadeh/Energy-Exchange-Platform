@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+
+    </style>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -19,7 +37,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">PowerFlow</a>
+    <a class="navbar-brand" href="#">Energy Exchange Platform</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -37,21 +55,23 @@
 
     <div class="mainbody">
 
-        <H4>List of Devices</H4>
+        <H4>List of Devices:</H4>
         <div class="table-responsive">
             <table class="table">
                 <thead>
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Peer</th>
                     <th scope="col">Name</th>
                     <th scope="col">Id</th>
-                    <th scope="col">OperatingState</th>
+                    <th scope="col">Operation State</th>
                 </tr>
                 </thead>
                 <tbody>
                 {{ range $i, $sequence := .DeviceList }}
                 <tr>
                     <th scope="row">{{ $i }}</th>
+                    <td>{{ $sequence.PeerId }}</td>
                     <td>{{ $sequence.Name }}</td>
                     <td>{{ $sequence.Id }}</td>
                     <td>{{ $sequence.OperatingState }}</td>
@@ -61,18 +81,94 @@
             </table>
         </div>
 
+        <H4>Supply Board</H4>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Read Energy</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{ range $i, $sequence := .SupplyDevicesDetails }}
+                <tr>
+                    <th scope="row">{{ $i }}</th>
+                    <td>{{ $sequence.DeviceName }}</td>
+                    <td>{{ $sequence.Id }}</td>
+                    <td>{{ $sequence.Reading }}</td>
+                </tr>
+                {{ end }}
+                </tbody>
+            </table>
+        </div>
 
-{{/*        {{ range $i, $sequence := .DeviceList }}*/}}
-{{/*           {{ $i }} : {{ $sequence.Name }} : {{ $sequence.Id }}*/}}
-{{/*            <br/>*/}}
-{{/*        {{ end }}*/}}
+        <H4>Consume Board</H4>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Read Energy</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{ range $i, $sequence := .ConsumeDevicesDetails }}
+                <tr>
+                    <th scope="row">{{ $i }}</th>
+                    <td>{{ $sequence.DeviceName }}</td>
+                    <td>{{ $sequence.Id }}</td>
+                    <td>{{ $sequence.Reading }}</td>
+                </tr>
+                {{ end }}
+                </tbody>
+            </table>
+        </div>
+
+        <H4>Transaction History</H4>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">SupplierName</th>
+                    <th scope="col">SupplierId</th>
+                    <th scope="col">ConsumerName</th>
+                    <th scope="col">ConsumerId</th>
+                    <th scope="col">PowerUnits</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{ range $i, $sequence := .Transactions }}
+                <tr>
+                    <th scope="row">{{ $i }}</th>
+                    <td>{{ $sequence.SupplierName }}</td>
+                    <td>{{ $sequence.SupplierId }}</td>
+                    <td>{{ $sequence.ConsumerName }}</td>
+                    <td>{{ $sequence.ConsumerId }}</td>
+                    <td>{{ $sequence.PowerUnits }}</td>
+                </tr>
+                {{ end }}
+                </tbody>
+            </table>
+        </div>
+
 
     </div>
 
 
 </div>
 
-<div class="footer">cs690 masters project
+<div class="footer">
+    Send email at: <a href="support@rozitaanurag.com">
+
+    support@rozitaanurag.com</a>
+
+    <BR> <B><I>@CS690 Master Project</I></B>
 </div>
 
 <!-- Optional JavaScript -->
