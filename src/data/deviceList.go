@@ -9,12 +9,13 @@ import (
 
 //
 type Device struct {
+	PeerId         string           `json:"-"` // peer Id of registered peer
 	Id             string           `json:"id"`
 	Name           string           `json:"name"`
 	AdminState     string           `json:"adminState"`
 	OperatingState string           `json:"operatingState"`
-	LastConnected  string           `json:"lastConnected"`
-	LastReported   string           `json:"lastReported"`
+	LastConnected  int64            `json:"lastConnected"`
+	LastReported   int64            `json:"lastReported"`
 	Labels         []string         `json:"labels"`
 	Location       string           `json:"location"`
 	Commands       []models.Command `json:"commands"`
@@ -37,7 +38,7 @@ func DeviceListFromJson(jsonBytes []byte) DeviceList {
 	dl := NewDeviceList()
 	err := json.Unmarshal(jsonBytes, &dl.Devices)
 	if err != nil {
-		fmt.Println("Error in getting device list from JSON")
+		fmt.Println("Error in getting device list from JSON", err)
 	}
 	return dl
 }
