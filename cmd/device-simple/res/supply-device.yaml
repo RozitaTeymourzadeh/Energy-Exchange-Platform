@@ -28,6 +28,29 @@ deviceResources:
       units:
         { type: "String", readWrite: "R", defaultValue: "" }
 
+
+  -
+    name: "SwitchButton"
+    description: "Switch On/Off."
+    properties:
+      value:
+        { type: "Bool", readWrite: "RW", defaultValue: "true" }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "On/Off" }
+  -
+    name: "Image"
+    description: "Visual representation of Switch state."
+    properties:
+      value:
+        { type: "Binary", readWrite: "R" }
+      units:
+        { type: "Binary", readWrite: "R", defaultValue: "On/Off" }
+
+
+
+
+
+
 deviceCommands:
   -
     name: "Random"
@@ -39,6 +62,19 @@ deviceCommands:
     get:
       -
         { operation: "get", object: "randomsupplierrate", property: "value", parameter: "Random" }
+
+  -
+    name: "Switch"
+    get:
+      - { operation: "get", object: "SwitchButton" }
+    set:
+      - { operation: "set", object: "SwitchButton", parameter: "false" }
+  -
+    name: "Image"
+    get:
+      - { operation: "get", object: "Image" }
+
+
 
 coreCommands:
   -
@@ -66,4 +102,43 @@ coreCommands:
         -
           code: "503"
           description: "service unavailable"
+          expectedValues: []
+
+
+  -
+    name: "Switch"
+    get:
+      path: "/api/v1/device/{deviceId}/SwitchButton"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["SwitchButton"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+    put:
+      path: "/api/v1/device/{deviceId}/SwitchButton"
+      parameterNames: ["SwitchButton"]
+      responses:
+        -
+          code: "200"
+          description: ""
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+  -
+    name: "Image"
+    get:
+      path: "/api/v1/device/{deviceId}/Image"
+      responses:
+        -
+          code: "200"
+          description: "CBOR encoded image transmitted as event to Core-Data"
+          expectedValues: ["Image"]
+        -
+          code: "500"
+          description: "Internal Server Error"
           expectedValues: []
