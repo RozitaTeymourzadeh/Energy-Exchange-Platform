@@ -143,7 +143,8 @@ func GetAllDeviceProfiles(w http.ResponseWriter, r *http.Request) {
 }
 
 func SwitchButton(w http.ResponseWriter, r *http.Request) {
-	uri := "http://localhost:48081/api/v1/device/" + + vars["deviceId"] + "/SwitchButton"
+	vars := mux.Vars(r)
+	uri := "http://localhost:48081/api/v1/device/" + vars["deviceId"] + "/SwitchButton"
 
 	resp, err := http.Get(uri)
 	if err != nil {
