@@ -35,7 +35,7 @@ var routes = Routes{
 		"GET",
 		"/getalldevices",
 		GetAllDevices,
-		//	localhost:48082/api/v1/device
+
 	},
 	Route{
 		"DeleteDevice",
@@ -44,6 +44,14 @@ var routes = Routes{
 		DeleteDevice,
 		//	localhost:48081/api/v1/device/id/ce13abf3-fd29-453b-9707-df679cbb60a5
 	},
+	Route{
+		"SwitchButton",
+		"PUT",
+		"/api/v1/device/{deviceId}/SwitchButton",
+		SwitchButton,
+		//	localhost:48081/api/v1/device/id/ce13abf3-fd29-453b-9707-df679cbb60a5
+	},
+
 	Route{
 		"AllDeviceProfiles",
 		"GET",
@@ -110,7 +118,6 @@ var routes = Routes{
 		TaskManagerFrontend,
 		//	localhost:6686/posttaskmanager
 	},
-
 	Route{
 		"MakeDecision",
 		"GET",

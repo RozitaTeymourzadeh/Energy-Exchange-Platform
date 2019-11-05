@@ -142,6 +142,24 @@ func GetAllDeviceProfiles(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func SwitchButton(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	uri := "http://localhost:48081/api/v1/device/" + vars["deviceId"] + "/SwitchButton"
+
+	resp, err := http.Get(uri)
+	if err != nil {
+		fmt.Println("Error on switching")
+	}
+	defer resp.Body.Close()
+	bytesRead, _ := ioutil.ReadAll(resp.Body)
+
+	deviceProfiles := data.DeviceProfilesFromJson(bytesRead)//ToDo
+
+	w.Write([]byte(deviceProfiles.ShowDeviceProfiles()))
+
+}
+
+
 func DeleteDeviceProfile(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	uri := "http://localhost:48081/api/v1/deviceprofile/id/" + vars["deviceId"]

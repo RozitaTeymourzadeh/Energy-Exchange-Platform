@@ -133,3 +133,14 @@ while docker-compose down, we can run in with --remove-orphans
 docker-compose up -d
 docker-compose down --remove-orphans
 ```
+
+## Run 
+
+1. Docker Up
+2. Make Build
+3. Run Device Simple
+4. Run Task Manager
+5. Brows HTML template
+6. Postman to run register device
+7. Postman to make decision
+9. Update Browser to update the page

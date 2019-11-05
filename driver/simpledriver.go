@@ -114,7 +114,7 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 		res[0] = cv
 	}
 
-	if reqs[0].DeviceResourceName == "SwitchButton" {
+	if reqs[0].DeviceResourceName == "SwitchButton" {//Switch device
 		cv, _ := dsModels.NewBoolValue(reqs[0].DeviceResourceName, now, s.switchButton)
 		res[0] = cv
 	} else if reqs[0].DeviceResourceName == "Image" {
