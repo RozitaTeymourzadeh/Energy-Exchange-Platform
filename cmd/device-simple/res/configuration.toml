@@ -63,10 +63,6 @@ Level = "DEBUG"
       Address = "s01"
       Port = "300"
   [[DeviceList.AutoEvents]]
-    Resource = "SupplierSwitchButton"
-    OnChange = false
-    Frequency = "8s"
-  [[DeviceList.AutoEvents]]
     Resource = "SupplierCharge"
     OnChange = false
     Frequency = "8s"
@@ -74,6 +70,14 @@ Level = "DEBUG"
     Resource = "SupplierRate"
     OnChange = false
     Frequency = "8s"
+  [[DeviceList.AutoEvents]]
+    Resource = "SupplierSwitch"
+    OnChange = false
+    Frequency = "8s"
+  [[DeviceList.AutoEvents]]
+      Resource = "SupplierSwitchButtonImage"
+      OnChange = false
+      Frequency = "8s"
 
 [[DeviceList]]
   Name = "Consume-Device-01"
@@ -96,3 +100,7 @@ Level = "DEBUG"
     Resource = "ConsumerRate"
     OnChange = false
     Frequency = "8s"
+  [[DeviceList.AutoEvents]]
+      Resource = "ConsumerSwitchButtonImage"
+      OnChange = false
+      Frequency = "8s"
