@@ -2,14 +2,14 @@ name: "Supply-Device"
 manufacturer: "usfVmware"
 model: "1"
 labels:
-  - "random"
-  - "test"
-description: "random number generator to simulate a device"
+  - "supply"
+  - "virtual"
+description: "Supply device"
 
 deviceResources:
   -
-    name: "randomsuppliernumber"
-    description: "generates random number"
+    name: "supplierCharge"
+    description: "generates supplier charge"
     attributes:
       { type: "random" }
     properties:
@@ -18,8 +18,8 @@ deviceResources:
       units:
         { type: "String", readWrite: "R", defaultValue: "" }
   -
-    name: "randomsupplierrate"
-    description: "generates random rate"
+    name: "supplierRate"
+    description: "generates supplier rate"
     attributes:
       { type: "random" }
     properties:
@@ -27,10 +27,8 @@ deviceResources:
         { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "10.00"  }
       units:
         { type: "String", readWrite: "R", defaultValue: "" }
-
-
   -
-    name: "SwitchButton"
+    name: "SupplierSwitchButton"
     description: "Switch On/Off."
     properties:
       value:
@@ -38,7 +36,7 @@ deviceResources:
       units:
         { type: "String", readWrite: "R", defaultValue: "On/Off" }
   -
-    name: "Image"
+    name: "SupplierSwitchButtonImage"
     description: "Visual representation of Switch state."
     properties:
       value:
@@ -47,40 +45,35 @@ deviceResources:
         { type: "Binary", readWrite: "R", defaultValue: "On/Off" }
 
 
-
-
-
-
 deviceCommands:
   -
-    name: "Random"
+    name: "SupplierCharge"
     get:
       -
-        { operation: "get", object: "randomsuppliernumber", property: "value", parameter: "Random" }
+        { operation: "get", object: "supplierCharge", property: "value", parameter: "Random" }
   -
-    name: "RandomRate"
+    name: "SupplierRate"
     get:
       -
-        { operation: "get", object: "randomsupplierrate", property: "value", parameter: "Random" }
-
+        { operation: "get", object: "supplierRate", property: "value", parameter: "Random" }
   -
-    name: "Switch"
+    name: "SupplierSwitchButton"
     get:
-      - { operation: "get", object: "SwitchButton" }
+      - { operation: "get", object: "SupplierSwitchButton" }
     set:
-      - { operation: "set", object: "SwitchButton", parameter: "false" }
+      - { operation: "set", object: "SupplierSwitchButton", parameter: "false" }
   -
-    name: "Image"
+    name: "SupplierSwitchButtonImage"
     get:
-      - { operation: "get", object: "Image" }
+      - { operation: "get", object: "SupplierSwitchButtonImage" }
 
 
 
 coreCommands:
   -
-    name: "Random"
+    name: "SupplierCharge"
     get:
-      path: "/api/v1/device/{deviceId}/Random"
+      path: "/api/v1/device/{deviceId}/suppliercharge"
       responses:
         -
           code: "200"
@@ -91,9 +84,9 @@ coreCommands:
           description: "service unavailable"
           expectedValues: []
   -
-    name: "RandomRate"
+    name: "SupplierRate"
     get:
-      path: "/api/v1/device/{deviceId}/RandomRate"
+      path: "/api/v1/device/{deviceId}/Supplierrate"
       responses:
         -
           code: "200"
@@ -103,24 +96,22 @@ coreCommands:
           code: "503"
           description: "service unavailable"
           expectedValues: []
-
-
   -
-    name: "Switch"
+    name: "SupplierSwitchButton"
     get:
-      path: "/api/v1/device/{deviceId}/SwitchButton"
+      path: "/api/v1/device/{deviceId}/supplierswitchbutton"
       responses:
         -
           code: "200"
           description: ""
-          expectedValues: ["SwitchButton"]
+          expectedValues: ["SupplierSwitchButton"]
         -
           code: "503"
           description: "service unavailable"
           expectedValues: []
     put:
-      path: "/api/v1/device/{deviceId}/SwitchButton"
-      parameterNames: ["SwitchButton"]
+      path: "/api/v1/device/{deviceId}/supplierswitchbutton"
+      parameterNames: ["SupplierSwitchButton"]
       responses:
         -
           code: "200"
@@ -130,9 +121,9 @@ coreCommands:
           description: "service unavailable"
           expectedValues: []
   -
-    name: "Image"
+    name: "SupplierSwitchButtonImage"
     get:
-      path: "/api/v1/device/{deviceId}/Image"
+      path: "/api/v1/device/{deviceId}/supplierbuttonimage"
       responses:
         -
           code: "200"

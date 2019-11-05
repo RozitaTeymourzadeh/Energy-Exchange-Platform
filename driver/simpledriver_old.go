@@ -83,15 +83,15 @@ package driver
 //	res = make([]*dsModels.CommandValue, 1)
 //	now := time.Now().UnixNano()
 //
-//	if reqs[0].DeviceResourceName == "randomsuppliernumber" {
+//	if reqs[0].DeviceResourceName == "supplierChargenumber" {
 //		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(100)))
 //		res[0] = cv
 //	}
-//	if reqs[0].DeviceResourceName == "randomsupplierrate" {
+//	if reqs[0].DeviceResourceName == "supplierRateNumber" {
 //		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(10)))
 //		res[0] = cv
 //	}
-//	if reqs[0].DeviceResourceName == "randomconsumenumber" {
+//	if reqs[0].DeviceResourceName == "consumerChargeNumber" {
 //		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(50)))
 //		res[0] = cv
 //	}

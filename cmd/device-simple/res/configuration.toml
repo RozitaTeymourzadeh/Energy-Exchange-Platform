@@ -56,28 +56,43 @@ Level = "DEBUG"
 [[DeviceList]]
   Name = "Supply-Device-01"
   Profile = "Supply-Device"
-  Description = "Supply - Random Number Generator Device"
-  Labels = [ "random", "test" ]
+  Description = "Supply device 01"
+  Labels = [ "supply", "virtual" ]
   [DeviceList.Protocols]
     [DeviceList.Protocols.Other]
-      Address = "random"
+      Address = "s01"
       Port = "300"
   [[DeviceList.AutoEvents]]
-    Resource = "Random"
+    Resource = "SupplierSwitchButton"
+    OnChange = false
+    Frequency = "8s"
+  [[DeviceList.AutoEvents]]
+    Resource = "SupplierCharge"
+    OnChange = false
+    Frequency = "8s"
+  [[DeviceList.AutoEvents]]
+    Resource = "SupplierRate"
     OnChange = false
     Frequency = "8s"
 
 [[DeviceList]]
   Name = "Consume-Device-01"
   Profile = "Consume-Device"
-  Description = "Example of Consume Device"
-  Labels = [ "industrial" ]
+  Description = "Consume Device 01"
+  Labels = [ "consume", "virtual" ]
   [DeviceList.Protocols]
     [DeviceList.Protocols.other]
-      Address = "simple01"
+      Address = "c01"
       Port = "310"
   [[DeviceList.AutoEvents]]
-     Resource = "Random"
-     OnChange = false
-     Frequency = "8s"
-
+    Resource = "ConsumerSwitchButton"
+    OnChange = false
+    Frequency = "8s"
+  [[DeviceList.AutoEvents]]
+    Resource = "ConsumerCharge"
+    OnChange = false
+    Frequency = "8s"
+  [[DeviceList.AutoEvents]]
+    Resource = "ConsumerRate"
+    OnChange = false
+    Frequency = "8s"

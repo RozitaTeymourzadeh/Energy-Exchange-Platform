@@ -36,9 +36,10 @@ type SimpleDriver struct {
 
 // counters
 type counters struct {
-	randomsuppliernumber int32
-	randomsupplierrate   int32
-	randomconsumenumber  int32
+	supplierChargeNumber int32
+	supplierRateNumber   int32
+	consumerChargeNumber int32
+	consumerRateNumber   int32
 }
 
 var Counters = counters{}
@@ -95,29 +96,42 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 	res = make([]*dsModels.CommandValue, 1)
 	now := time.Now().UnixNano()
 
-	if reqs[0].DeviceResourceName == "randomsuppliernumber" { // supply device
-		Counters.randomsuppliernumber++
-		reading := generateOnceAndReadFromFileAfter(Counters.randomsuppliernumber, 100, "randomsuppliernumberValue.txt", 1)
-		log.Println("randomsuppliernumber value: ", reading)
+	//supply device
+	if reqs[0].DeviceResourceName == "supplierCharge" { // supply device charge
+		Counters.supplierChargeNumber++
+		reading := generateOnceAndReadFromFileAfter(Counters.supplierChargeNumber, 100, "supplierChargeValue.txt", 1)
+		log.Println("supplierCharge value: ", reading)
 		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(reading))
 		res[0] = cv
 	}
-	if reqs[0].DeviceResourceName == "randomsupplierrate" {
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(10)))
+	if reqs[0].DeviceResourceName == "supplierRate" { // supply device rate
+		Counters.supplierRateNumber++
+		reading := generateOnceAndReadFromFileAfter(Counters.supplierRateNumber, 10, "supplierChargeValue.txt", 0)
+		log.Println("supplierCharge value: ", reading)
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(reading))
 		res[0] = cv
 	}
-	if reqs[0].DeviceResourceName == "randomconsumenumber" { // consume device
-		Counters.randomconsumenumber++
-		reading := generateOnceAndReadFromFileAfter(Counters.randomconsumenumber, 50, "randomconsumenumberValue.txt", -1)
-		log.Println("randomconsumenumber value: ", int32(reading))
+	//consume device
+	if reqs[0].DeviceResourceName == "consumerCharge" { // consume device charge
+		Counters.consumerChargeNumber++
+		reading := generateOnceAndReadFromFileAfter(Counters.consumerChargeNumber, 50, "consumeChargeValue.txt", -1)
+		log.Println("consumerCharge value: ", int32(reading))
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(reading))
+		res[0] = cv
+	}
+	if reqs[0].DeviceResourceName == "consumerRate" { // consume device rate
+		Counters.consumerChargeNumber++
+		reading := generateOnceAndReadFromFileAfter(Counters.consumerChargeNumber, 10, "consumeChargeValue.txt", 0)
+		log.Println("consumerCharge value: ", int32(reading))
 		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(reading))
 		res[0] = cv
 	}
 
-	if reqs[0].DeviceResourceName == "SwitchButton" {//Switch device
+	// supply switch
+	if reqs[0].DeviceResourceName == "SupplierSwitchButton" { //supplier Switch device
 		cv, _ := dsModels.NewBoolValue(reqs[0].DeviceResourceName, now, s.switchButton)
 		res[0] = cv
-	} else if reqs[0].DeviceResourceName == "Image" {
+	} else if reqs[0].DeviceResourceName == "SupplierSwitchButtonImage" {
 		// Show a binary/image representation of the switch's on/off value
 		buf := new(bytes.Buffer)
 		if s.switchButton == true {
@@ -128,6 +142,22 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 		cvb, _ := dsModels.NewBinaryValue(reqs[0].DeviceResourceName, now, buf.Bytes())
 		res[0] = cvb
 	}
+	// consume switch
+	if reqs[0].DeviceResourceName == "ConsumerSwitchButton" { //consumer Switch device
+		cv, _ := dsModels.NewBoolValue(reqs[0].DeviceResourceName, now, s.switchButton)
+		res[0] = cv
+	} else if reqs[0].DeviceResourceName == "ConsumerSwitchButtonImage" { //consumer Switch device Image
+		// Show a binary/image representation of the switch's on/off value
+		buf := new(bytes.Buffer)
+		if s.switchButton == true {
+			err = getImageBytes("./res/on.png", buf)
+		} else {
+			err = getImageBytes("./res/off.jpg", buf)
+		}
+		cvb, _ := dsModels.NewBinaryValue(reqs[0].DeviceResourceName, now, buf.Bytes())
+		res[0] = cvb
+	}
+
 	return
 }
 

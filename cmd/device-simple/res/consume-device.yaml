@@ -2,34 +2,77 @@ name: "Consume-Device"
 manufacturer: "usfVmware"
 model: "1"
 labels:
-  - "random"
-  - "test"
-description: "random number generator to simulate a device"
+  - "consume"
+  - "virtual"
+description: "Consume device"
 
 deviceResources:
   -
-    name: "randomconsumenumber"
-    description: "generated random number"
+    name: "consumerCharge"
+    description: "generates consumer charge"
     attributes:
       { type: "random" }
     properties:
       value:
-        { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "5.00"  }
+        { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "100.00"  }
       units:
         { type: "String", readWrite: "R", defaultValue: "" }
+  -
+    name: "consumerRate"
+    description: "generates Consumer rate"
+    attributes:
+      { type: "random" }
+    properties:
+      value:
+        { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "10.00"  }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+  -
+    name: "ConsumerSwitchButton"
+    description: "Switch On/Off."
+    properties:
+      value:
+        { type: "Bool", readWrite: "RW", defaultValue: "true" }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "On/Off" }
+  -
+    name: "ConsumerSwitchButtonImage"
+    description: "Visual representation of Switch state."
+    properties:
+      value:
+        { type: "Binary", readWrite: "R" }
+      units:
+        { type: "Binary", readWrite: "R", defaultValue: "On/Off" }
+
 
 deviceCommands:
   -
-    name: "Random"
+    name: "ConsumerCharge"
     get:
       -
-        { operation: "get", object: "randomconsumenumber", property: "value", parameter: "Random" }
+        { operation: "get", object: "consumerCharge", property: "value", parameter: "Random" }
+  -
+    name: "ConsumerRate"
+    get:
+      -
+        { operation: "get", object: "consumerRate", property: "value", parameter: "Random" }
+  -
+    name: "ConsumerSwitchButton"
+    get:
+      - { operation: "get", object: "ConsumerSwitchButton" }
+    set:
+      - { operation: "set", object: "ConsumerSwitchButton", parameter: "false" }
+  -
+    name: "ConsumerSwitchButtonImage"
+    get:
+      - { operation: "get", object: "ConsumerButtonImage" }
+
 
 coreCommands:
   -
-    name: "Random"
+    name: "ConsumerCharge"
     get:
-      path: "/api/v1/device/{deviceId}/Random"
+      path: "/api/v1/device/{deviceId}/consumercharge"
       responses:
         -
           code: "200"
@@ -38,4 +81,54 @@ coreCommands:
         -
           code: "503"
           description: "service unavailable"
+          expectedValues: []
+  -
+    name: "ConsumerRate"
+    get:
+      path: "/api/v1/device/{deviceId}/consumerrate"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["Random"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+  -
+    name: "ConsumerSwitchButton"
+    get:
+      path: "/api/v1/device/{deviceId}/Consumerswitchbutton"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["ConsumerSwitchButton"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+    put:
+      path: "/api/v1/device/{deviceId}/consumerswitchbutton"
+      parameterNames: ["ConsumerSwitchButton"]
+      responses:
+        -
+          code: "200"
+          description: ""
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+  -
+    name: "ConsumerSwitchButtonImage"
+    get:
+      path: "/api/v1/device/{deviceId}/consumerbuttonimage"
+      responses:
+        -
+          code: "200"
+          description: "CBOR encoded image transmitted as event to Core-Data"
+          expectedValues: ["Image"]
+        -
+          code: "500"
+          description: "Internal Server Error"
           expectedValues: []
