@@ -28,7 +28,7 @@ deviceResources:
       units:
         { type: "String", readWrite: "R", defaultValue: "" }
   -
-    name: "supplierSwitchButton"
+    name: "SupplierSwitchButton"
     description: "Switch On/Off."
     properties:
       value:
@@ -36,7 +36,7 @@ deviceResources:
       units:
         { type: "String", readWrite: "R", defaultValue: "On/Off" }
   -
-    name: "supplierSwitchButtonImage"
+    name: "SupplierSwitchButtonImage"
     description: "Visual representation of Switch state."
     properties:
       value:
@@ -57,15 +57,15 @@ deviceCommands:
       -
         { operation: "get", object: "supplierRate", property: "value", parameter: "Random" }
   -
-    name: "SupplierSwitch"
+    name: "SupplierSwitchButton"
     get:
-      - { operation: "get", object: "supplierSwitchButton" }
+      - { operation: "get", object: "SupplierSwitchButton" }
     set:
-      - { operation: "set", object: "supplierSwitchButton", parameter: "false" }
+      - { operation: "set", object: "SupplierSwitchButton", parameter: "false" }
   -
     name: "SupplierSwitchButtonImage"
     get:
-      - { operation: "get", object: "supplierSwitchButtonImage" }
+      - { operation: "get", object: "SupplierSwitchButtonImage" }
 
 
 
@@ -73,12 +73,12 @@ coreCommands:
   -
     name: "SupplierCharge"
     get:
-      path: "/api/v1/device/{deviceId}/supplierCharge"
+      path: "/api/v1/device/{deviceId}/suppliercharge"
       responses:
         -
           code: "200"
           description: ""
-          expectedValues: ["supplierCharge"]
+          expectedValues: ["Random"]
         -
           code: "503"
           description: "service unavailable"
@@ -86,12 +86,12 @@ coreCommands:
   -
     name: "SupplierRate"
     get:
-      path: "/api/v1/device/{deviceId}/supplierRate"
+      path: "/api/v1/device/{deviceId}/Supplierrate"
       responses:
         -
           code: "200"
           description: ""
-          expectedValues: ["supplierRate"]
+          expectedValues: ["Random"]
         -
           code: "503"
           description: "service unavailable"
@@ -99,19 +99,19 @@ coreCommands:
   -
     name: "SupplierSwitchButton"
     get:
-      path: "/api/v1/device/{deviceId}/supplierSwitchButton"
+      path: "/api/v1/device/{deviceId}/supplierswitchbutton"
       responses:
         -
           code: "200"
           description: ""
-          expectedValues: ["supplierSwitchButton"]
+          expectedValues: ["SupplierSwitchButton"]
         -
           code: "503"
           description: "service unavailable"
           expectedValues: []
     put:
-      path: "/api/v1/device/{deviceId}/supplierSwitchButton"
-      parameterNames: ["supplierSwitchButton"]
+      path: "/api/v1/device/{deviceId}/supplierswitchbutton"
+      parameterNames: ["SupplierSwitchButton"]
       responses:
         -
           code: "200"
@@ -123,12 +123,12 @@ coreCommands:
   -
     name: "SupplierSwitchButtonImage"
     get:
-      path: "/api/v1/device/{deviceId}/supplierSwitchButtonImage"
+      path: "/api/v1/device/{deviceId}/supplierbuttonimage"
       responses:
         -
           code: "200"
           description: "CBOR encoded image transmitted as event to Core-Data"
-          expectedValues: ["supplierSwitchButtonImage"]
+          expectedValues: ["Image"]
         -
           code: "500"
           description: "Internal Server Error"
