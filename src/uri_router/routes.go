@@ -1,6 +1,8 @@
 package uri_router
 
-import "net/http"
+import (
+	"net/http"
+)
 
 type Route struct {
 	Name        string
@@ -35,7 +37,7 @@ var routes = Routes{
 		"GET",
 		"/getalldevices",
 		GetAllDevices,
-
+		//	localhost:48082/api/v1/device
 	},
 	Route{
 		"DeleteDevice",
@@ -44,14 +46,6 @@ var routes = Routes{
 		DeleteDevice,
 		//	localhost:48081/api/v1/device/id/ce13abf3-fd29-453b-9707-df679cbb60a5
 	},
-	Route{
-		"SwitchButton",
-		"PUT",
-		"/api/v1/device/{deviceId}/SwitchButton",
-		SwitchButton,
-		//	localhost:48081/api/v1/device/id/ce13abf3-fd29-453b-9707-df679cbb60a5
-	},
-
 	Route{
 		"AllDeviceProfiles",
 		"GET",
@@ -118,23 +112,23 @@ var routes = Routes{
 		TaskManagerFrontend,
 		//	localhost:6686/posttaskmanager
 	},
-	Route{
-		"MakeDecision",
-		"GET",
-		"/makeDecision",
-		MakeDecision,
-		//	localhost:6686/makeDecision
-	},
+	//Route{
+	//	"MakeDecision",
+	//	"GET",
+	//	"/makeDecision",
+	//	MakeDecision,
+	//	//	localhost:6686/makeDecision
+	//},
 	///////////////////// !!!!!!!!! ///////////////////
 	//device manager apis
 	///////////////////// !!!!!!!!! ///////////////////
-	Route{
-		"On",
-		"GET",
-		"/on",
-		On,
-		//	localhost:9999/on
-	},
+	//Route{
+	//	"On",
+	//	"GET",
+	//	"/on",
+	//	On,
+	//	//	localhost:9999/on
+	//},
 	Route{
 		"SendDeviceList",
 		"GET",

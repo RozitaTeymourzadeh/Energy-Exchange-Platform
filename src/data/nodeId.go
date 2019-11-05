@@ -6,24 +6,31 @@ import (
 )
 
 type nodeId struct {
-	Address   string
-	Port      string
-	Separator string
-	peers     map[string]Peer
+	Address            string
+	Port               string
+	EdgeXAddress       string
+	TaskManagerAddress string
+	TaskManagerPort    string
+	Separator          string
+	Peers              []PeerInfo
 }
 
 var instanceNodeId *nodeId
 var onceNodeId sync.Once
 
-func SetNodeId(address string, port string /*, connectingAddress string*/) *nodeId {
+func SetNodeId(address string, port string, taskManagerAddress string, taskManagerPort string) *nodeId {
 	onceNodeId.Do(func() {
 		instanceNodeId = &nodeId{
-			Address:   address,
-			Port:      port,
-			Separator: ":",
-			peers:     make(map[string]Peer),
+			Address:            address,
+			Port:               port,
+			EdgeXAddress:       "",
+			TaskManagerAddress: taskManagerAddress,
+			TaskManagerPort:    taskManagerPort,
+			Separator:          ":",
+			Peers:              make([]PeerInfo, 0),
 		}
 	})
+	fmt.Println(instanceNodeId)
 	return instanceNodeId
 }
 
@@ -31,14 +38,21 @@ func GetNodeId() *nodeId {
 	return instanceNodeId
 }
 
-func (nid *nodeId) GetPeers() map[string]Peer {
-	fmt.Println(nid)
-	return nid.peers
+func (nid *nodeId) SetEdgeXAddress(edgeAddress string) {
+	nid.EdgeXAddress = edgeAddress
 }
 
-func (nid *nodeId) AddPeer(peerObj Peer) {
-	nid.peers[peerObj.ID] = peerObj
-	fmt.Println("Size of peers : ", len(nid.peers))
+func (nid *nodeId) GetPeers() []PeerInfo {
+	for _, peer := range nid.Peers {
+		fmt.Println("IP: " + peer.IpAdd)
+	}
+	fmt.Println(nid)
+	return nid.Peers
+}
+
+func (nid *nodeId) AddPeer(rInfo PeerInfo) {
+	nid.Peers = append(nid.Peers, rInfo)
+	fmt.Println("Size of peers : ", len(nid.Peers))
 }
 
 //// constructor for NodeId

@@ -106,23 +106,23 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 	}
 	if reqs[0].DeviceResourceName == "supplierRate" { // supply device rate
 		Counters.supplierRateNumber++
-		reading := generateOnceAndReadFromFileAfter(Counters.supplierRateNumber, 10, "supplierChargeValue.txt", 0)
-		log.Println("supplierCharge value: ", reading)
+		reading := generateOnceAndReadFromFileAfter(Counters.supplierRateNumber, 10, "supplierRateValue.txt", 0)
+		log.Println("supplierRate value: ", reading)
 		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(reading))
 		res[0] = cv
 	}
 	//consume device
 	if reqs[0].DeviceResourceName == "consumerCharge" { // consume device charge
 		Counters.consumerChargeNumber++
-		reading := generateOnceAndReadFromFileAfter(Counters.consumerChargeNumber, 50, "consumeChargeValue.txt", -1)
+		reading := generateOnceAndReadFromFileAfter(Counters.consumerChargeNumber, 50, "consumerChargeValue.txt", -1)
 		log.Println("consumerCharge value: ", int32(reading))
 		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(reading))
 		res[0] = cv
 	}
 	if reqs[0].DeviceResourceName == "consumerRate" { // consume device rate
-		Counters.consumerChargeNumber++
-		reading := generateOnceAndReadFromFileAfter(Counters.consumerChargeNumber, 10, "consumeChargeValue.txt", 0)
-		log.Println("consumerCharge value: ", int32(reading))
+		Counters.consumerRateNumber++
+		reading := generateOnceAndReadFromFileAfter(Counters.consumerRateNumber, 10, "consumerRateValue.txt", 0)
+		log.Println("consumerRate value: ", int32(reading))
 		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(reading))
 		res[0] = cv
 	}
@@ -222,12 +222,12 @@ func (s *SimpleDriver) RemoveDevice(deviceName string, protocols map[string]cont
 
 // GenerateOnceAndReadFromFileAfter
 func generateOnceAndReadFromFileAfter(count int32, maxVal int, filename string, change int) int {
-	fmt.Println("in generateOnceAndReadFromFileAfter, count is : ", count)
+	fmt.Println("Event count is : ", count)
 	var val int
 	if count <= 1 {
 		parser.DeleteFile(filename)
 		val = rand.Intn(maxVal)
-		fmt.Println("Writing to file generated value : ", strconv.Itoa(val))
+		//fmt.Println("Writing to file generated value : ", strconv.Itoa(val))
 		parser.WriteFile(filename, strconv.Itoa(val))
 
 	} else {
@@ -242,7 +242,7 @@ func generateOnceAndReadFromFileAfter(count int32, maxVal int, filename string, 
 			val = fileVal + change
 		}
 
-		fmt.Println("Writing to added value : ", int32(val))
+		//fmt.Println("Writing to added value : ", int32(val))
 		parser.OverWriteFile(filename, strconv.Itoa(val)) //(fmt.Sprint(reading)/*strconv.Itoa(reading)*/)
 
 		//return reading

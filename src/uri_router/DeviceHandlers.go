@@ -1,7 +1,6 @@
 package uri_router
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 	"github.com/edgexfoundry/device-simple/src/data"
@@ -18,30 +17,36 @@ import (
 //  Device Manager apis
 /////////////////////////
 /////////////////////////
-func On(w http.ResponseWriter, r *http.Request) {
 
-	rInfo := data.RegistryInfo{
-		IpAdd: "localhost", // todo - ngrok ip
-		Port:  "9999",
-	}
+//var TASKMANAGER_ADDRESS = "http://localhost:6686"
 
-	rJson := rInfo.RegistryToJSON()
-
-	//creating a new client
-	client := http.Client{}
-	// creating request
-	req, _ := http.NewRequest(http.MethodPost, "http://localhost:6686/register" /*ngrok*/, bytes.NewBuffer(rJson)) //todo - ngrok ip
-	// fetching response
-	_, err := client.Do(req)
-	if err != nil {
-		log.Println(errors.New("Error in device registration : " + err.Error()))
-	}
-
-	w.Write([]byte("On--ing device"))
-}
+//func On(w http.ResponseWriter, r *http.Request) {
+//
+//	//data.SetNodeId(SystemIp(), )
+//	pInfo := data.PeerInfo {
+//		IpAdd: data.GetNodeId().Address,
+//		Port:  data.GetNodeId().Port,
+//	}
+//
+//	rJson := pInfo.PeerInfoToJSON()
+//
+//	//creating a new client
+//	client := http.Client{}
+//	// creating request
+//	req, _ := http.NewRequest(http.MethodPost, TASKMANAGER_ADDRESS+"/register", bytes.NewBuffer(rJson))
+//	// fetching response
+//	_, err := client.Do(req)
+//	if err != nil {
+//		log.Println(errors.New("Error in device registration : " + err.Error()))
+//	}
+//
+//	fmt.Println("On--ing device")
+//	w.Write([]byte("On--ing device"))
+//}
 
 func SendDeviceList(w http.ResponseWriter, r *http.Request) {
-	uri := "http://localhost:48082/api/v1/device"
+	//uri := "http://localhost:48082/api/v1/device"
+	uri := "http://" + data.GetNodeId().EdgeXAddress + ":" + "48082" + "/api/v1/device"
 
 	resp, err := http.Get(uri)
 	if err != nil {
@@ -51,7 +56,7 @@ func SendDeviceList(w http.ResponseWriter, r *http.Request) {
 	bytesRead, _ := ioutil.ReadAll(resp.Body)
 
 	//deviceList := data.DeviceListFromJson(bytesRead)
-	//DeviceList = deviceList //deviceList.AddAllToDevices(&Devices)
+	//DEVICELIST = deviceList //deviceList.AddAllToDevices(&Devices)
 
 	w.WriteHeader(200)
 	_, err = w.Write(bytesRead)
@@ -64,7 +69,7 @@ func SendDeviceList(w http.ResponseWriter, r *http.Request) {
 }
 
 func SupplierTx(w http.ResponseWriter, r *http.Request) {
-	log.Println([]byte("Supplier tx recv'ed"))
+	log.Println("Supplier tx recv'ed")
 
 	bytesRead, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -74,21 +79,21 @@ func SupplierTx(w http.ResponseWriter, r *http.Request) {
 
 	tx := data.TransactionFromJSON(bytesRead)
 
-	pwd, _ := os.Getwd()
-	fmt.Println("Current working dir is : " + pwd)
+	//pwd, _ := os.Getwd()
+	//fmt.Println("Current working dir is : " + pwd)
 
 	changeValue, err := strconv.Atoi(tx.PowerUnits)
 	if err != nil {
 		log.Println(errors.New("Cannot read Change value in param: " + tx.PowerUnits))
 	}
 
-	parser.UpdateValueInFile("../../cmd/device-simple/randomsuppliernumberValue.txt", -changeValue)
+	parser.UpdateValueInFile("../../cmd/device-simple/supplierChargeValue.txt", -changeValue)
 
 	sendTransactionToConsumer(tx)
 }
 
 func ConsumerTx(w http.ResponseWriter, r *http.Request) {
-	log.Println([]byte("Consumer tx recv'ed"))
+	log.Println("Consumer tx recv'ed")
 
 	bytesRead, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -106,5 +111,5 @@ func ConsumerTx(w http.ResponseWriter, r *http.Request) {
 		log.Println(errors.New("Cannot read Change value in param: " + tx.PowerUnits))
 	}
 
-	parser.UpdateValueInFile("../../cmd/device-simple/randomconsumenumberValue.txt", changeValue)
+	parser.UpdateValueInFile("../../cmd/device-simple/consumerChargeValue.txt", changeValue)
 }

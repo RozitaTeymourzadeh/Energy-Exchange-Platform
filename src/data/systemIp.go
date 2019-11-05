@@ -1,11 +1,11 @@
-package uri_router
+package data
 
 import (
 	"net"
 	"os"
 )
 
-func GetIP() string {
+func SystemIp() string {
 	addrs, err := net.InterfaceAddrs()
 	if err != nil {
 		_, _ = os.Stderr.WriteString("Oops: " + err.Error() + "\n")

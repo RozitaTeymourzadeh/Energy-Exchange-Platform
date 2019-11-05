@@ -29,11 +29,14 @@
 <H4>Device Need Energy?</H4>
 
 <p>|--- Device -------------------|</p>
-
-<button onclick="showContent()">Device Need Energy</button>
+<div class="myClass">Device Need Energy: </div>
+{{/*<form action="/deviceFront" method="get">*/}}
+    <button onclick="{{parser.DeviceNeedEnergy()}}">Device Need Energy</button>
+{{/*</form>*/}}
 <template>
-    <div class="myClass">Device Need Energy: </div>
+    <div class="myClass">Device Purchased Energy: </div>
 </template>
+
 
 <script>
     var myArrNeed = ["A", "B"];

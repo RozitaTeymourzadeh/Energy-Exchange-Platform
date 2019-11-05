@@ -7,28 +7,28 @@ import (
 	"github.com/edgexfoundry/device-simple/src/resources"
 	"html/template"
 	"log"
-	"math/rand"
 	"os"
-	"time"
-
 	//"os"
 	//"time"
 
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"net/http"
-	"strconv"
-	"strings"
 )
+
+//var INIT_SERVER_ADDRESS = "http://localhost:6686"
+//changes in init for arg of port provided
+//var SELFID = ds.NewtNodeId("localhost", 6686)
 
 // data structure to hold readings
 var DeviceEventsDS = data.NewDeviceEvents()
 
 //var Devices = ds.NewDevices()
-var DeviceList = data.NewDeviceList()
-var SupplyDeviceDetails = make([]data.DeviceTypeDetails, 0)
-var ConsumeDeviceDetails = make([]data.DeviceTypeDetails, 0)
-var Transactions = make([]data.Transaction, 0)
+var APPNAME = "PowerFlow : Energy Exchange Platform"
+var DEVICELIST = data.NewDeviceList()
+var SUPPLYDEVICEDETAILS = make([]data.DeviceTypeDetails, 0)
+var CONSUMEDEVICEDETAILS = make([]data.DeviceTypeDetails, 0)
+var TRANSACTIONS = make([]data.Transaction, 0)
 
 //var PageVars = resources.NewPageVars()
 
@@ -41,6 +41,11 @@ var Transactions = make([]data.Transaction, 0)
 
 // Start handler
 func Start(w http.ResponseWriter, r *http.Request) {
+
+	//DEVICELIST = getAllDevices( /*data.GetNodeId().ConnectingAddress*/ )
+	//SUPPLYDEVICEDETAILS = generateDeviceTypeBoard("supply")
+	//CONSUMEDEVICEDETAILS = generateDeviceTypeBoard("consume")
+
 	_, _ = w.Write([]byte("PowerFlow : Energy Exchange Platform"))
 }
 
@@ -49,23 +54,17 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	//pageVars := resources.PageVars{
 	//	Title: "Energy Trading Platform",
 	//}
-	title := "Energy Trading Platform"
-	DeviceList = getAllDevices( /*data.GetNodeId().ConnectingAddress*/ )
-	SupplyDeviceDetails = generateDeviceTypeBoard("supply")
-	ConsumeDeviceDetails = generateDeviceTypeBoard("consume")
 
 	p := resources.PageVars{
-		Title:                 title,
-		DeviceList:            DeviceList.Devices,
-		SupplyDevicesDetails:  SupplyDeviceDetails,
-		ConsumeDevicesDetails: ConsumeDeviceDetails,
-		Transactions:          Transactions,
-		Body:                  "",
+		Title:                 APPNAME,
+		DeviceList:            DEVICELIST.Devices,
+		SupplyDevicesDetails:  SUPPLYDEVICEDETAILS,
+		ConsumeDevicesDetails: CONSUMEDEVICEDETAILS,
+		Transactions:          TRANSACTIONS,
 	}
-	//PageVars.DeviceList = DeviceList.Devices //append(PageVars.DeviceList, "A", "B")
 
-	x := p.SupplyDevicesDetails
-	fmt.Println(len(x))
+	//x := p.SupplyDevicesDetails
+	//fmt.Println(len(x))
 	render(w, "home.html", p)
 }
 
@@ -99,7 +98,7 @@ func GetAllDevices(w http.ResponseWriter, r *http.Request) {
 	bytesRead, _ := ioutil.ReadAll(resp.Body)
 
 	deviceList := data.DeviceListFromJson(bytesRead)
-	DeviceList = deviceList
+	DEVICELIST = deviceList
 	//deviceList.AddAllToDevices(&Devices)
 
 	w.Write([]byte(deviceList.ShowDeviceInList()))
@@ -117,7 +116,7 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 	// fetching response
 	resp, err := client.Do(req)
 	if err != nil {
-		fmt.Println("error in reading response body in DeleteDevice")
+		fmt.Println("error in reading response body in startreading")
 	}
 	defer resp.Body.Close()
 
@@ -141,24 +140,6 @@ func GetAllDeviceProfiles(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(deviceProfiles.ShowDeviceProfiles()))
 
 }
-
-func SwitchButton(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	uri := "http://localhost:48081/api/v1/device/" + vars["deviceId"] + "/SwitchButton"
-
-	resp, err := http.Get(uri)
-	if err != nil {
-		fmt.Println("Error on switching")
-	}
-	defer resp.Body.Close()
-	bytesRead, _ := ioutil.ReadAll(resp.Body)
-
-	deviceProfiles := data.DeviceProfilesFromJson(bytesRead)//ToDo
-
-	w.Write([]byte(deviceProfiles.ShowDeviceProfiles()))
-
-}
-
 
 func DeleteDeviceProfile(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -237,84 +218,24 @@ func ShowAllLatestDeviceData(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func MakeDecision(w http.ResponseWriter, r *http.Request) {
-
-	//forDecisionSupply := make(map[string]string)
-	//forDecisionConsume := make(map[string]string)
-
-	//forDevices := [2]string{"Supply-Device-01/randomsuppliernumber", "Consume-Device01/randomconsumenumber"}
-	//for _, ford := range forDevices {
-	//	resp, err := http.Get("http://localhost:6686/showLatestDeviceData/" + ford /*/Supply-Device-01/randomsuppliernumber"*/)
-	//	if err != nil {
-	//		fmt.Println("Could not fetch data for Supply-Device-01")
-	//	}
-	//	defer resp.Body.Close()
-	//
-	//	value, _ := ioutil.ReadAll(resp.Body)
-	//	values := string(value[:])
-	//	vals := strings.Split(values, "=")
-	//	if len(vals) > 1 {
-	//		if strings.Contains(vals[0], "Supply") {
-	//			forDecisionSupply[vals[0]] = vals[1]
-	//		} else if strings.Contains(vals[0], "Consume") {
-	//			forDecisionConsume[vals[0]] = vals[1]
-	//		}
-	//	}
-	//}
-
-	// making decision
-	if len(ConsumeDeviceDetails) < 1 {
-		_, _ = w.Write([]byte("No consume device"))
-
-	} else if len(SupplyDeviceDetails) < 1 {
-		_, _ = w.Write([]byte("No supply device"))
-
-	} else {
-		sb := strings.Builder{}
-		sb.WriteString("Pairing consume and supply devices:\n")
-		for _, cv := range ConsumeDeviceDetails {
-			matched := false
-			sb.WriteString(">>> \n")
-			for _, sv := range SupplyDeviceDetails {
-				sval, _ := strconv.Atoi(sv.Reading)
-				cval, _ := strconv.Atoi(cv.Reading)
-				//if sval >= cval { // one supply device supplying all energy needed by the consume device
-				if cval <= 40 && sval >= 40 {
-					matched = true
-					//SupplyDeviceDetails[sk] = string(sval - cval)
-
-					//generate random number between 15 and 30
-					rand.Seed(time.Now().UnixNano())
-					min := 10
-					max := 30
-					//rand.Intn(max - min + 1) + min)
-					randPowerUnits := rand.Intn(max-min+1) + min
-					newTx := data.Transaction{
-						SupplierName:    sv.DeviceName,
-						SupplierId:      sv.Id,
-						SupplierAddress: sv.DeviceAddress,
-						ConsumerName:    cv.DeviceName,
-						ConsumerId:      cv.Id,
-						ConsumerAddress: cv.DeviceAddress,
-						PowerUnits:      strconv.Itoa(randPowerUnits),
-					}
-					Transactions = append(Transactions, newTx)
-					sb.WriteString(cv.DeviceName + " will receive " + strconv.Itoa(randPowerUnits) + " units from " + sv.DeviceName)
-
-					go sendTransactionToSupplier(newTx)
-
-				}
-			}
-			if matched == false {
-				sb.WriteString("Could not match " + cv.DeviceName + " to any Supply device")
-			}
-		}
-
-		_, _ = w.Write([]byte(sb.String()))
-
-	} // end of else
-
-}
+//func MakeDecision(w http.ResponseWriter, r *http.Request) {
+//
+//	go MakeDecisionHelper()
+//	//// making decision
+//	//if len(CONSUMEDEVICEDETAILS) < 1 {
+//	//	_, _ = w.Write([]byte("No consume device"))
+//	//
+//	//} else if len(SupplyDeviceDetails) < 1 {
+//	//	_, _ = w.Write([]byte("No supply device"))
+//	//
+//	//} else {
+//	//
+//	//	str := makeDecisionHandlerHelper()
+//	//	_, _ = w.Write([]byte(str))
+//	//
+//	//} // end of else
+//
+//}
 
 /* Event()
 *
@@ -391,11 +312,14 @@ func Register(w http.ResponseWriter, r *http.Request) { //todo
 	if r.Method == http.MethodPost {
 		defer r.Body.Close()
 		bytesRead, _ := ioutil.ReadAll(r.Body)
-		peerObj := data.PeerFromJson(bytesRead)
-		data.GetNodeId().AddPeer(peerObj)
+		rInfo := data.PeerInfoFromJSON(bytesRead)
+		data.GetNodeId().AddPeer(rInfo)
+		fmt.Println(data.GetNodeId().GetPeers())
 		w.WriteHeader(200)
+	} else {
+		w.WriteHeader(405)
 	}
-	w.WriteHeader(405)
+
 }
 
 func DeviceFront(w http.ResponseWriter, r *http.Request) {

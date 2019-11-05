@@ -65,7 +65,7 @@ deviceCommands:
   -
     name: "ConsumerSwitchButtonImage"
     get:
-      - { operation: "get", object: "ConsumerButtonImage" }
+      - { operation: "get", object: "ConsumerSwitchButtonImage" }
 
 
 coreCommands:
@@ -122,7 +122,7 @@ coreCommands:
   -
     name: "ConsumerSwitchButtonImage"
     get:
-      path: "/api/v1/device/{deviceId}/consumerbuttonimage"
+      path: "/api/v1/device/{deviceId}/consumerswitchbuttonimage"
       responses:
         -
           code: "200"

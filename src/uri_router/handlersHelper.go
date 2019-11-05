@@ -30,23 +30,24 @@ func returnCode204(w http.ResponseWriter, r *http.Request) {
 
 func getAllDevices( /*ip string*/ ) data.DeviceList {
 	dl := data.NewDeviceList()
+	if len(data.GetNodeId().GetPeers()) > 0 {
+		for _, peer := range data.GetNodeId().GetPeers() {
+			//uri := "http://" + peer.Address + ":48082/api/v1/device"
+			uri := "http://" + peer.IpAdd + ":" + peer.Port + "/sendDeviceList"
+			fmt.Println("Sending device req to : ", peer.IpAdd)
+			resp, err := http.Get(uri)
+			if err != nil {
+				fmt.Println("Error in getting all devices")
+			}
+			defer resp.Body.Close()
+			bytesRead, _ := ioutil.ReadAll(resp.Body)
+			peerDeviceList := data.DeviceListFromJson(bytesRead)
+			for _, val := range peerDeviceList.Devices {
+				val.PeerId = peer.IpAdd
+				dl.Devices = append(dl.Devices, val)
+			}
 
-	for _, peer := range data.GetNodeId().GetPeers() {
-		//uri := "http://" + peer.Address + ":48082/api/v1/device"
-		uri := "http://" + peer.Address + ":9999/sendDeviceList"
-		fmt.Println("Sending device req to : ", peer.Address)
-		resp, err := http.Get(uri)
-		if err != nil {
-			fmt.Println("Error in getting all devices")
 		}
-		defer resp.Body.Close()
-		bytesRead, _ := ioutil.ReadAll(resp.Body)
-		peerDeviceList := data.DeviceListFromJson(bytesRead)
-		for _, val := range peerDeviceList.Devices {
-			val.PeerId = peer.Address
-			dl.Devices = append(dl.Devices, val)
-		}
-
 	}
 
 	return dl
@@ -76,7 +77,7 @@ func generateDeviceTypeBoard(deviceType string) []data.DeviceTypeDetails { //tod
 
 	sl := make([]data.DeviceTypeDetails, 0)
 
-	for _, d := range DeviceList.Devices {
+	for _, d := range DEVICELIST.Devices {
 
 		uri := "http://" + d.PeerId + ":48080/api/v1/event/device/" + d.Name + "/" + "1"
 		resp, err := http.Get(uri)

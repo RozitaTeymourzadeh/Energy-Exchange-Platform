@@ -2,7 +2,7 @@ package data
 
 import "encoding/json"
 
-type RegistryInfo struct {
+type PeerInfo struct {
 	IpAdd string `json:"ipAdd"`
 	Port  string `json:"port"`
 }
@@ -11,13 +11,13 @@ type RegistryInfo struct {
 //
 //}
 
-func (ri *RegistryInfo) RegistryToJSON() []byte {
+func (ri *PeerInfo) PeerInfoToJSON() []byte {
 	jsonBytes, _ := json.Marshal(ri)
 	return jsonBytes
 }
 
-func RegistryFromJSON(jsonBytes []byte) RegistryInfo {
-	ri := RegistryInfo{}
-	_ = json.Unmarshal(jsonBytes, ri)
+func PeerInfoFromJSON(jsonBytes []byte) PeerInfo {
+	ri := PeerInfo{}
+	_ = json.Unmarshal(jsonBytes, &ri)
 	return ri
 }

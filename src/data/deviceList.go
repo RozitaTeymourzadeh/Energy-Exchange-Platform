@@ -57,7 +57,7 @@ func (dl *DeviceList) ShowDeviceInList() string {
 	sb.WriteString("Device List: \n")
 	for _, val := range dl.Devices {
 
-		sb.WriteString(val.Name + " : " + val.Id + "\n")
+		sb.WriteString("@" + val.PeerId + val.Name + " : " + val.Id + "\n")
 	}
 	return sb.String()
 }
