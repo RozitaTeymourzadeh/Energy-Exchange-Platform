@@ -28,7 +28,7 @@ deviceResources:
       units:
         { type: "String", readWrite: "R", defaultValue: "" }
   -
-    name: "ConsumerSwitchButton"
+    name: "consumerSwitchButton"
     description: "Switch On/Off."
     properties:
       value:
@@ -36,7 +36,7 @@ deviceResources:
       units:
         { type: "String", readWrite: "R", defaultValue: "On/Off" }
   -
-    name: "ConsumerSwitchButtonImage"
+    name: "consumerSwitchButtonImage"
     description: "Visual representation of Switch state."
     properties:
       value:
@@ -59,25 +59,25 @@ deviceCommands:
   -
     name: "ConsumerSwitchButton"
     get:
-      - { operation: "get", object: "ConsumerSwitchButton" }
+      - { operation: "get", object: "consumerSwitchButton" }
     set:
-      - { operation: "set", object: "ConsumerSwitchButton", parameter: "false" }
+      - { operation: "set", object: "consumerSwitchButton", parameter: "false" }
   -
     name: "ConsumerSwitchButtonImage"
     get:
-      - { operation: "get", object: "ConsumerButtonImage" }
+      - { operation: "get", object: "consumerButtonImage" }
 
 
 coreCommands:
   -
     name: "ConsumerCharge"
     get:
-      path: "/api/v1/device/{deviceId}/consumercharge"
+      path: "/api/v1/device/{deviceId}/consumerCharge"
       responses:
         -
           code: "200"
           description: ""
-          expectedValues: ["Random"]
+          expectedValues: ["consumerCharge"]
         -
           code: "503"
           description: "service unavailable"
@@ -85,12 +85,12 @@ coreCommands:
   -
     name: "ConsumerRate"
     get:
-      path: "/api/v1/device/{deviceId}/consumerrate"
+      path: "/api/v1/device/{deviceId}/consumerRate"
       responses:
         -
           code: "200"
           description: ""
-          expectedValues: ["Random"]
+          expectedValues: ["consumerRate"]
         -
           code: "503"
           description: "service unavailable"
@@ -98,19 +98,19 @@ coreCommands:
   -
     name: "ConsumerSwitchButton"
     get:
-      path: "/api/v1/device/{deviceId}/Consumerswitchbutton"
+      path: "/api/v1/device/{deviceId}/consumerSwitchButtonImage"
       responses:
         -
           code: "200"
           description: ""
-          expectedValues: ["ConsumerSwitchButton"]
+          expectedValues: ["consumerSwitchButton"]
         -
           code: "503"
           description: "service unavailable"
           expectedValues: []
     put:
-      path: "/api/v1/device/{deviceId}/consumerswitchbutton"
-      parameterNames: ["ConsumerSwitchButton"]
+      path: "/api/v1/device/{deviceId}/consumerSwitchButton"
+      parameterNames: ["consumerSwitchButton"]
       responses:
         -
           code: "200"
@@ -122,12 +122,12 @@ coreCommands:
   -
     name: "ConsumerSwitchButtonImage"
     get:
-      path: "/api/v1/device/{deviceId}/consumerbuttonimage"
+      path: "/api/v1/device/{deviceId}/consumerSwitchButtonImage"
       responses:
         -
           code: "200"
           description: "CBOR encoded image transmitted as event to Core-Data"
-          expectedValues: ["Image"]
+          expectedValues: ["consumerSwitchButtonImage"]
         -
           code: "500"
           description: "Internal Server Error"

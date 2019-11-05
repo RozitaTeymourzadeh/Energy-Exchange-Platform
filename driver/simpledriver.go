@@ -128,10 +128,10 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 	}
 
 	// supply switch
-	if reqs[0].DeviceResourceName == "SupplierSwitchButton" { //supplier Switch device
+	if reqs[0].DeviceResourceName == "supplierSwitchButton" { //supplier Switch device
 		cv, _ := dsModels.NewBoolValue(reqs[0].DeviceResourceName, now, s.switchButton)
 		res[0] = cv
-	} else if reqs[0].DeviceResourceName == "SupplierSwitchButtonImage" {
+	} else if reqs[0].DeviceResourceName == "supplierSwitchButtonImage" {
 		// Show a binary/image representation of the switch's on/off value
 		buf := new(bytes.Buffer)
 		if s.switchButton == true {
@@ -143,10 +143,10 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 		res[0] = cvb
 	}
 	// consume switch
-	if reqs[0].DeviceResourceName == "ConsumerSwitchButton" { //consumer Switch device
+	if reqs[0].DeviceResourceName == "consumerSwitchButton" { //consumer Switch device
 		cv, _ := dsModels.NewBoolValue(reqs[0].DeviceResourceName, now, s.switchButton)
 		res[0] = cv
-	} else if reqs[0].DeviceResourceName == "ConsumerSwitchButtonImage" { //consumer Switch device Image
+	} else if reqs[0].DeviceResourceName == "consumerSwitchButtonImage" { //consumer Switch device Image
 		// Show a binary/image representation of the switch's on/off value
 		buf := new(bytes.Buffer)
 		if s.switchButton == true {
