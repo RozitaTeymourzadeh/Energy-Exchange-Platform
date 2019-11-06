@@ -28,7 +28,7 @@ deviceResources:
       units:
         { type: "String", readWrite: "R", defaultValue: "" }
   -
-    name: "ConsumerSwitchButton"
+    name: "consumerSwitchButton"
     description: "Switch On/Off."
     properties:
       value:
@@ -36,7 +36,7 @@ deviceResources:
       units:
         { type: "String", readWrite: "R", defaultValue: "On/Off" }
   -
-    name: "ConsumerSwitchButtonImage"
+    name: "consumerSwitchButtonImage"
     description: "Visual representation of Switch state."
     properties:
       value:
@@ -98,7 +98,7 @@ coreCommands:
   -
     name: "ConsumerSwitchButton"
     get:
-      path: "/api/v1/device/{deviceId}/Consumerswitchbutton"
+      path: "/api/v1/device/{deviceId}/consumerswitchbutton"
       responses:
         -
           code: "200"

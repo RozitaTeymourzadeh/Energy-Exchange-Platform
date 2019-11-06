@@ -28,7 +28,7 @@ deviceResources:
       units:
         { type: "String", readWrite: "R", defaultValue: "" }
   -
-    name: "SupplierSwitchButton"
+    name: "supplierSwitchButton"
     description: "Switch On/Off."
     properties:
       value:
@@ -36,7 +36,7 @@ deviceResources:
       units:
         { type: "String", readWrite: "R", defaultValue: "On/Off" }
   -
-    name: "SupplierSwitchButtonImage"
+    name: "supplierSwitchButtonImage"
     description: "Visual representation of Switch state."
     properties:
       value:
@@ -86,7 +86,7 @@ coreCommands:
   -
     name: "SupplierRate"
     get:
-      path: "/api/v1/device/{deviceId}/Supplierrate"
+      path: "/api/v1/device/{deviceId}/supplierrate"
       responses:
         -
           code: "200"
@@ -123,7 +123,7 @@ coreCommands:
   -
     name: "SupplierSwitchButtonImage"
     get:
-      path: "/api/v1/device/{deviceId}/supplierbuttonimage"
+      path: "/api/v1/device/{deviceId}/supplierswitchbuttonimage"
       responses:
         -
           code: "200"
