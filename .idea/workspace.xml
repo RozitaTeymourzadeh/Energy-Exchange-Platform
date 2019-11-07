@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="62e4bd61-0cf6-4779-a88b-e60b0eae5cdb" name="Default Changelist" comment="changed supplydevice and consumedevice yaml, congiguration toml and simpleDriver.go, edited DeviceManager, suppliertx and comsumetx value change in file. TODO: add filename as variable, change make decision, but before change mechanism to handle multiple event for a device. Build a device object to store details of the device (chargeValue, Rate, switch)">
+    <list default="true" id="62e4bd61-0cf6-4779-a88b-e60b0eae5cdb" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/data/deviceReadings.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clean_mongo.js" beforeDir="false" afterPath="$PROJECT_DIR$/clean_mongo.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/device-simple/consumerChargeValue.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/consumerChargeValue.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/device-simple/consumerRateValue.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/consumerRateValue.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/device-simple/res/configuration.toml" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/res/configuration.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/device-simple/res/consume-device.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/res/consume-device.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/device-simple/res/supply-device.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/res/supply-device.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/device-simple/supplierChargeValue.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/supplierChargeValue.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/device-simple/supplierRateValue.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/supplierRateValue.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver/simpledriver.go" beforeDir="false" afterPath="$PROJECT_DIR$/driver/simpledriver.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uri_router/DeviceHandlers.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/uri_router/DeviceHandlers.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uri_router/handlers.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/uri_router/handlers.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uri_router/handlersHelper.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/uri_router/handlersHelper.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
   </component>
   <component name="GOROOT" path="/usr/local/Cellar/go/1.13/libexec" />
   <component name="Git.Settings">
@@ -31,12 +39,13 @@
   </component>
   <component name="ProjectId" id="1TDuUvkzQmJqH7m3RrsghDjQ1t7" />
   <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="GO_FMT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
-    <property name="last_opened_file_path" value="$USER_HOME$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">

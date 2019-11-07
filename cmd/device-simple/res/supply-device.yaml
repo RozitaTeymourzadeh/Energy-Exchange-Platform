@@ -59,9 +59,11 @@ deviceCommands:
   -
     name: "SupplierSwitchButton"
     get:
-      - { operation: "get", object: "SupplierSwitchButton" }
+      -
+        { operation: "get", object: "SupplierSwitchButton" }
     set:
-      - { operation: "set", object: "SupplierSwitchButton", parameter: "false" }
+      -
+        { operation: "set", object: "SupplierSwitchButton", parameter: "false" }
   -
     name: "SupplierSwitchButtonImage"
     get:
@@ -104,14 +106,14 @@ coreCommands:
         -
           code: "200"
           description: ""
-          expectedValues: ["SupplierSwitchButton"]
+          expectedValues: ["SwitchButton"]
         -
           code: "503"
           description: "service unavailable"
           expectedValues: []
     put:
       path: "/api/v1/device/{deviceId}/supplierswitchbutton"
-      parameterNames: ["SupplierSwitchButton"]
+      parameterNames: ["SwitchButton"]
       responses:
         -
           code: "200"

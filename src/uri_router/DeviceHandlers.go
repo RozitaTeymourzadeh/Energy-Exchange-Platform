@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/edgexfoundry/device-simple/src/data"
 	"github.com/edgexfoundry/device-simple/src/parser"
+	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -112,4 +113,114 @@ func ConsumerTx(w http.ResponseWriter, r *http.Request) {
 	}
 
 	parser.UpdateValueInFile("../../cmd/device-simple/consumerChargeValue.txt", changeValue)
+}
+
+//// moved from handlers.go
+
+func GetAllDevices(w http.ResponseWriter, r *http.Request) {
+	uri := "http://localhost:48082/api/v1/device"
+
+	resp, err := http.Get(uri)
+	if err != nil {
+		fmt.Println("Error in getting all devices")
+	}
+	defer resp.Body.Close()
+	bytesRead, _ := ioutil.ReadAll(resp.Body)
+
+	deviceList := data.DeviceListFromJson(bytesRead)
+	DEVICELIST = deviceList
+	//deviceList.AddAllToDevices(&Devices)
+
+	w.Write([]byte(deviceList.ShowDeviceInList()))
+
+}
+
+func DeleteDevice(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	uri := "http://localhost:48081/api/v1/device/id/" + vars["deviceId"]
+
+	//creating a new client
+	client := http.Client{}
+	// creating request
+	req, _ := http.NewRequest(http.MethodDelete, uri, nil)
+	// fetching response
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("error in reading response body in startreading")
+	}
+	defer resp.Body.Close()
+
+	bytesRead, _ := ioutil.ReadAll(resp.Body)
+
+	w.Write(bytesRead)
+}
+
+func GetAllDeviceProfiles(w http.ResponseWriter, r *http.Request) {
+	uri := "http://localhost:48081/api/v1/deviceprofile"
+
+	resp, err := http.Get(uri)
+	if err != nil {
+		fmt.Println("Error in getting all devices")
+	}
+	defer resp.Body.Close()
+	bytesRead, _ := ioutil.ReadAll(resp.Body)
+
+	deviceProfiles := data.DeviceProfilesFromJson(bytesRead)
+
+	w.Write([]byte(deviceProfiles.ShowDeviceProfiles()))
+
+}
+
+func DeleteDeviceProfile(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	uri := "http://localhost:48081/api/v1/deviceprofile/id/" + vars["deviceId"]
+
+	//creating a new client
+	client := http.Client{}
+	// creating request
+	req, _ := http.NewRequest(http.MethodDelete, uri, nil)
+	// fetching response
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("error in reading response body in startreading")
+	}
+	defer resp.Body.Close()
+
+	bytesRead, _ := ioutil.ReadAll(resp.Body)
+
+	w.Write(bytesRead)
+}
+
+func ReadDeviceData(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+	uri := "http://localhost:48080/api/v1/event/device/" + vars["deviceName"] + "/" + vars["noOfReadings"]
+
+	resp, err := http.Get(uri)
+	if err != nil {
+		fmt.Println("error in reading response body in startreading")
+	}
+	defer resp.Body.Close()
+	bytesRead, _ := ioutil.ReadAll(resp.Body)
+	//fmt.Println(string(bytesRead))
+
+	cdes := data.CoreDataEventsFromJson(bytesRead)
+
+	fmt.Println("coreDataEvent:")
+	for _, coreDataEvent := range cdes.DataEvents {
+		fmt.Println(string(coreDataEvent.CoreDataEventToJson()))
+		DeviceEventsDS.AddToDeviceEvents(coreDataEvent)
+	}
+
+	//// todo: remove below code to  different endpoint
+	//latestCde, err := DeviceEventsDS.GetLatestDeviceResourceNameEventForDevice("Supply-Device-01", "randomsuppliernumber")
+	//if err != nil {
+	//	fmt.Println("Error in getting latest CoreEventData for a device")
+	//}
+	//
+	//_, _ = w.Write(([]byte)(latestCde.Readings[0].Device + " : " + latestCde.Readings[0].Value))
+
+	//_ , _ = w.Write([]byte(DeviceEventsDS.ShowDevice(vars["deviceName"])))
+	_, _ = w.Write([]byte(DeviceEventsDS.ShowDeviceEvents(vars["deviceName"])))
+
 }

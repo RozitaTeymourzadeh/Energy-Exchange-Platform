@@ -73,13 +73,13 @@ func getAllDevices( /*ip string*/ ) data.DeviceList {
 //				5. add to supplyDeviceList
 //
 //use by PageVars
-func generateDeviceTypeBoard(deviceType string) []data.DeviceTypeDetails { //todo : here build suppy board
+func generateDeviceTypeBoard(deviceType string) []data.DeviceTypeDetails { //todo : here build supply board
 
 	sl := make([]data.DeviceTypeDetails, 0)
 
 	for _, d := range DEVICELIST.Devices {
 
-		uri := "http://" + d.PeerId + ":48080/api/v1/event/device/" + d.Name + "/" + "1"
+		uri := "http://" + d.PeerId + ":48080/api/v1/event/device/" + d.Name + "/" + "10"
 		resp, err := http.Get(uri)
 
 		if err != nil {
