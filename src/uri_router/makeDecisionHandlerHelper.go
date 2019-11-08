@@ -48,8 +48,8 @@ func makeDecisionHandlerHelper() string {
 		matched := false
 		sb.WriteString(">>> \n")
 		for _, sv := range SUPPLYDEVICEDETAILS {
-			sval, _ := strconv.Atoi(sv.Reading)
-			cval, _ := strconv.Atoi(cv.Reading)
+			sval, _ := strconv.Atoi(sv.Charge)
+			cval, _ := strconv.Atoi(cv.Charge)
 			//if sval >= cval { // one supply device supplying all energy needed by the consume device
 			if cval <= 40 && sval >= 40 {
 				matched = true

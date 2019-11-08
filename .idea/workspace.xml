@@ -2,17 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62e4bd61-0cf6-4779-a88b-e60b0eae5cdb" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/data/deviceReadings.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/device-simple/consumerChargeValue.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/consumerChargeValue.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/device-simple/consumerRateValue.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/consumerRateValue.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/device-simple/res/consume-device.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/res/consume-device.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/device-simple/res/supply-device.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/res/supply-device.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/device-simple/supplierChargeValue.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/supplierChargeValue.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/device-simple/supplierRateValue.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/supplierRateValue.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/TaskManager.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/TaskManager.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data/deviceTypeDetails.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/deviceTypeDetails.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/devicepkg/deviceManager.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/devicepkg/deviceManager.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/resources/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/templates/home.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/uri_router/DeviceHandlers.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/uri_router/DeviceHandlers.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/uri_router/handlers.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/uri_router/handlers.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/uri_router/handlersHelper.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/uri_router/handlersHelper.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uri_router/makeDecisionHandlerHelper.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/uri_router/makeDecisionHandlerHelper.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/uri_router/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/uri_router/routes.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -89,6 +92,16 @@
         <item itemvalue="Go Build.go build github.com/edgexfoundry/device-simple/src/devicePkg" />
       </list>
     </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="allServicesViewState">
+      <serviceView>
+        <treeState>
+          <expand />
+          <select />
+        </treeState>
+      </serviceView>
+    </option>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />

@@ -20,7 +20,7 @@ func main() {
 	} else {
 		port = "6686"
 	}
-	data.SetNodeId(ip, port, ip, port)
+	data.SetNodeId(ip, port, "", "")
 	fmt.Println("http://" + ip + ":" + port)
 
 	// serve everything in the css folder, the img folder and mp3 folder as a file

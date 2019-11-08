@@ -10,31 +10,12 @@ import (
 	"strings"
 )
 
-//for return code 503
-func returnCode503(w http.ResponseWriter, r *http.Request) {
-	http.Error(w, "Server Error", http.StatusServiceUnavailable)
-	http.Error(w, http.StatusText(http.StatusServiceUnavailable), http.StatusServiceUnavailable)
-}
-
-//for return code 500
-func returnCode500(w http.ResponseWriter, r *http.Request) {
-	http.Error(w, "Server Error", http.StatusInternalServerError)
-	http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
-}
-
-//for return code 204
-func returnCode204(w http.ResponseWriter, r *http.Request) {
-	http.Error(w, "Block does not exists", http.StatusNoContent)
-	http.Error(w, http.StatusText(http.StatusNoContent), http.StatusNoContent)
-}
-
-func getAllDevices( /*ip string*/ ) data.DeviceList {
+func getAllDevices() data.DeviceList {
 	dl := data.NewDeviceList()
 	if len(data.GetNodeId().GetPeers()) > 0 {
 		for _, peer := range data.GetNodeId().GetPeers() {
-			//uri := "http://" + peer.Address + ":48082/api/v1/device"
 			uri := "http://" + peer.IpAdd + ":" + peer.Port + "/sendDeviceList"
-			fmt.Println("Sending device req to : ", peer.IpAdd)
+			fmt.Println("Sending device req to : ", uri)
 			resp, err := http.Get(uri)
 			if err != nil {
 				fmt.Println("Error in getting all devices")
@@ -51,19 +32,6 @@ func getAllDevices( /*ip string*/ ) data.DeviceList {
 	}
 
 	return dl
-
-	//
-	//
-	//uri := "http://"+data.GetNodeId().Address+":48082/api/v1/device"
-	//
-	//resp, err := http.Get(uri)
-	//if err != nil {
-	//	fmt.Println("Error in getting all devices")
-	//}
-	//defer resp.Body.Close()
-	//bytesRead, _ := ioutil.ReadAll(resp.Body)
-	//
-	//return data.DeviceListFromJson(bytesRead)
 }
 
 //1. get list of peers
@@ -73,13 +41,14 @@ func getAllDevices( /*ip string*/ ) data.DeviceList {
 //				5. add to supplyDeviceList
 //
 //use by PageVars
-func generateDeviceTypeBoard(deviceType string) []data.DeviceTypeDetails { //todo : here build supply board
+func generateDeviceTypeBoard(deviceType string) []data.DeviceTypeDetails {
 
 	sl := make([]data.DeviceTypeDetails, 0)
 
 	for _, d := range DEVICELIST.Devices {
 
-		uri := "http://" + d.PeerId + ":48080/api/v1/event/device/" + d.Name + "/" + "10"
+		//uri := "http://" + d.PeerId + ":48080/api/v1/event/device/" + d.Name + "/" + "10"
+		uri := "http://" + d.PeerId + ":9999/sendDeviceEvents/" + d.Name + "/" + "10"
 		resp, err := http.Get(uri)
 
 		if err != nil {
@@ -90,17 +59,38 @@ func generateDeviceTypeBoard(deviceType string) []data.DeviceTypeDetails { //tod
 		//fmt.Println(string(bytesRead))
 
 		cdes := data.CoreDataEventsFromJson(bytesRead)
-		// iterate through cdes to get only "supply" device
-		//for _, cde := range cdes.DataEvents {
+		// iterate through cdes to get only "supply" or "consume" device
 		if strings.Contains(strings.ToLower(cdes.DataEvents[0].Device), strings.ToLower(deviceType)) {
-			sl = append(sl, data.DeviceTypeDetails{
-				DeviceAddress: d.PeerId,
-				DeviceName:    cdes.DataEvents[0].Device,
-				Id:            cdes.DataEvents[0].Id,
-				Reading:       cdes.DataEvents[0].Readings[0].Value,
-			})
+			updatedCharge := false
+			updatedRate := false
+			dl := data.DeviceTypeDetails{}
+			dl.DeviceAddress = d.PeerId
+			dl.DeviceName = cdes.DataEvents[0].Device
+			dl.Id = cdes.DataEvents[0].Id
+			for _, cde := range cdes.DataEvents {
+
+				for _, reading := range cde.Readings {
+					if strings.Contains(reading.Name, "Charge") && updatedCharge == false {
+						updatedCharge = true
+						//dl.Charge = cdes.DataEvents[0].Readings[0].Value
+						dl.Charge = reading.Value
+					} else if strings.Contains(reading.Name, "Rate") && updatedRate == false {
+						updatedRate = true
+						//dl.Rate = cdes.DataEvents[0].Readings[0].Value
+						dl.Rate = reading.Value
+					} else {
+						continue
+					}
+				}
+				if updatedCharge && updatedRate {
+					sl = append(sl, dl)
+					break
+				}
+				//if strings.Contains(strings.ToLower(cdes.DataEvents[0].Device), strings.ToLower(deviceType)) {
+
+				//}
+			}
 		}
-		//}
 
 	}
 	return sl

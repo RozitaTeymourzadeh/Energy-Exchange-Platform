@@ -14,11 +14,10 @@ import (
 func Run() {
 	// // // // // // // //
 	edgeXAddress := "localhost"
-	taskManagerAddress := "localhost"
-	taskManagerPort := "6686"
+	taskManagerAddress := "d2800eea.ngrok.io"
+	taskManagerPort := "80"
 	// // // // // // // //
 
-	fmt.Println("Device Manager is listening ....")
 	router := uri_router.NewRouter()
 
 	ip := data.SystemIp() //
@@ -42,6 +41,8 @@ func Run() {
 	//http.Handle("/mp3/", http.StripPrefix("/mp3/", http.FileServer(http.Dir("mp3"))))
 
 	// listen and serve at ip and port
+	fmt.Println("Device Manager is listening on : " + data.GetNodeId().Address + ":" + data.GetNodeId().Port)
+
 	log.Fatal(http.ListenAndServe(data.GetNodeId().Address+":"+data.GetNodeId().Port, router))
 }
 
@@ -50,7 +51,6 @@ func On() {
 	uri := "http://" + data.GetNodeId().TaskManagerAddress + ":" + data.GetNodeId().TaskManagerPort + "/register"
 	fmt.Println(uri)
 
-	//data.SetNodeId(SystemIp(), )
 	pInfo := data.PeerInfo{
 		IpAdd: data.GetNodeId().Address,
 		Port:  data.GetNodeId().Port,

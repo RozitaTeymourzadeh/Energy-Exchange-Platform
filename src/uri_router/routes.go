@@ -15,16 +15,16 @@ type Routes []Route
 
 var routes = Routes{
 	Route{
-		"Index",
-		"GET",
-		"/",
-		Index,
-	},
-	Route{
 		"Start",
 		"GET",
 		"/start",
 		Start,
+	},
+	Route{
+		"Index",
+		"GET",
+		"/",
+		Index,
 	},
 	Route{
 		"Register",
@@ -32,6 +32,32 @@ var routes = Routes{
 		"/register",
 		Register,
 	},
+	Route{
+		"ShowLatestDeviceData",
+		"GET",
+		"/showLatestDeviceData/{deviceName}/{resourceName}",
+		ShowLatestDeviceData,
+		//	localhost:6686/showLatestDeviceData/Supply-Device-01/randomsuppliernumber
+		//	localhost:6686/showLatestDeviceData/Consume-Device01/randomconsumenumber
+	},
+	Route{
+		"ShowAllLatestDeviceData",
+		"GET",
+		"/showAllLatestDeviceData",
+		ShowAllLatestDeviceData,
+		//	localhost:6686/showAllLatestDeviceData
+	},
+	Route{
+		"ReadDeviceData",
+		"GET",
+		"/readDeviceData/{deviceName}/{noOfReadings}",
+		ReadDeviceData,
+		//	http://localhost:6686/readDeviceData/Supply-Device-01/10
+		//  http://localhost:6686/readDeviceData/Consume-Device01/10
+	},
+	///////////////////// !!!!!!!!! ///////////////////
+	//device manager apis
+	///////////////////// !!!!!!!!! ///////////////////
 	Route{
 		"GetAllDevices",
 		"GET",
@@ -61,80 +87,17 @@ var routes = Routes{
 		//	localhost:48081/api/v1/deviceprofile/id/33793ade-9e34-4e24-a8a1-7936ba693f7a
 	},
 	Route{
-		"ReadDeviceData",
-		"GET",
-		"/readDeviceData/{deviceName}/{noOfReadings}",
-		ReadDeviceData,
-		//	http://localhost:6686/readDeviceData/Supply-Device-01/10
-		//  http://localhost:6686/readDeviceData/Consume-Device01/10
-	},
-	Route{
-		"ShowLatestDeviceData",
-		"GET",
-		"/showLatestDeviceData/{deviceName}/{resourceName}",
-		ShowLatestDeviceData,
-		//	localhost:6686/showLatestDeviceData/Supply-Device-01/randomsuppliernumber
-		//	localhost:6686/showLatestDeviceData/Consume-Device01/randomconsumenumber
-	},
-	Route{
-		"ShowAllLatestDeviceData",
-		"GET",
-		"/showAllLatestDeviceData",
-		ShowAllLatestDeviceData,
-		//	localhost:6686/showAllLatestDeviceData
-	},
-	//Route{
-	//	"MakeDecision",
-	//	"GET",
-	//	"/makeDecision",
-	//	MakeDecision,
-	//	//	localhost:6686/makeDecision
-	//},
-
-	Route{
-		"GetTaskManager",
-		"GET",
-		"/gettaskmanager",
-		TaskManagerFrontend,
-		//	localhost:6686/gettaskmanager
-	},
-	Route{
-		"GetDeviceFront",
-		"GET",
-		"/deviceFront",
-		DeviceFront,
-		//	localhost:6686/gettaskmanager
-	},
-	Route{
-		"PostEvent",
-		"POST",
-		"/posttaskmanager",
-		TaskManagerFrontend,
-		//	localhost:6686/posttaskmanager
-	},
-	//Route{
-	//	"MakeDecision",
-	//	"GET",
-	//	"/makeDecision",
-	//	MakeDecision,
-	//	//	localhost:6686/makeDecision
-	//},
-	///////////////////// !!!!!!!!! ///////////////////
-	//device manager apis
-	///////////////////// !!!!!!!!! ///////////////////
-	//Route{
-	//	"On",
-	//	"GET",
-	//	"/on",
-	//	On,
-	//	//	localhost:9999/on
-	//},
-	Route{
 		"SendDeviceList",
 		"GET",
 		"/sendDeviceList",
 		SendDeviceList,
 		//	localhost:9999/sendDeviceList
+	},
+	Route{
+		"SendDeviceEvents",
+		"GET",
+		"/sendDeviceEvents/{deviceName}/{noOfReadings}",
+		SendDeviceEvents,
 	},
 	Route{
 		"SupplierTx",

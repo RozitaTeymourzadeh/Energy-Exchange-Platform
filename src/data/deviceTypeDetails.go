@@ -1,8 +1,10 @@
 package data
 
 type DeviceTypeDetails struct {
-	DeviceAddress string
+	DeviceAddress string // ip and port
 	DeviceName    string
 	Id            string
-	Reading       string
+	//Reading       string
+	Charge string
+	Rate   string
 }

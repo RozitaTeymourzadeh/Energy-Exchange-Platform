@@ -21,30 +21,6 @@ import (
 
 //var TASKMANAGER_ADDRESS = "http://localhost:6686"
 
-//func On(w http.ResponseWriter, r *http.Request) {
-//
-//	//data.SetNodeId(SystemIp(), )
-//	pInfo := data.PeerInfo {
-//		IpAdd: data.GetNodeId().Address,
-//		Port:  data.GetNodeId().Port,
-//	}
-//
-//	rJson := pInfo.PeerInfoToJSON()
-//
-//	//creating a new client
-//	client := http.Client{}
-//	// creating request
-//	req, _ := http.NewRequest(http.MethodPost, TASKMANAGER_ADDRESS+"/register", bytes.NewBuffer(rJson))
-//	// fetching response
-//	_, err := client.Do(req)
-//	if err != nil {
-//		log.Println(errors.New("Error in device registration : " + err.Error()))
-//	}
-//
-//	fmt.Println("On--ing device")
-//	w.Write([]byte("On--ing device"))
-//}
-
 func SendDeviceList(w http.ResponseWriter, r *http.Request) {
 	//uri := "http://localhost:48082/api/v1/device"
 	uri := "http://" + data.GetNodeId().EdgeXAddress + ":" + "48082" + "/api/v1/device"
@@ -66,6 +42,24 @@ func SendDeviceList(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(405)
 		_, _ = w.Write([]byte("No Device found"))
 	}
+
+}
+
+func SendDeviceEvents(w http.ResponseWriter, r *http.Request) {
+
+	vars := mux.Vars(r)
+	uri := "http://localhost:48080/api/v1/event/device/" + vars["deviceName"] + "/" + vars["noOfReadings"]
+
+	resp, err := http.Get(uri)
+	if err != nil {
+		fmt.Println("error in reading response body in startreading")
+	}
+	defer resp.Body.Close()
+	bytesRead, _ := ioutil.ReadAll(resp.Body)
+	fmt.Println(string(bytesRead))
+
+	w.WriteHeader(http.StatusOK)
+	w.Write(bytesRead)
 
 }
 
@@ -118,7 +112,8 @@ func ConsumerTx(w http.ResponseWriter, r *http.Request) {
 //// moved from handlers.go
 
 func GetAllDevices(w http.ResponseWriter, r *http.Request) {
-	uri := "http://localhost:48082/api/v1/device"
+	//uri := "http://localhost:48082/api/v1/device"
+	uri := "http://" + data.GetNodeId().EdgeXAddress + ":48082/api/v1/device"
 
 	resp, err := http.Get(uri)
 	if err != nil {
@@ -137,7 +132,8 @@ func GetAllDevices(w http.ResponseWriter, r *http.Request) {
 
 func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	uri := "http://localhost:48081/api/v1/device/id/" + vars["deviceId"]
+	//uri := "http://localhost:48081/api/v1/device/id/" + vars["deviceId"]
+	uri := "http://" + data.GetNodeId().EdgeXAddress + ":48081/api/v1/device/id/" + vars["deviceId"]
 
 	//creating a new client
 	client := http.Client{}
@@ -156,7 +152,8 @@ func DeleteDevice(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetAllDeviceProfiles(w http.ResponseWriter, r *http.Request) {
-	uri := "http://localhost:48081/api/v1/deviceprofile"
+	//uri := "http://localhost:48081/api/v1/deviceprofile"
+	uri := "http://" + data.GetNodeId().EdgeXAddress + ":48081/api/v1/deviceprofile"
 
 	resp, err := http.Get(uri)
 	if err != nil {
@@ -173,7 +170,8 @@ func GetAllDeviceProfiles(w http.ResponseWriter, r *http.Request) {
 
 func DeleteDeviceProfile(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	uri := "http://localhost:48081/api/v1/deviceprofile/id/" + vars["deviceId"]
+	//uri := "http://localhost:48081/api/v1/deviceprofile/id/" + vars["deviceId"]
+	uri := "http://" + data.GetNodeId().EdgeXAddress + ":48081/api/v1/deviceprofile/id/" + vars["deviceId"]
 
 	//creating a new client
 	client := http.Client{}
@@ -189,38 +187,4 @@ func DeleteDeviceProfile(w http.ResponseWriter, r *http.Request) {
 	bytesRead, _ := ioutil.ReadAll(resp.Body)
 
 	w.Write(bytesRead)
-}
-
-func ReadDeviceData(w http.ResponseWriter, r *http.Request) {
-
-	vars := mux.Vars(r)
-	uri := "http://localhost:48080/api/v1/event/device/" + vars["deviceName"] + "/" + vars["noOfReadings"]
-
-	resp, err := http.Get(uri)
-	if err != nil {
-		fmt.Println("error in reading response body in startreading")
-	}
-	defer resp.Body.Close()
-	bytesRead, _ := ioutil.ReadAll(resp.Body)
-	//fmt.Println(string(bytesRead))
-
-	cdes := data.CoreDataEventsFromJson(bytesRead)
-
-	fmt.Println("coreDataEvent:")
-	for _, coreDataEvent := range cdes.DataEvents {
-		fmt.Println(string(coreDataEvent.CoreDataEventToJson()))
-		DeviceEventsDS.AddToDeviceEvents(coreDataEvent)
-	}
-
-	//// todo: remove below code to  different endpoint
-	//latestCde, err := DeviceEventsDS.GetLatestDeviceResourceNameEventForDevice("Supply-Device-01", "randomsuppliernumber")
-	//if err != nil {
-	//	fmt.Println("Error in getting latest CoreEventData for a device")
-	//}
-	//
-	//_, _ = w.Write(([]byte)(latestCde.Readings[0].Device + " : " + latestCde.Readings[0].Value))
-
-	//_ , _ = w.Write([]byte(DeviceEventsDS.ShowDevice(vars["deviceName"])))
-	_, _ = w.Write([]byte(DeviceEventsDS.ShowDeviceEvents(vars["deviceName"])))
-
 }
