@@ -1,11 +1,13 @@
 	package main
 
 	import (
-		"MerklePatriciaTree/p5/Blockchain_Application_P5/data"
-		"MerklePatriciaTree/p5/Blockchain_Application_P5/p5"
+		//"MerklePatriciaTree/p5/Blockchain_Application_P5/data"
+		//"MerklePatriciaTree/p5/Blockchain_Application_P5/p5"
 		"crypto/rand"
 		"crypto/rsa"
 		"fmt"
+		"github.com/edgexfoundry/device-simple/src/blockchain/data"
+		p5 "github.com/edgexfoundry/device-simple/src/blockchain/transaction"
 		"log"
 		"net/http"
 		"os"
