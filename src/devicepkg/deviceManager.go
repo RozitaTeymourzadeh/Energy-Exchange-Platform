@@ -14,8 +14,10 @@ import (
 func Run() {
 	// // // // // // // //
 	edgeXAddress := "localhost"
-	taskManagerAddress := "d2800eea.ngrok.io"
-	taskManagerPort := "80"
+	taskManagerPort := "6680"
+	taskManagerAddress := "localhost"
+	//taskManagerAddress := "d2800eea.ngrok.io"
+	//taskManagerPort := "80"
 	// // // // // // // //
 
 	router := uri_router.NewRouter()
