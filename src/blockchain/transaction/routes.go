@@ -54,6 +54,7 @@ var routes = Routes{
 		"/getevent",
 		Event,
 	},
+	//ToDo Post Transaction
 	Route{
 		"PostEvent",
 		"POST",

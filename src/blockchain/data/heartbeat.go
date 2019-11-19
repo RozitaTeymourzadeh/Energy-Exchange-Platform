@@ -1,9 +1,11 @@
 package data
 
 import (
-	"MerklePatriciaTree/p5/Blockchain_Application_P5/p4"
+	//"MerklePatriciaTree/p5/Blockchain_Application_P5/p4"
+	"github.com/edgexfoundry/device-simple/src/blockchain/block"
 	"crypto/rsa"
 	"encoding/json"
+	//p4 "github.com/edgexfoundry/device-simple/src/blockchain/block"
 
 	//"fmt"
 )

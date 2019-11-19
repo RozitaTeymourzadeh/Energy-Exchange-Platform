@@ -14,8 +14,8 @@ import (
 func Run() {
 	// // // // // // // //
 	edgeXAddress := "localhost"
-	taskManagerPort := "6680"
-	taskManagerAddress := "localhost"
+	taskManagerPort := "6686"
+	taskManagerAddress := "http://localhost"
 	//taskManagerAddress := "d2800eea.ngrok.io"
 	//taskManagerPort := "80"
 	// // // // // // // //
@@ -50,7 +50,7 @@ func Run() {
 
 func On() {
 
-	uri := "http://" + data.GetNodeId().TaskManagerAddress + ":" + data.GetNodeId().TaskManagerPort + "/register"
+	uri := data.GetNodeId().TaskManagerAddress + ":" + data.GetNodeId().TaskManagerPort + "/register"
 	fmt.Println(uri)
 
 	pInfo := data.PeerInfo{

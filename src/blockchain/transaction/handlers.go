@@ -1,15 +1,17 @@
 package p5
 
 import (
-	"MerklePatriciaTree/p3/cs686-blockchain-p3-RozitaTeymourzadeh/p2"
-	"MerklePatriciaTree/p5/Blockchain_Application_P5/data"
-	"MerklePatriciaTree/p5/Blockchain_Application_P5/p4"
+	//"MerklePatriciaTree/p3/cs686-blockchain-p3-RozitaTeymourzadeh/p2"
+	//"MerklePatriciaTree/p5/Blockchain_Application_P5/data"
+	//"MerklePatriciaTree/p5/Blockchain_Application_P5/p4"
 	"bytes"
 	"crypto"
 	"crypto/rsa"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	p4 "github.com/edgexfoundry/device-simple/src/blockchain/block"
+	"github.com/edgexfoundry/device-simple/src/blockchain/data"
 	"golang.org/x/crypto/sha3"
 	"io/ioutil"
 	"log"
@@ -385,7 +387,7 @@ func AskForBlock(height int32, hash string) {
 	for key, value := range PeerMap {
 		fmt.Printf("key[%s] value[%d]\n", key, value)
 		fmt.Println("height:", height)
-		heightString := p2.ConvertIntToString(height)
+		heightString := p4.ConvertIntToString(height)
 		//http://localhost:8863/upload/1/xxxx
 		prepareRequest := "http://" + key + ASK_PEERS + "/" + heightString + "/" + hash
 		//http://localhost:8845:/block/5/hashvalue
