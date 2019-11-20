@@ -28,7 +28,7 @@ deviceResources:
       units:
         { type: "String", readWrite: "R", defaultValue: "" }
   -
-    name: "consumerSwitchButton"
+    name: "CSwitchButton"
     description: "Switch On/Off."
     properties:
       value:
@@ -36,7 +36,7 @@ deviceResources:
       units:
         { type: "String", readWrite: "R", defaultValue: "On/Off" }
   -
-    name: "consumerSwitchButtonImage"
+    name: "Image"
     description: "Visual representation of Switch state."
     properties:
       value:
@@ -57,18 +57,19 @@ deviceCommands:
       -
         { operation: "get", object: "consumerRate", property: "value", parameter: "Random" }
   -
-    name: "ConsumerSwitchButton"
+    name: "CSwitch"
     get:
       -
-        { operation: "get", object: "ConsumerSwitchButton" }
+        { operation: "get", object: "CSwitchButton" }
     set:
       -
-        { operation: "set", object: "ConsumerSwitchButton", parameter: "false" }
+        { operation: "set", object: "CSwitchButton", parameter: "false" }
   -
-    name: "ConsumerSwitchButtonImage"
+    name: "Image"
     get:
       -
-        { operation: "get", object: "ConsumerSwitchButtonImage" }
+        { operation: "get", object: "Image" }
+
 
 
 coreCommands:
@@ -98,22 +99,23 @@ coreCommands:
           code: "503"
           description: "service unavailable"
           expectedValues: []
+
   -
-    name: "ConsumerSwitchButton"
+    name: "CSwitch"
     get:
-      path: "/api/v1/device/{deviceId}/consumerswitchbutton"
+      path: "/api/v1/device/{deviceId}/CSwitchButton"
       responses:
         -
           code: "200"
           description: ""
-          expectedValues: ["SwitchButton"]
+          expectedValues: ["CSwitchButton"]
         -
           code: "503"
           description: "service unavailable"
           expectedValues: []
     put:
-      path: "/api/v1/device/{deviceId}/consumerswitchbutton"
-      parameterNames: ["SwitchButton"]
+      path: "/api/v1/device/{deviceId}/CSwitchButton"
+      parameterNames: ["CSwitchButton"]
       responses:
         -
           code: "200"
@@ -123,9 +125,9 @@ coreCommands:
           description: "service unavailable"
           expectedValues: []
   -
-    name: "ConsumerSwitchButtonImage"
+    name: "Image"
     get:
-      path: "/api/v1/device/{deviceId}/consumerswitchbuttonimage"
+      path: "/api/v1/device/{deviceId}/Image"
       responses:
         -
           code: "200"
