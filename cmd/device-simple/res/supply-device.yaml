@@ -18,8 +18,8 @@ deviceResources:
       units:
         { type: "String", readWrite: "R", defaultValue: "" }
   -
-    name: "supplierRate"
-    description: "generates supplier rate"
+    name: "supplyRate"
+    description: "generates supply rate"
     attributes:
       { type: "random" }
     properties:
@@ -27,6 +27,51 @@ deviceResources:
         { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "10.00"  }
       units:
         { type: "String", readWrite: "R", defaultValue: "" }
+
+  -
+    name: "supplierChargeRate"
+    description: "generates supplier charge rate"
+    attributes:
+      { type: "random" }
+    properties:
+      value:
+        { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "10.00"  }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+
+  -
+    name: "isSupplying"
+    description: "generates isSupplying status"
+    attributes:
+      { type: "random" }
+    properties:
+      value:
+        { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "1"  }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+
+  -
+    name: "toSupply"
+    description: "generates toSupply units"
+    attributes:
+      { type: "random" }
+    properties:
+      value:
+        { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "100"  }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+
+  -
+    name: "sellRate"
+    description: "generates sell rate per unit"
+    attributes:
+      { type: "random" }
+    properties:
+      value:
+        { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "100"  }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+
   -
     name: "SSwitchButton"
     description: "Switch On/Off."
@@ -52,10 +97,35 @@ deviceCommands:
       -
         { operation: "get", object: "supplierCharge", property: "value", parameter: "Random" }
   -
-    name: "SupplierRate"
+    name: "SupplyRate"
     get:
       -
-        { operation: "get", object: "supplierRate", property: "value", parameter: "Random" }
+        { operation: "get", object: "supplyRate", property: "value", parameter: "Random" }
+
+  -
+    name: "SupplierChargeRate"
+    get:
+      -
+        { operation: "get", object: "supplierChargeRate", property: "value", parameter: "Random" }
+
+  -
+    name: "IsSupplying"
+    get:
+      -
+        { operation: "get", object: "isSupplying", property: "value", parameter: "Random" }
+
+  -
+    name: "ToSupply"
+    get:
+      -
+        { operation: "get", object: "toSupply", property: "value", parameter: "Random" }
+
+  -
+    name: "SellRate"
+    get:
+      -
+        { operation: "get", object: "sellRate", property: "value", parameter: "Random" }
+
   -
     name: "SSwitch"
     get:
@@ -87,9 +157,65 @@ coreCommands:
           description: "service unavailable"
           expectedValues: []
   -
-    name: "SupplierRate"
+    name: "SupplyRate"
     get:
-      path: "/api/v1/device/{deviceId}/supplierrate"
+      path: "/api/v1/device/{deviceId}/supplyrate"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["Random"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+
+  -
+    name: "SupplierChargeRate"
+    get:
+      path: "/api/v1/device/{deviceId}/supplierchargerate"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["Random"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+
+  -
+    name: "IsSupplying"
+    get:
+      path: "/api/v1/device/{deviceId}/issupplying"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["Random"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+
+  -
+    name: "ToSupply"
+    get:
+      path: "/api/v1/device/{deviceId}/tosupply"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["Random"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+
+  -
+    name: "SellRate"
+    get:
+      path: "/api/v1/device/{deviceId}/sellrate"
       responses:
         -
           code: "200"

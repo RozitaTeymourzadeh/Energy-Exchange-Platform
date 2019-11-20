@@ -18,8 +18,8 @@ deviceResources:
       units:
         { type: "String", readWrite: "R", defaultValue: "" }
   -
-    name: "consumerRate"
-    description: "generates Consumer rate"
+    name: "consumerDischargeRate"
+    description: "generates Consumer discharge rate"
     attributes:
       { type: "random" }
     properties:
@@ -27,6 +27,50 @@ deviceResources:
         { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "10.00"  }
       units:
         { type: "String", readWrite: "R", defaultValue: "" }
+
+  - name: "require"
+    description: "generates Consumer requirement"
+    attributes:
+      { type: "random" }
+    properties:
+      value:
+        { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "10.00"  }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+
+  -
+    name: "isReceiving"
+    description: "generates isSupplying status"
+    attributes:
+      { type: "random" }
+    properties:
+      value:
+        { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "1"  }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+
+  -
+    name: "toReceive"
+    description: "generates toReceive units"
+    attributes:
+      { type: "random" }
+    properties:
+      value:
+        { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "100"  }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+
+  -
+    name: "buyRate"
+    description: "generates buy rate per unit"
+    attributes:
+      { type: "random" }
+    properties:
+      value:
+        { type: "INT32", readWrite: "R", defaultValue: "0.00", minimum: "0.00", maximum: "100"  }
+      units:
+        { type: "String", readWrite: "R", defaultValue: "" }
+
   -
     name: "CSwitchButton"
     description: "Switch On/Off."
@@ -52,10 +96,33 @@ deviceCommands:
       -
         { operation: "get", object: "consumerCharge", property: "value", parameter: "Random" }
   -
-    name: "ConsumerRate"
+    name: "ConsumerDischargeRate"
     get:
       -
-        { operation: "get", object: "consumerRate", property: "value", parameter: "Random" }
+        { operation: "get", object: "consumerDischargeRate", property: "value", parameter: "Random" }
+
+  - name: "Require"
+    get:
+      - { operation: "get", object: "require", property: "value", parameter: "Random" }
+
+  -
+    name: "IsReceiving"
+    get:
+      -
+        { operation: "get", object: "isReceiving", property: "value", parameter: "Random" }
+
+  -
+    name: "ToReceive"
+    get:
+      -
+        { operation: "get", object: "toReceive", property: "value", parameter: "Random" }
+
+  -
+    name: "BuyRate"
+    get:
+      -
+        { operation: "get", object: "buyRate", property: "value", parameter: "Random" }
+
   -
     name: "CSwitch"
     get:
@@ -87,9 +154,65 @@ coreCommands:
           description: "service unavailable"
           expectedValues: []
   -
-    name: "ConsumerRate"
+    name: "ConsumerDischargeRate"
     get:
-      path: "/api/v1/device/{deviceId}/consumerrate"
+      path: "/api/v1/device/{deviceId}/consumerdischargerate"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["Random"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+
+  -
+    name: "IsReceiving"
+    get:
+      path: "/api/v1/device/{deviceId}/isreceiving"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["Random"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+
+  -
+    name: "ToReceive"
+    get:
+      path: "/api/v1/device/{deviceId}/toreceive"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["Random"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+
+  -
+    name: "Require"
+    get:
+      path: "/api/v1/device/{deviceId}/require"
+      responses:
+        -
+          code: "200"
+          description: ""
+          expectedValues: ["Random"]
+        -
+          code: "503"
+          description: "service unavailable"
+          expectedValues: []
+
+  -
+    name: "BuyRate"
+    get:
+      path: "/api/v1/device/{deviceId}/buyrate"
       responses:
         -
           code: "200"

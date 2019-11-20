@@ -4,7 +4,9 @@ type DeviceTypeDetails struct {
 	DeviceAddress string // ip and port
 	DeviceName    string
 	Id            string
-	//Reading       string
+	//Reading
 	Charge string
 	Rate   string
+	//
+
 }

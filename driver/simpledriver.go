@@ -15,6 +15,7 @@ import (
 	"errors"
 	"fmt"
 	dsModels "github.com/edgexfoundry/device-sdk-go/pkg/models"
+	"github.com/edgexfoundry/device-simple/src/data"
 	"github.com/edgexfoundry/device-simple/src/parser"
 	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
 	contract "github.com/edgexfoundry/go-mod-core-contracts/models"
@@ -36,10 +37,18 @@ type SimpleDriver struct {
 
 // counters
 type counters struct {
-	supplierChargeNumber int32
-	supplierRateNumber   int32
-	consumerChargeNumber int32
-	consumerRateNumber   int32
+	supplierCharge     int32
+	supplierRate       int32
+	supplierChargeRate int32
+	isSupplying        int32
+	toSupply           int32
+	sellRate           int32
+	consumerCharge     int32
+	consumerRate       int32
+	require            int32
+	isReceiving        int32
+	toReceive          int32
+	buyRate            int32
 }
 
 var Counters = counters{}
@@ -97,33 +106,103 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 	now := time.Now().UnixNano()
 
 	//supply device
-	if reqs[0].DeviceResourceName == "supplierCharge" { // supply device charge
-		Counters.supplierChargeNumber++
-		reading := generateOnceAndReadFromFileAfter(Counters.supplierChargeNumber, 100, "supplierChargeValue.txt", 1)
-		log.Println("supplierCharge value: ", reading)
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(reading))
+	if reqs[0].DeviceResourceName == "supplierCharge" { // supply charge
+		Counters.supplierCharge++
+		//reading := generateOnceAndReadFromFileAfter(Counters.supplierCharge, 100, "supplierChargeValue.txt", 1)
+		data.GetSupplyDevice().Charge =
+			generateOnceAndReadFromFileAfter(Counters.supplierCharge, 100, "supplierChargeValue.txt", data.GetSupplyDevice().SupplierChargeRate)
+		log.Println("supplierCharge value: ", data.GetSupplyDevice().Charge)
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetSupplyDevice().Charge))
 		res[0] = cv
 	}
-	if reqs[0].DeviceResourceName == "supplierRate" { // supply device rate
-		Counters.supplierRateNumber++
-		reading := generateOnceAndReadFromFileAfter(Counters.supplierRateNumber, 10, "supplierRateValue.txt", 0)
-		log.Println("supplierRate value: ", reading)
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(reading))
+	if reqs[0].DeviceResourceName == "supplyRate" { // supply rate
+		Counters.supplierRate++
+		data.GetSupplyDevice().SupplyRate =
+			generateOnceAndReadFromFileAfter(Counters.supplierRate, 10, "supplierRateValue.txt", 0)
+		log.Println("supplierRate value: ", data.GetSupplyDevice().SupplyRate)
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetSupplyDevice().SupplyRate))
 		res[0] = cv
 	}
+	if reqs[0].DeviceResourceName == "supplierChargeRate" { // supply charge rate
+		Counters.supplierChargeRate++
+		data.GetSupplyDevice().SupplierChargeRate =
+			generateOnceAndReadFromFileAfter(Counters.supplierChargeRate, 10, "supplierChargeRateValue.txt", 0)
+		log.Println("supplierChargeRate value: ", data.GetSupplyDevice().SupplierChargeRate)
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetSupplyDevice().SupplierChargeRate))
+		res[0] = cv
+	}
+	if reqs[0].DeviceResourceName == "isSupplying" { // is Supplying
+		Counters.isSupplying++
+		data.GetSupplyDevice().IsSupplying =
+			generateOnceAndReadFromFileAfter(Counters.isSupplying, 0, "isSupplyingValue.txt", 0)
+		log.Println("isSupplying value: ", data.GetSupplyDevice().IsSupplying)
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetSupplyDevice().IsSupplying))
+		res[0] = cv
+	}
+	if reqs[0].DeviceResourceName == "toSupply" { // to supply
+		Counters.toSupply++
+		data.GetSupplyDevice().ToSupply =
+			generateOnceAndReadFromFileAfter(Counters.toSupply, 0, "toSupplyValue.txt", 0)
+		log.Println("supplierRate value: ", data.GetSupplyDevice().ToSupply)
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetSupplyDevice().ToSupply))
+		res[0] = cv
+	}
+	if reqs[0].DeviceResourceName == "sellRate" { // sell rate
+		Counters.sellRate++
+		data.GetSupplyDevice().SellRate =
+			generateOnceAndReadFromFileAfter(Counters.sellRate, 20, "sellRateValue.txt", 0)
+		log.Println("SellRate value: ", data.GetSupplyDevice().SellRate)
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetSupplyDevice().SellRate))
+		res[0] = cv
+	}
+
 	//consume device
-	if reqs[0].DeviceResourceName == "consumerCharge" { // consume device charge
-		Counters.consumerChargeNumber++
-		reading := generateOnceAndReadFromFileAfter(Counters.consumerChargeNumber, 50, "consumerChargeValue.txt", -1)
-		log.Println("consumerCharge value: ", int32(reading))
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(reading))
+	if reqs[0].DeviceResourceName == "consumerCharge" { // consumer charge
+		Counters.consumerCharge++
+		data.GetConsumeDevice().Charge =
+			generateOnceAndReadFromFileAfter(Counters.consumerCharge, 50, "consumerChargeValue.txt", -data.GetConsumeDevice().ConsumeRate)
+		log.Println("consumerCharge value: ", int32(data.GetConsumeDevice().Charge))
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetConsumeDevice().Charge))
 		res[0] = cv
 	}
-	if reqs[0].DeviceResourceName == "consumerRate" { // consume device rate
-		Counters.consumerRateNumber++
-		reading := generateOnceAndReadFromFileAfter(Counters.consumerRateNumber, 10, "consumerRateValue.txt", 0)
-		log.Println("consumerRate value: ", int32(reading))
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(reading))
+	if reqs[0].DeviceResourceName == "consumerDischargeRate" { // consumer rate
+		Counters.consumerRate++
+		data.GetConsumeDevice().ConsumeRate =
+			generateOnceAndReadFromFileAfter(Counters.consumerRate, 10, "consumerRateValue.txt", 0)
+		log.Println("consumerRate value: ", int32(data.GetConsumeDevice().ConsumeRate))
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetConsumeDevice().ConsumeRate))
+		res[0] = cv
+	}
+	if reqs[0].DeviceResourceName == "require" { // consumer require units
+		Counters.require++
+		data.GetConsumeDevice().Require =
+			generateOnceAndReadFromFileAfter(Counters.require, 10, "requireValue.txt", 0)
+		log.Println("consumer require value: ", int32(data.GetConsumeDevice().Require))
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetConsumeDevice().Require))
+		res[0] = cv
+	}
+	if reqs[0].DeviceResourceName == "isReceiving" { // consumer require units
+		Counters.isReceiving++
+		data.GetConsumeDevice().IsReceiving =
+			generateOnceAndReadFromFileAfter(Counters.isReceiving, 0, "isReceivingValue.txt", 0)
+		log.Println("consumer isReceiving value: ", int32(data.GetConsumeDevice().IsReceiving))
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetConsumeDevice().IsReceiving))
+		res[0] = cv
+	}
+	if reqs[0].DeviceResourceName == "toReceive" { // consumer require units
+		Counters.toReceive++
+		data.GetConsumeDevice().ToReceive =
+			generateOnceAndReadFromFileAfter(Counters.toReceive, 0, "toReceiveValue.txt", 0)
+		log.Println("consumer toReceive value: ", int32(data.GetConsumeDevice().ToReceive))
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetConsumeDevice().ToReceive))
+		res[0] = cv
+	}
+	if reqs[0].DeviceResourceName == "buyRate" { // buy rate
+		Counters.buyRate++
+		data.GetConsumeDevice().BuyRate =
+			generateOnceAndReadFromFileAfter(Counters.buyRate, 30, "buyRateValue.txt", 0)
+		log.Println("BuyRate value: ", data.GetConsumeDevice().BuyRate)
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetConsumeDevice().BuyRate))
 		res[0] = cv
 	}
 
@@ -226,7 +305,10 @@ func generateOnceAndReadFromFileAfter(count int32, maxVal int, filename string, 
 	var val int
 	if count <= 1 {
 		parser.DeleteFile(filename)
-		val = rand.Intn(maxVal)
+		val = 0
+		if maxVal > 0 {
+			val = rand.Intn(maxVal)
+		}
 		//fmt.Println("Writing to file generated value : ", strconv.Itoa(val))
 		parser.WriteFile(filename, strconv.Itoa(val))
 
@@ -240,6 +322,8 @@ func generateOnceAndReadFromFileAfter(count int32, maxVal int, filename string, 
 		}
 		if fileVal+change >= 0 {
 			val = fileVal + change
+		} else if fileVal+change < 0 {
+			val = 0
 		}
 
 		//fmt.Println("Writing to added value : ", int32(val))

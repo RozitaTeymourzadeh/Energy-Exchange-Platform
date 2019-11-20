@@ -9,7 +9,7 @@ import (
 
 //
 type Device struct {
-	PeerId         string           `json:"-"` // peer Id of registered peer
+	PeerId         string           `json:"-"` // peer Id of registered peer ip and port
 	Id             string           `json:"id"`
 	Name           string           `json:"name"`
 	AdminState     string           `json:"adminState"`

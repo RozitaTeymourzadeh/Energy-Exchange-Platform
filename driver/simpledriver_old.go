@@ -87,11 +87,11 @@ package driver
 //		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(100)))
 //		res[0] = cv
 //	}
-//	if reqs[0].DeviceResourceName == "supplierRateNumber" {
+//	if reqs[0].DeviceResourceName == "supplierRate" {
 //		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(10)))
 //		res[0] = cv
 //	}
-//	if reqs[0].DeviceResourceName == "consumerChargeNumber" {
+//	if reqs[0].DeviceResourceName == "consumerCharge" {
 //		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(rand.Intn(50)))
 //		res[0] = cv
 //	}

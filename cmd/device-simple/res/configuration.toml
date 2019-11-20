@@ -71,7 +71,23 @@ Level = "DEBUG"
     OnChange = false
     Frequency = "8s"
   [[DeviceList.AutoEvents]]
-    Resource = "SupplierRate"
+    Resource = "SupplyRate"
+    OnChange = false
+    Frequency = "8s"
+  [[DeviceList.AutoEvents]]
+    Resource = "SupplierChargeRate"
+    OnChange = false
+    Frequency = "8s"
+  [[DeviceList.AutoEvents]]
+    Resource = "IsSupplying"
+    OnChange = false
+    Frequency = "8s"
+  [[DeviceList.AutoEvents]]
+    Resource = "ToSupply"
+    OnChange = false
+    Frequency = "8s"
+  [[DeviceList.AutoEvents]]
+    Resource = "SellRate"
     OnChange = false
     Frequency = "8s"
 
@@ -93,6 +109,22 @@ Level = "DEBUG"
     OnChange = false
     Frequency = "8s"
   [[DeviceList.AutoEvents]]
-    Resource = "ConsumerRate"
+    Resource = "ConsumerDischargeRate"
+    OnChange = false
+    Frequency = "8s"
+  [[DeviceList.AutoEvents]]
+    Resource = "Require"
+    OnChange = false
+    Frequency = "8s"
+  [[DeviceList.AutoEvents]]
+    Resource = "IsReceiving"
+    OnChange = false
+    Frequency = "8s"
+  [[DeviceList.AutoEvents]]
+    Resource = "ToReceive"
+    OnChange = false
+    Frequency = "8s"
+  [[DeviceList.AutoEvents]]
+    Resource = "BuyRate"
     OnChange = false
     Frequency = "8s"
