@@ -128,7 +128,7 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 	}
 
 	// supply switch
-	if reqs[0].DeviceResourceName == "supplierSwitchButton" { //supplier Switch device
+	if reqs[0].DeviceResourceName == "SSwitchButton" { //supplier Switch device
 		cv, _ := dsModels.NewBoolValue(reqs[0].DeviceResourceName, now, s.switchButton)
 		res[0] = cv
 	} else if reqs[0].DeviceResourceName == "supplierSwitchButtonImage" {
@@ -143,7 +143,7 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 		res[0] = cvb
 	}
 	// consume switch
-	if reqs[0].DeviceResourceName == "consumerSwitchButton" { //consumer Switch device
+	if reqs[0].DeviceResourceName == "CSwitchButton" { //consumer Switch device
 		cv, _ := dsModels.NewBoolValue(reqs[0].DeviceResourceName, now, s.switchButton)
 		res[0] = cv
 	} else if reqs[0].DeviceResourceName == "consumerSwitchButtonImage" { //consumer Switch device Image

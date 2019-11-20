@@ -5,17 +5,13 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/device-simple/consumerChargeValue.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/consumerChargeValue.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/device-simple/consumerRateValue.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/consumerRateValue.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/device-simple/res/configuration.toml" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/res/configuration.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/device-simple/res/consume-device.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/res/consume-device.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/device-simple/res/supply-device.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/res/supply-device.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/device-simple/supplierChargeValue.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/supplierChargeValue.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmd/device-simple/supplierRateValue.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/supplierRateValue.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TaskManager.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/TaskManager.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data/deviceTypeDetails.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/data/deviceTypeDetails.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/devicepkg/deviceManager.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/devicepkg/deviceManager.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/resources/templates/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/resources/templates/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uri_router/DeviceHandlers.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/uri_router/DeviceHandlers.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uri_router/handlers.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/uri_router/handlers.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uri_router/handlersHelper.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/uri_router/handlersHelper.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uri_router/makeDecisionHandlerHelper.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/uri_router/makeDecisionHandlerHelper.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/uri_router/routes.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/uri_router/routes.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/driver/simpledriver.go" beforeDir="false" afterPath="$PROJECT_DIR$/driver/simpledriver.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -67,7 +63,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Go Build.go build github.com/edgexfoundry/device-simple/src">
+  <component name="RunManager" selected="Go Build.go build main.go">
     <configuration name="go build github.com/edgexfoundry/device-simple/src" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
       <module name="Energy-Exchange-Platform" />
       <working_directory value="$PROJECT_DIR$" />
@@ -86,8 +82,18 @@
       <directory value="$PROJECT_DIR$/" />
       <method v="2" />
     </configuration>
+    <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="Energy-Exchange-Platform" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/src/blockchain/main.go" />
+      <package value="github.com/edgexfoundry/device-simple" />
+      <directory value="$PROJECT_DIR$/" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Go Build.go build main.go" />
         <item itemvalue="Go Build.go build github.com/edgexfoundry/device-simple/src" />
         <item itemvalue="Go Build.go build github.com/edgexfoundry/device-simple/src/devicePkg" />
       </list>
