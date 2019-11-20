@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62e4bd61-0cf6-4779-a88b-e60b0eae5cdb" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/cmd/device-simple/res/configuration.toml" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/res/configuration.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/device-simple/res/consume-device.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/res/consume-device.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/device-simple/res/supply-device.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/res/supply-device.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/driver/simpledriver.go" beforeDir="false" afterPath="$PROJECT_DIR$/driver/simpledriver.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/device-simple/consumerChargeValue.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/consumerChargeValue.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/device-simple/supplierChargeValue.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/device-simple/supplierChargeValue.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/devicepkg/deviceManager.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/devicepkg/deviceManager.go" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -112,7 +112,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="changed supplydevice and consumedevice yaml, congiguration toml and simpleDriver.go" />
     <MESSAGE value="changed supplydevice and consumedevice yaml, congiguration toml and simpleDriver.go, edited DeviceManager, suppliertx and comsumetx value change in file. TODO: add filename as variable, change make decision, but before change mechanism to handle multiple event for a device. Build a device object to store details of the device (chargeValue, Rate, switch)" />
-    <option name="LAST_COMMIT_MESSAGE" value="changed supplydevice and consumedevice yaml, congiguration toml and simpleDriver.go, edited DeviceManager, suppliertx and comsumetx value change in file. TODO: add filename as variable, change make decision, but before change mechanism to handle multiple event for a device. Build a device object to store details of the device (chargeValue, Rate, switch)" />
+    <MESSAGE value="switch buttons on supply and consume device" />
+    <option name="LAST_COMMIT_MESSAGE" value="switch buttons on supply and consume device" />
   </component>
   <component name="VgoProject">
     <integration-enabled>true</integration-enabled>
