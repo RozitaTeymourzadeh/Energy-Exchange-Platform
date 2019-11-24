@@ -1,8 +1,6 @@
 package data
 
 import (
-
-	"crypto/rsa"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -14,14 +12,28 @@ import (
 * Data structure for transaction data
 *
  */
+//type Transaction struct {
+//	PublicKey   		*rsa.PublicKey `json:"publicKey"`
+//	EventId     		string			`json:"eventId"`
+//	EventName     		string			`json:"eventName"`
+//	Timestamp  			int64			`json:"eventDate"`
+//	EventDescription    string			`json:"eventDescription"`
+//	TransactionFee    	int				`json:"transactionFee"`
+//	Balance				int				`json:"balance"`
+//}
+
 type Transaction struct {
-	PublicKey   		*rsa.PublicKey `json:"publicKey"`
-	EventId     		string			`json:"eventId"`
-	EventName     		string			`json:"eventName"`
-	Timestamp  			int64			`json:"eventDate"`
-	EventDescription    string			`json:"eventDescription"`
-	TransactionFee    	int				`json:"transactionFee"`
-	Balance				int				`json:"balance"`
+	EventId     	string `json:"eventId"`
+	SupplierName    string `json:"supplierName"`
+	SupplierId      string `json:"supplierId"`
+	SupplierAddress string `json:"supplierAddress"`
+	ConsumerName    string `json:"consumerName"`
+	ConsumerId      string `json:"consumerId"`
+	ConsumerAddress string `json:"consumerAddress"`
+	PowerUnits      string `json:"powerUnits"`
+	Timestamp  		int64  `json:"eventDate"`
+	PowerFee  		int	   `json:"PowerFee"`
+	Balance			int	   `json:"balance"`
 }
 
 /* TransactionPool Struct
@@ -40,15 +52,21 @@ type TransactionPool struct {
 * To return new transaction data
 *
  */
-func NewTransaction(eventId string, publicKey *rsa.PublicKey,eventName string, timestamp int64, eventDescription string, transactionFee int, balance int) Transaction {
+func NewTransaction(EventId string, SupplierName string, SupplierId string,SupplierAddress string,
+	ConsumerName string, ConsumerId string,ConsumerAddress string,
+	PowerUnits string,Timestamp int64, PowerFee int, Balance int) Transaction {
 	return Transaction{
-		EventId: eventId,
-		PublicKey:  publicKey,
-		EventName: eventName,
-		Timestamp: timestamp,
-		EventDescription: eventDescription,
-		TransactionFee: transactionFee,
-		Balance: balance,
+		EventId: EventId,
+		SupplierName: SupplierName,
+		SupplierId:  SupplierId,
+		SupplierAddress: SupplierAddress,
+		ConsumerName: ConsumerName,
+		ConsumerId:  ConsumerId,
+		ConsumerAddress: ConsumerAddress,
+		PowerUnits: PowerUnits,
+		Timestamp: Timestamp,
+		PowerFee: PowerFee,
+		Balance: Balance,
 	}
 }
 
@@ -57,10 +75,17 @@ func NewTransaction(eventId string, publicKey *rsa.PublicKey,eventName string, t
 * To calculate transaction fee for generating block
 *
  */
-func TransactionFeeCalculation(Json string) int{
-	transactionFee := (len(Json)* 2)/10
-	return transactionFee
+func PowerFeeCalculation(Json string) int{
+
+	//err := transaction.DecodeFromJson(Json)
+	//if err == nil {
+	//	//TODO take time stamp and calculate power fee
+	//}
+	PowerFee := (len(Json)* 2)/10
+
+	return PowerFee
 }
+
 
 /* EncodeToJson()
 *
@@ -127,8 +152,8 @@ func (txp *TransactionPool) GetOneTxFromPool(TxPool TransactionPool, userBalance
 
 	if len(TxPool.GetTransactionPoolMap()) > 0 {
 		for _, transactionObject := range TxPool.GetTransactionPoolMap() {
-			if userBalance >= transactionObject.TransactionFee {
-				transactionObject.Balance = transactionObject.Balance - transactionObject.TransactionFee
+			if userBalance >= transactionObject.PowerFee {
+				transactionObject.Balance = transactionObject.Balance - transactionObject.PowerFee
 				//TODO check how to add
 				//fmt.Println("transactionObject.Balance:",transactionObject.Balance)
 				return &transactionObject
@@ -148,7 +173,7 @@ func (txp *TransactionPool) AddToConfirmedPool(tx Transaction) { //duplicates in
 	defer txp.mux.Unlock()
 
 	//TODO:BUG. Transaction ID's coming "" (NULL) we should return false in that case.
-	if(tx.EventId == ""){
+	if tx.EventId == "" {
 		fmt.Println("Tx ID is NULL. Do not add to CheckConfirmedPool,TX:",tx.EventId)
 		return
 	}

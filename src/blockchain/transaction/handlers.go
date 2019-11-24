@@ -42,7 +42,7 @@ var NONCE_ZERO ="00000"
 
 var newTransactionObject data.Transaction
 var TxPool data.TransactionPool
-var userBalance int = 100
+var Balance int = 100
 var TransactionMap  map[string]data.Transaction
 var minerKey *rsa.PrivateKey
 var Verified  bool = false
@@ -507,7 +507,7 @@ func StartTryingNonce() {
 		blocks := SBC.GetLatestBlocks()
 		STOP_GEN_BLOCK = false
 		var transactionJSON string
-		transaction := TxPool.GetOneTxFromPool(TxPool, userBalance)
+		transaction := TxPool.GetOneTxFromPool(TxPool, Balance)
 		if transaction != nil {
 			transactionJSON, _ = transaction.EncodeToJson()
 
@@ -582,19 +582,39 @@ func Event(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Event Description: %s\n", eventDescription)
 
 			eventId := p4.StringRandom(16)
-			newTimestamp := time.Now().Unix()
+			Timestamp := time.Now().Unix()
+			SupplierName:= "default"
+			SupplierId:= "default"
+			SupplierAddress := "default"
+			ConsumerName:= "default"
+			ConsumerId:= "default"
+			ConsumerAddress := "default"
+			PowerUnits := "default"
+
+
 			buf := bytes.Buffer{}
-			buf.WriteString(eventId)
+			//ToDo To be removed
 			buf.WriteString(eventName)
 			buf.WriteString(eventDescription)
 
+			//buf.WriteString(SupplierName)
+			//buf.WriteString(SupplierId)
+			//buf.WriteString(SupplierAddress)
+			//buf.WriteString(ConsumerName)
+			//buf.WriteString(ConsumerId)
+			//buf.WriteString(ConsumerAddress)
+			//buf.WriteString(PowerUnits)
+			//buf.WriteString(ConsumerAddress)
+
+
 		result := buf.String()
-		transactionFee:= data.TransactionFeeCalculation(result)
+		PowerFee:= data.PowerFeeCalculation(result)
 		/*Block Validation */
-		if userBalance - transactionFee >= 0 {
-			userBalance = userBalance - transactionFee
+		if Balance - PowerFee >= 0 {
+			Balance = Balance - PowerFee
 			//minershortKey:= rsa.PublicKey{}
-			newTransactionObject := data.NewTransaction(eventId, &minerKey.PublicKey, eventName, newTimestamp, eventDescription, transactionFee, userBalance)
+			//newTransactionObject := data.NewTransaction(eventId, &minerKey.PublicKey, eventName, newTimestamp, eventDescription, transactionFee, userBalance)
+			newTransactionObject := data.NewTransaction(eventId, SupplierName, SupplierId, SupplierAddress, ConsumerName, ConsumerId, ConsumerAddress, PowerUnits, Timestamp, PowerFee, Balance)
 			fmt.Println("Transaction:", newTransactionObject)
 			transactionJSON, _ := newTransactionObject.EncodeToJson()
 			fmt.Println("Transaction JSON:", transactionJSON)
@@ -610,7 +630,7 @@ func Event(w http.ResponseWriter, r *http.Request) {
 			go TxPool.AddToTransactionPool(newTransactionObject)
 
 		} else {
-			fmt.Fprintf(w, "User's has not got enough balance to add Transaction! Sorry!Balance = %d\n", userBalance)
+			fmt.Fprintf(w, "User's has not got enough balance to add Transaction! Sorry!Balance = %d\n", Balance)
 		}
 	default:
 		fmt.Fprintf(w, "FATAL: Wrong HTTP Request!")
