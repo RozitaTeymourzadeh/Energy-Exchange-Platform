@@ -23,6 +23,7 @@ import (
 //}
 
 type Transaction struct {
+
 	EventId     	string `json:"eventId"`
 	SupplierName    string `json:"supplierName"`
 	SupplierId      string `json:"supplierId"`
@@ -32,8 +33,9 @@ type Transaction struct {
 	ConsumerAddress string `json:"consumerAddress"`
 	PowerUnits      string `json:"powerUnits"`
 	Timestamp  		int64  `json:"eventDate"`
-	PowerFee  		int	   `json:"PowerFee"`
+	PowerFee  		int	   `json:"powerFee"`
 	Balance			int	   `json:"balance"`
+	EventType 		string `json:"eventType"` // requirement , supply
 }
 
 /* TransactionPool Struct
@@ -54,7 +56,7 @@ type TransactionPool struct {
  */
 func NewTransaction(EventId string, SupplierName string, SupplierId string,SupplierAddress string,
 	ConsumerName string, ConsumerId string,ConsumerAddress string,
-	PowerUnits string,Timestamp int64, PowerFee int, Balance int) Transaction {
+	PowerUnits string,Timestamp int64, PowerFee int, Balance int, EventType string) Transaction {
 	return Transaction{
 		EventId: EventId,
 		SupplierName: SupplierName,
@@ -67,6 +69,7 @@ func NewTransaction(EventId string, SupplierName string, SupplierId string,Suppl
 		Timestamp: Timestamp,
 		PowerFee: PowerFee,
 		Balance: Balance,
+		EventType:EventType,
 	}
 }
 
@@ -82,7 +85,6 @@ func PowerFeeCalculation(Json string) int{
 	//	//TODO take time stamp and calculate power fee
 	//}
 	PowerFee := (len(Json)* 2)/10
-
 	return PowerFee
 }
 

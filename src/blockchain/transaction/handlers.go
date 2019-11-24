@@ -85,8 +85,8 @@ func init() {
 		Peers.Register(id)
 		SELF_ADDR="localhost"+os.Args[1]
 		Peers.Add(FIRST_PEER,6686)
-		publicKey,_:=data.ParseRsaPublicKeyFromPemStr("HARD_CODED_PEER1")
-		Peers.AddPublicKey(publicKey,6686)
+		//publicKey,_:=data.ParseRsaPublicKeyFromPemStr("HARD_CODED_PEER1")
+		//Peers.AddPublicKey(publicKey,6686)
 	} else {
 		Peers.Register(6686)
 		SELF_ADDR="localhost:6686"
@@ -122,7 +122,7 @@ func Start(w http.ResponseWriter, r *http.Request) {
 	minerKey = data.GenerateKeyPair(4096)
 	fmt.Println("Public Key:", minerKey.PublicKey)
 	fmt.Println("Private Key:", minerKey)
-	Peers.AddPublicKey(&minerKey.PublicKey,Peers.GetSelfId())
+	//Peers.AddPublicKey(&minerKey.PublicKey,Peers.GetSelfId())
 	go StartTryingNonce()
 
 	/*Timer to send heartBeat periodically*/
@@ -307,7 +307,7 @@ func HeartBeatReceive(w http.ResponseWriter, r *http.Request) {
 
 	transaction.DecodeFromJson(Heart.TransactionInfoJson)
 
-	Peers.AddPublicKey(Heart.PeerPublicKey, Heart.Id)
+	//Peers.AddPublicKey(Heart.PeerPublicKey, Heart.Id)
 	Peers.Add(Heart.Addr, Heart.Id)
 	Peers.InjectPeerMapJson(Heart.PeerMapJson, SELF_ADDR)
 	if Heart.IfNewBlock {
@@ -590,6 +590,7 @@ func Event(w http.ResponseWriter, r *http.Request) {
 			ConsumerId:= "default"
 			ConsumerAddress := "default"
 			PowerUnits := "default"
+			EventType := "default"
 
 
 			buf := bytes.Buffer{}
@@ -605,6 +606,7 @@ func Event(w http.ResponseWriter, r *http.Request) {
 			//buf.WriteString(ConsumerAddress)
 			//buf.WriteString(PowerUnits)
 			//buf.WriteString(ConsumerAddress)
+			//buf.WriteString(EventType)
 
 
 		result := buf.String()
@@ -614,7 +616,7 @@ func Event(w http.ResponseWriter, r *http.Request) {
 			Balance = Balance - PowerFee
 			//minershortKey:= rsa.PublicKey{}
 			//newTransactionObject := data.NewTransaction(eventId, &minerKey.PublicKey, eventName, newTimestamp, eventDescription, transactionFee, userBalance)
-			newTransactionObject := data.NewTransaction(eventId, SupplierName, SupplierId, SupplierAddress, ConsumerName, ConsumerId, ConsumerAddress, PowerUnits, Timestamp, PowerFee, Balance)
+			newTransactionObject := data.NewTransaction(eventId, SupplierName, SupplierId, SupplierAddress, ConsumerName, ConsumerId, ConsumerAddress, PowerUnits, Timestamp, PowerFee, Balance, EventType)
 			fmt.Println("Transaction:", newTransactionObject)
 			transactionJSON, _ := newTransactionObject.EncodeToJson()
 			fmt.Println("Transaction JSON:", transactionJSON)
