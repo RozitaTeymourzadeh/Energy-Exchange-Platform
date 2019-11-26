@@ -76,7 +76,7 @@ func makeDecisionHandlerHelper() string {
 				}
 				TRANSACTIONS = append([]data.Transaction{newTx}, TRANSACTIONS...) // prepend
 				sb.WriteString(cv.DeviceName + " will receive " + strconv.Itoa(randPowerUnits) + " units from " + sv.DeviceName)
-
+				//ToDo transaction to the miner call /PostEvent
 				go sendTransactionToSupplier(newTx) // spawning new thread
 
 			}
