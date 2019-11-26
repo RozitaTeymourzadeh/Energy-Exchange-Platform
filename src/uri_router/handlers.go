@@ -26,18 +26,22 @@ var DeviceEventsDS = data.NewDeviceEvents()
 //var Devices = ds.NewDevices()
 var APPNAME = "PowerFlow : Energy Exchange Platform"
 var DEVICELIST = data.NewDeviceList()
+var SELFDEVICES = data.NewDeviceMap()
+
+// //DEVICEBOARD - // GetSupplyDeviceBoard() // GetConsumeDeviceBoard() - init in
 var SUPPLYDEVICEDETAILS = make([]data.DeviceTypeDetails, 0)
 var CONSUMEDEVICEDETAILS = make([]data.DeviceTypeDetails, 0)
 var TRANSACTIONS = make([]data.Transaction, 0)
 
 //var PageVars = resources.NewPageVars()
 
-//func init() {
-//	// This function will be executed before everything else.
-//
-//	SELF_ADDR = SELF_ADDR_PREFIX + os.Args[1]
-//	fmt.Println("Node : ", SELF_ADDR)
-//}
+func init() {
+	//	// This function will be executed before everything else.
+	//
+	//	SELF_ADDR = SELF_ADDR_PREFIX + os.Args[1]
+	//	fmt.Println("Node : ", SELF_ADDR)
+
+}
 
 // Start handler
 func Start(w http.ResponseWriter, r *http.Request) {

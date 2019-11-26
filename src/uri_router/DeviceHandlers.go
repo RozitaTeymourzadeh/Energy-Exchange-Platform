@@ -111,7 +111,7 @@ func ConsumerTx(w http.ResponseWriter, r *http.Request) {
 
 //// moved from handlers.go
 
-func GetAllDevices(w http.ResponseWriter, r *http.Request) {
+func GetAllSelfDevices(w http.ResponseWriter, r *http.Request) {
 	//uri := "http://localhost:48082/api/v1/device"
 	uri := "http://" + data.GetNodeId().EdgeXAddress + ":48082/api/v1/device"
 
@@ -123,7 +123,6 @@ func GetAllDevices(w http.ResponseWriter, r *http.Request) {
 	bytesRead, _ := ioutil.ReadAll(resp.Body)
 
 	deviceList := data.DeviceListFromJson(bytesRead)
-	DEVICELIST = deviceList
 	//deviceList.AddAllToDevices(&Devices)
 
 	w.Write([]byte(deviceList.ShowDeviceInList()))

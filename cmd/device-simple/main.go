@@ -13,8 +13,8 @@ import (
 	"github.com/edgexfoundry/device-sdk-go/pkg/startup"
 	"github.com/edgexfoundry/device-simple"
 	"github.com/edgexfoundry/device-simple/driver"
+	"github.com/edgexfoundry/device-simple/src/data"
 	"github.com/edgexfoundry/device-simple/src/devicePkg"
-
 	"os"
 )
 
@@ -34,6 +34,10 @@ func main() {
 	// server end
 	/////////////////////////
 	/////////////////////////
+	data.GetSupplyDevice()  // init singleton supplydevice.go // used in simpleDriver
+	data.GetConsumeDevice() // init singleton consumedevice.go // used in simpleDriver
+	data.GetDeviceBoards()  // init singleton GetDeviceBoards // store for all things bc
+
 	go devicePkg.Run() // device manager
 
 	fmt.Fprintf(os.Stdout, "HERE.......\n")

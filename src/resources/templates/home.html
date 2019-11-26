@@ -14,12 +14,19 @@
     <link href='https://fonts.googleapis.com/css?family=Rosario:400' rel='stylesheet' type='text/css'>
 
     <title>{{.Title}}</title>
+
+
 </head>
 
 <body>
 
+<h2>Energy Exchange Platform</h2>
+<img src="img/a.jpg">
+
+
+
 <nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary p-4 sticky-top">
-    <a class="navbar-brand" href="/">PowerFlow</a>
+    <a class="navbar-brand" href="/">Power Flow</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -38,7 +45,7 @@
 
     <div class="mainbody ">
 
-        <H4 class="p-3 mb-0 mt-4 bg-light text-black">List of Devices</H4>
+        <H4 class="p-3 mb-0 mt-4 bg-light text-black">List of Device(s)</H4>
         <div class="table-responsive">
             <table class="table table-hover table-striped">
                 <thead class="thead-light">
@@ -46,8 +53,8 @@
                     <th scope="col">#</th>
                     <th scope="col">Peer</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Id</th>
-                    <th scope="col">OperatingState</th>
+                    <th scope="col">Device ID</th>
+                    <th scope="col">Operating State</th>
                 </tr>
                 </thead>
                 <tbody >
@@ -71,8 +78,8 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Id</th>
-                    <th scope="col">Reading</th>
+                    <th scope="col">Device ID</th>
+                    <th scope="col">Charge Level</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -81,7 +88,7 @@
                         <th scope="row">{{ $i }}</th>
                         <td>{{ $sequence.DeviceName }}</td>
                         <td>{{ $sequence.Id }}</td>
-                        <td>{{ $sequence.Charge }}</td>
+                        <td>{{ $sequence.SupplierCharge }}</td>
                     </tr>
                 {{ end }}
                 </tbody>
@@ -95,8 +102,8 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Id</th>
-                    <th scope="col">Reading</th>
+                    <th scope="col">Device ID</th>
+                    <th scope="col">Charge Level</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -105,7 +112,7 @@
                         <th scope="row">{{ $i }}</th>
                         <td>{{ $sequence.DeviceName }}</td>
                         <td>{{ $sequence.Id }}</td>
-                        <td>{{ $sequence.Charge }}</td>
+                        <td>{{ $sequence.ConsumerCharge }}</td>
                     </tr>
                 {{ end }}
                 </tbody>
@@ -118,11 +125,11 @@
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">SupplierName</th>
-                    <th scope="col">SupplierId</th>
-                    <th scope="col">ConsumerName</th>
-                    <th scope="col">ConsumerId</th>
-                    <th scope="col">PowerUnits</th>
+                    <th scope="col">Supplier Name</th>
+                    <th scope="col">Supplier ID</th>
+                    <th scope="col">Consumer Name</th>
+                    <th scope="col">Consumer ID</th>
+                    <th scope="col">Power Unit (kWh)</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -153,6 +160,8 @@
 
     <BR> <B><I>@CS690 Master Project</I></B>
 </div>
+
+
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->

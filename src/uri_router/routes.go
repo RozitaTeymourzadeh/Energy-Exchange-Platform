@@ -59,10 +59,10 @@ var routes = Routes{
 	//device manager apis
 	///////////////////// !!!!!!!!! ///////////////////
 	Route{
-		"GetAllDevices",
+		"GetAllSelfDevices",
 		"GET",
-		"/getalldevices",
-		GetAllDevices,
+		"/getallselfdevices",
+		GetAllSelfDevices,
 		//	localhost:48082/api/v1/device
 	},
 	Route{

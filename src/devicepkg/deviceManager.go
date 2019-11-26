@@ -33,6 +33,14 @@ func Run() {
 	data.GetNodeId().SetEdgeXAddress(edgeXAddress) // setting edgex address
 	fmt.Println("EdgeX address is : " + edgeXAddress)
 
+	uri_router.GetSelfDevices() // init self devices in router
+	for _, device := range uri_router.SELFDEVICES.Devices {
+		fmt.Println(": : :device : : :")
+		fmt.Println("device.PeerId : " + device.PeerId)
+		fmt.Println("device.Id : " + device.Id)
+		fmt.Println("device.Name : " + device.Name)
+	}
+
 	go On()
 
 	// serve everything in the css folder, the img folder and mp3 folder as a file

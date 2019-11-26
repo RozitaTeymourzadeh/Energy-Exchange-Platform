@@ -15,8 +15,10 @@ func MakeDecision() {
 
 		///
 		DEVICELIST = getAllDevices( /*data.GetNodeId().ConnectingAddress*/ )
-		SUPPLYDEVICEDETAILS = generateDeviceTypeBoard("supply")
-		CONSUMEDEVICEDETAILS = generateDeviceTypeBoard("consume")
+		//SELFDEVICES = init in deviceManager.go
+		//DEVICEBOARD - // GetSupplyDeviceBoard() // GetConsumeDeviceBoard()
+		SUPPLYDEVICEDETAILS = generateSupplyDeviceTypeBoard("supply")
+		CONSUMEDEVICEDETAILS = generateConsumeDeviceTypeBoard("consume")
 		///
 
 		fmt.Println("Decision : ")
@@ -48,8 +50,10 @@ func makeDecisionHandlerHelper() string {
 		matched := false
 		sb.WriteString(">>> \n")
 		for _, sv := range SUPPLYDEVICEDETAILS {
-			sval, _ := strconv.Atoi(sv.Charge)
-			cval, _ := strconv.Atoi(cv.Charge)
+			//sval, _ := strconv.Atoi(sv.SupplierCharge)
+			//cval, _ := strconv.Atoi(cv.ConsumerCharge)
+			sval := sv.SupplierCharge
+			cval := cv.ConsumerCharge
 			//if sval >= cval { // one supply device supplying all energy needed by the consume device
 			if cval <= 40 && sval >= 40 {
 				matched = true
