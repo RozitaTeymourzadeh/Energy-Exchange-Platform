@@ -31,9 +31,9 @@ var ifStarted bool
 var TA_SERVER = "http://localhost:6688"
 var REGISTER_SERVER = TA_SERVER + "/peer"
 var ASK_PEERS = "/block"
-var SELF_ADDR = "localhost:6686"
+var SELF_ADDR = "localhost:6666"
 var SELF_ID = 0
-var FIRST_PEER = "localhost:6686"
+var FIRST_PEER = "localhost:6666"
 var BC_DOWNLOAD_SERVER = FIRST_PEER + "/upload"
 var RECEIVE_PATH = "/heartbeat/receive"
 var STOP_GEN_BLOCK = false
@@ -84,12 +84,12 @@ func init() {
 		id  := int32(result)
 		Peers.Register(id)
 		SELF_ADDR="localhost"+os.Args[1]
-		Peers.Add(FIRST_PEER,6686)
-		//publicKey,_:=data.ParseRsaPublicKeyFromPemStr("HARD_CODED_PEER1")
-		//Peers.AddPublicKey(publicKey,6686)
+		Peers.Add(FIRST_PEER,6666)
+		publicKey,_:=data.ParseRsaPublicKeyFromPemStr("HARD_CODED_PEER1")
+		Peers.AddPublicKey(publicKey,6666)
 	} else {
-		Peers.Register(6686)
-		SELF_ADDR="localhost:6686"
+		Peers.Register(6666)
+		SELF_ADDR="localhost:6666"
 	}
 }
 
@@ -122,7 +122,7 @@ func Start(w http.ResponseWriter, r *http.Request) {
 	minerKey = data.GenerateKeyPair(4096)
 	fmt.Println("Public Key:", minerKey.PublicKey)
 	fmt.Println("Private Key:", minerKey)
-	//Peers.AddPublicKey(&minerKey.PublicKey,Peers.GetSelfId())
+	Peers.AddPublicKey(&minerKey.PublicKey,Peers.GetSelfId())
 	go StartTryingNonce()
 
 	/*Timer to send heartBeat periodically*/
@@ -307,7 +307,7 @@ func HeartBeatReceive(w http.ResponseWriter, r *http.Request) {
 
 	transaction.DecodeFromJson(Heart.TransactionInfoJson)
 
-	//Peers.AddPublicKey(Heart.PeerPublicKey, Heart.Id)
+	Peers.AddPublicKey(Heart.PeerPublicKey, Heart.Id)
 	Peers.Add(Heart.Addr, Heart.Id)
 	Peers.InjectPeerMapJson(Heart.PeerMapJson, SELF_ADDR)
 	if Heart.IfNewBlock {
@@ -576,6 +576,19 @@ func Event(w http.ResponseWriter, r *http.Request) {
 		eventName := r.FormValue("eventName")
 		//eventDate := r.FormValue("eventDate")
 		eventDescription := r.FormValue("eventDescription")
+
+
+		SupplierName := r.FormValue("SupplierName")
+		SupplierId := r.FormValue("SupplierId")
+		SupplierAddress := r.FormValue("SupplierAddress")
+		ConsumerName := r.FormValue("ConsumerName")
+		ConsumerId := r.FormValue("ConsumerId")
+		ConsumerAddress := r.FormValue("ConsumerAddress")
+		PowerUnits := r.FormValue("PowerUnits")
+		EventType := r.FormValue("EventType")
+
+
+
 		//fmt.Fprintf(w, "Event ID: %s\n", eventId)
 		fmt.Fprintf(w, "Event Name: %s\n", eventName)
 		//fmt.Fprintf(w, "Event Date: %d\n", eventDate)
@@ -583,14 +596,14 @@ func Event(w http.ResponseWriter, r *http.Request) {
 
 			eventId := p4.StringRandom(16)
 			Timestamp := time.Now().Unix()
-			SupplierName:= "default"
-			SupplierId:= "default"
-			SupplierAddress := "default"
-			ConsumerName:= "default"
-			ConsumerId:= "default"
-			ConsumerAddress := "default"
-			PowerUnits := "default"
-			EventType := "default"
+			//SupplierName:= "default"
+			//SupplierId:= "default"
+			//SupplierAddress := "default"
+			//ConsumerName:= "default"
+			//ConsumerId:= "default"
+			//ConsumerAddress := "default"
+			//PowerUnits := "default"
+			//EventType := "default"
 
 
 			buf := bytes.Buffer{}
@@ -598,15 +611,15 @@ func Event(w http.ResponseWriter, r *http.Request) {
 			buf.WriteString(eventName)
 			buf.WriteString(eventDescription)
 
-			//buf.WriteString(SupplierName)
-			//buf.WriteString(SupplierId)
-			//buf.WriteString(SupplierAddress)
-			//buf.WriteString(ConsumerName)
-			//buf.WriteString(ConsumerId)
-			//buf.WriteString(ConsumerAddress)
-			//buf.WriteString(PowerUnits)
-			//buf.WriteString(ConsumerAddress)
-			//buf.WriteString(EventType)
+			buf.WriteString(SupplierName)
+			buf.WriteString(SupplierId)
+			buf.WriteString(SupplierAddress)
+			buf.WriteString(ConsumerName)
+			buf.WriteString(ConsumerId)
+			buf.WriteString(ConsumerAddress)
+			buf.WriteString(PowerUnits)
+			buf.WriteString(ConsumerAddress)
+			buf.WriteString(EventType)
 
 
 		result := buf.String()

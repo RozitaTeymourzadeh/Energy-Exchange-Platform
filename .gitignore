@@ -20,3 +20,5 @@ cmd/device-simple/device-simple
 cmd/device-simple/randomsuppliernumberValue.txt
 
 cmd/device-simple/randomconsumenumberValue.txt
+
+cmd/device-simple/buyRateValue.txt
