@@ -14,7 +14,7 @@
     <link href='https://fonts.googleapis.com/css?family=Rosario:400' rel='stylesheet' type='text/css'>
 
     <title>{{.Title}}</title>
-  
+
 
 </head>
 
@@ -88,7 +88,7 @@
                         <th scope="row">{{ $i }}</th>
                         <td>{{ $sequence.DeviceName }}</td>
                         <td>{{ $sequence.Id }}</td>
-                        <td>{{ $sequence.Charge }}</td>
+                        <td>{{ $sequence.SupplierCharge }}</td>
                     </tr>
                 {{ end }}
                 </tbody>
@@ -112,7 +112,7 @@
                         <th scope="row">{{ $i }}</th>
                         <td>{{ $sequence.DeviceName }}</td>
                         <td>{{ $sequence.Id }}</td>
-                        <td>{{ $sequence.Charge }}</td>
+                        <td>{{ $sequence.ConsumerCharge }}</td>
                     </tr>
                 {{ end }}
                 </tbody>

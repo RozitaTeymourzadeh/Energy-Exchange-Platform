@@ -33,6 +33,28 @@ func NewDeviceList() DeviceList {
 	}
 }
 
+type DeviceMap struct {
+	Devices map[string]Device `json:"devices"`
+}
+
+//
+func NewDeviceMap() DeviceMap {
+	return DeviceMap{
+		Devices: make(map[string]Device, 0),
+	}
+}
+
+func (dm *DeviceMap) DeviceMapToList() []Device {
+	devices := make([]Device, 0)
+	if len(dm.Devices) > 0 {
+		for _, d := range dm.Devices {
+			devices = append(devices, d)
+		}
+
+	}
+	return devices
+}
+
 //
 func DeviceListFromJson(jsonBytes []byte) DeviceList {
 	dl := NewDeviceList()
@@ -41,6 +63,15 @@ func DeviceListFromJson(jsonBytes []byte) DeviceList {
 		fmt.Println("Error in getting device list from JSON", err)
 	}
 	return dl
+}
+
+func DeviceMapFromJson(jsonBytes []byte) DeviceMap {
+	dm := NewDeviceMap()
+	err := json.Unmarshal(jsonBytes, &dm.Devices)
+	if err != nil {
+		fmt.Println("Error in getting device list from JSON", err)
+	}
+	return dm
 }
 
 //func (dl *DeviceList) GetDeviceList() []string {

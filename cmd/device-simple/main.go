@@ -13,8 +13,7 @@ import (
 	"github.com/edgexfoundry/device-sdk-go/pkg/startup"
 	"github.com/edgexfoundry/device-simple"
 	"github.com/edgexfoundry/device-simple/driver"
-	"github.com/edgexfoundry/device-simple/src/devicePkg"
-
+	"github.com/edgexfoundry/device-simple/src/uri_router"
 	"os"
 )
 
@@ -34,7 +33,7 @@ func main() {
 	// server end
 	/////////////////////////
 	/////////////////////////
-	go devicePkg.Run() // device manager
+	go uri_router.Run() // device manager
 
 	fmt.Fprintf(os.Stdout, "HERE.......\n")
 	sd := driver.SimpleDriver{}

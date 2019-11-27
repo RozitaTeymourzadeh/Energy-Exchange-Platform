@@ -31,7 +31,7 @@ func main() {
 	//http.Handle("/mp3/", http.StripPrefix("/mp3/", http.FileServer(http.Dir("mp3"))))
 
 	/////////////////////
-	go uri_router.MakeDecision()
+	// todo : if using task manager go uri_router.MakeDecision()
 	/////////////////////
 
 	// listen and serve at ip and port

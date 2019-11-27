@@ -4,9 +4,9 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"golang.org/x/crypto/sha3"
 	"math/rand"
 	"time"
-	"golang.org/x/crypto/sha3"
 )
 
 /*-------------------------STRUCT---------------------------------------------------*/
@@ -24,7 +24,7 @@ type BlockHeader struct {
 	Height     int32
 	Timestamp  int64
 	Hash       string
-	Nonce 	   string
+	Nonce      string
 }
 
 /* Block struct
@@ -47,7 +47,7 @@ type Block struct {
 * @output: nill
 *
  */
-func (block *Block) Initial(height int32, parentHash string, value MerklePatriciaTrie, nonce string ) {
+func (block *Block) Initial(height int32, parentHash string, value MerklePatriciaTrie, nonce string) {
 	block.Header.Height = height
 	block.Header.Timestamp = time.Now().Unix()
 	block.Header.ParentHash = parentHash
@@ -82,7 +82,7 @@ func (block *Block) UnmarshalJSON(input []byte) error {
 	block.Header.Hash = SymmetricBlockJson.Hash
 	block.Header.ParentHash = SymmetricBlockJson.ParentHash
 	block.Header.Size = SymmetricBlockJson.Size
-	block.Header.Nonce= SymmetricBlockJson.Nonce
+	block.Header.Nonce = SymmetricBlockJson.Nonce
 	mpt := MerklePatriciaTrie{}
 	mpt.Initial()
 	for k, v := range SymmetricBlockJson.MPT {
@@ -91,7 +91,6 @@ func (block *Block) UnmarshalJSON(input []byte) error {
 	block.Value = mpt
 	return nil
 }
-
 
 /* EncodeToJSON
 * Inherited from golang library
@@ -129,7 +128,7 @@ func (block *Block) MarshalJSON() ([]byte, error) {
 		Height:     block.Header.Height,
 		Timestamp:  block.Header.Timestamp,
 		Size:       block.Header.Size,
-		Nonce: 		block.Header.Nonce,
+		Nonce:      block.Header.Nonce,
 		Hash:       block.Header.Hash,
 		ParentHash: block.Header.ParentHash,
 		MPT:        block.Value.LeafList(),
@@ -145,7 +144,7 @@ type BlockJson struct {
 	Height     int32             `json:"height"`
 	Timestamp  int64             `json:"timeStamp"`
 	Size       int32             `json:"size"`
-	Nonce 	   string			 `json:"nonce"`
+	Nonce      string            `json:"nonce"`
 	Hash       string            `json:"hash"`
 	ParentHash string            `json:"parentHash"`
 	MPT        map[string]string `json:"mpt"`
@@ -154,7 +153,6 @@ type BlockJson struct {
 func (block *Block) GetHash() string {
 	return block.Header.Hash
 }
-
 
 /* Hash
 *
@@ -168,7 +166,6 @@ func (block *Block) Hash() string {
 	sum := sha3.Sum256([]byte(hashStr))
 	return "HashStart_" + hex.EncodeToString(sum[:]) + "_HashEnd"
 }
-
 
 /* StringRandom()
 *

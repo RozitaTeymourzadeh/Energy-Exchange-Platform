@@ -1,4 +1,4 @@
-package data
+package bcdata
 
 import (
 	"crypto"
@@ -20,8 +20,8 @@ import (
 
 type Signature struct {
 	Signature []byte
-	hashed []byte
-	h crypto.Hash
+	hashed    []byte
+	h         crypto.Hash
 }
 
 /* Event()
@@ -30,7 +30,7 @@ type Signature struct {
 * /postQueryEvent API
 * To search the event info
  */
-func GenerateKeyPair(bitSize int) (*rsa.PrivateKey) {
+func GenerateKeyPair(bitSize int) *rsa.PrivateKey {
 	reader := rand.Reader
 	key, err := rsa.GenerateKey(reader, bitSize)
 	checkError(err)
@@ -85,7 +85,6 @@ func PublicKeyToBytes(pub *rsa.PublicKey) []byte {
 	return pubBytes
 }
 
-
 /* BytesToPublicKey()
 *
 * To concet data structure
@@ -109,7 +108,6 @@ func BytesToPrivateKey(priv []byte) *rsa.PrivateKey {
 	}
 	return key
 }
-
 
 /* BytesToPublicKey()
 *
@@ -143,7 +141,7 @@ func BytesToPublicKey(pub []byte) *rsa.PublicKey {
 *
 * To encrypt transaction
 *
-*/
+ */
 func EncryptWithPublicKey(msg []byte, pub *rsa.PublicKey) []byte {
 	hash := sha512.New()
 	ciphertext, err := rsa.EncryptOAEP(hash, rand.Reader, pub, msg, nil)
@@ -172,7 +170,7 @@ func DecryptWithPrivateKey(ciphertext []byte, priv *rsa.PrivateKey) []byte {
 * To encrypt transaction
 *
  */
-func EncryptPSS (messageJson string, pubLicKey *rsa.PublicKey) ([]byte, hash.Hash, []byte, error){
+func EncryptPSS(messageJson string, pubLicKey *rsa.PublicKey) ([]byte, hash.Hash, []byte, error) {
 	message := []byte(messageJson)
 	label := []byte("")
 	hash := sha256.New()
@@ -196,7 +194,7 @@ func EncryptPSS (messageJson string, pubLicKey *rsa.PublicKey) ([]byte, hash.Has
 * To Decrypt transaction
 *
  */
-func DecryptPSS (ciphertext []byte, hash hash.Hash, label []byte,privateKey *rsa.PrivateKey) (string, error){
+func DecryptPSS(ciphertext []byte, hash hash.Hash, label []byte, privateKey *rsa.PrivateKey) (string, error) {
 
 	plainText, err := rsa.DecryptOAEP(
 		hash,
@@ -218,7 +216,7 @@ func DecryptPSS (ciphertext []byte, hash hash.Hash, label []byte,privateKey *rsa
 * To sign transaction
 *
  */
-func SignPSS (message []byte, privateKey *rsa.PrivateKey) ([]byte, rsa.PSSOptions, []byte, crypto.Hash, error){
+func SignPSS(message []byte, privateKey *rsa.PrivateKey) ([]byte, rsa.PSSOptions, []byte, crypto.Hash, error) {
 	//messageByte := []byte(message)
 	var opts rsa.PSSOptions
 	opts.SaltLength = rsa.PSSSaltLengthAuto // for simple example
@@ -242,13 +240,12 @@ func SignPSS (message []byte, privateKey *rsa.PrivateKey) ([]byte, rsa.PSSOption
 	return signature, opts, hashed, newhash, err
 }
 
-
 /* VerificationPSS()
 *
 * To verify signature
 *
  */
-func VerificationPSS (publicKey *rsa.PublicKey, opts rsa.PSSOptions, hashed []byte, newhash crypto.Hash, signature []byte) (bool,error){
+func VerificationPSS(publicKey *rsa.PublicKey, opts rsa.PSSOptions, hashed []byte, newhash crypto.Hash, signature []byte) (bool, error) {
 	isVerify := false
 	err := rsa.VerifyPSS(
 		publicKey,
@@ -273,11 +270,11 @@ func VerificationPSS (publicKey *rsa.PublicKey, opts rsa.PSSOptions, hashed []by
 * Generate Key string
 *
  */
-func GenerateKeyString() (*rsa.PrivateKey,VerificationKeyJson){
+func GenerateKeyString() (*rsa.PrivateKey, VerificationKeyJson) {
 
 	privateKey, err := rsa.GenerateKey(rand.Reader, 2014)
 	if err != nil {
-		return privateKey,NewVerificationKeyJson("", "")
+		return privateKey, NewVerificationKeyJson("", "")
 	}
 
 	privateKeyDer := x509.MarshalPKCS1PrivateKey(privateKey)
@@ -291,7 +288,7 @@ func GenerateKeyString() (*rsa.PrivateKey,VerificationKeyJson){
 	publicKey := privateKey.PublicKey
 	publicKeyDer, err := x509.MarshalPKIXPublicKey(&publicKey)
 	if err != nil {
-		return privateKey,NewVerificationKeyJson("", "")
+		return privateKey, NewVerificationKeyJson("", "")
 	}
 
 	publicKeyBlock := pem.Block{
@@ -304,7 +301,7 @@ func GenerateKeyString() (*rsa.PrivateKey,VerificationKeyJson){
 	//fmt.Println(privateKeyPem)
 	//fmt.Println(publicKeyPem)
 
-	return privateKey,NewVerificationKeyJson(publicKeyPem, privateKeyPem)
+	return privateKey, NewVerificationKeyJson(publicKeyPem, privateKeyPem)
 }
 
 /* VerificationKeyJson struct
@@ -313,8 +310,8 @@ func GenerateKeyString() (*rsa.PrivateKey,VerificationKeyJson){
 *
  */
 type VerificationKeyJson struct {
-	PublicKey   string   `json:"publickey"` //DataStructure
-	PrivateKey  string  `json:"privatekey"`
+	PublicKey  string `json:"publickey"` //DataStructure
+	PrivateKey string `json:"privatekey"`
 }
 
 /* NewVerificationKeyJson()
@@ -409,13 +406,12 @@ func ParseRsaPublicKeyFromPemStr(pubPEM string) (*rsa.PublicKey, error) {
 	return nil, errors.New("Key type is not RSA")
 }
 
-
 /* EncryptPKCS()
 *
 * to encrypt transaction
 *
  */
-func EncryptPKCS (publickey *rsa.PublicKey, msg string) []byte{
+func EncryptPKCS(publickey *rsa.PublicKey, msg string) []byte {
 	msgByte := []byte(msg)
 	encryptedPKCS1v15, errPKCS1v15 := rsa.EncryptPKCS1v15(rand.Reader, publickey, msgByte)
 
@@ -433,7 +429,7 @@ func EncryptPKCS (publickey *rsa.PublicKey, msg string) []byte{
 * to decrypt transaction
 *
  */
-func DecryptPKCS (privatekey *rsa.PrivateKey, encryptedPKCS1v15 []byte) []byte{
+func DecryptPKCS(privatekey *rsa.PrivateKey, encryptedPKCS1v15 []byte) []byte {
 	decryptedPKCS1v15, err := rsa.DecryptPKCS1v15(rand.Reader, privatekey, encryptedPKCS1v15)
 	if err != nil {
 		fmt.Println(err)
@@ -449,7 +445,7 @@ func DecryptPKCS (privatekey *rsa.PrivateKey, encryptedPKCS1v15 []byte) []byte{
 * to sign transaction
 *
  */
-func SignPKCS (message string , privatekey *rsa.PrivateKey)(crypto.Hash,[]byte, []byte ){
+func SignPKCS(message string, privatekey *rsa.PrivateKey) (crypto.Hash, []byte, []byte) {
 	var h crypto.Hash
 	messageByte := []byte(message)
 	hash := md5.New()
@@ -469,7 +465,7 @@ func SignPKCS (message string , privatekey *rsa.PrivateKey)(crypto.Hash,[]byte, 
 * to Verify signature
 *
  */
-func VerifyPKCS (publickey *rsa.PublicKey, h crypto.Hash, hashed []byte, signature []byte) (bool, error){
+func VerifyPKCS(publickey *rsa.PublicKey, h crypto.Hash, hashed []byte, signature []byte) (bool, error) {
 	verified := false
 	err := rsa.VerifyPKCS1v15(publickey, h, hashed, signature)
 

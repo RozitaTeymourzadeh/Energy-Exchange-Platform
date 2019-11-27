@@ -1,4 +1,4 @@
-package data
+package bcdata
 
 import (
 	"container/ring"
@@ -15,11 +15,11 @@ import (
 *
  */
 type PeerList struct {
-	selfId int32
+	selfId  int32
 	peerMap map[string]int32
 	//peerPublicKeyMap map[*rsa.PublicKey]int32
 	maxLength int32
-	mux sync.Mutex
+	mux       sync.Mutex
 }
 
 /* Pair
@@ -55,14 +55,12 @@ func NewPeerList(id int32, maxLength int32) PeerList {
 	return peerList
 }
 
-
-
 /* GetPeerMap()
 *
 * To return the peerMap
 *
  */
-func (peers *PeerList) GetPeerMap() map[string]int32{
+func (peers *PeerList) GetPeerMap() map[string]int32 {
 	peers.mux.Lock()
 	defer peers.mux.Unlock()
 	return peers.peerMap
@@ -79,13 +77,12 @@ func (peers *PeerList) GetPeerMap() map[string]int32{
 //	return peers.peerPublicKeyMap
 //}
 
-
 /* GetMaxLength()
 *
 * To return the peerMap
 *
  */
-func (peers *PeerList) GetMaxLength() int32{
+func (peers *PeerList) GetMaxLength() int32 {
 	return peers.maxLength
 }
 
@@ -94,12 +91,11 @@ func (peers *PeerList) GetMaxLength() int32{
 * To add ip and address into the peerMap
 *
  */
-func(peers *PeerList) Add(addr string, id int32) {
+func (peers *PeerList) Add(addr string, id int32) {
 	peers.mux.Lock()
 	peers.peerMap[addr] = id
 	peers.mux.Unlock()
 }
-
 
 //func(peers *PeerList) AddPublicKey(publicKey *rsa.PublicKey, id int32) {
 //	peers.mux.Lock()
@@ -112,12 +108,11 @@ func(peers *PeerList) Add(addr string, id int32) {
 * To delete ip and address from the peerMap
 *
  */
-func(peers *PeerList) Delete(addr string) {
+func (peers *PeerList) Delete(addr string) {
 	peers.mux.Lock()
 	delete(peers.peerMap, addr)
 	peers.mux.Unlock()
 }
-
 
 /* Rebalance()
 *
@@ -146,16 +141,16 @@ func (peers *PeerList) Rebalance() {
 *
 * To Swap element for sorting purpose
 *
-*/
+ */
 func (pairs PairList) Swap(i, j int) {
 	pairs[i], pairs[j] = pairs[j], pairs[i]
-	}
+}
 
 /* Len()
 *
 * To return pair Len
 *
-*/
+ */
 func (pairs PairList) Len() int {
 	return len(pairs)
 }
@@ -164,7 +159,7 @@ func (pairs PairList) Len() int {
 *
 * To conduct element comparison
 *
-*/
+ */
 func (pairs PairList) Less(i, j int) bool {
 	return pairs[i].id < pairs[j].id
 }
@@ -173,7 +168,7 @@ func (pairs PairList) Less(i, j int) bool {
 *
 * To turn a map into a PairList, then sort and return it.
 *
-*/
+ */
 func sortMapByValue(m map[string]int32) PairList {
 	p := make(PairList, len(m))
 	i := 0
@@ -193,7 +188,7 @@ func sortMapByValue(m map[string]int32) PairList {
 *
 * To Balance PeerMap
 *
-*/
+ */
 func (peers *PeerList) getBalancedPeerMap(sortedAddrIDListLength int, sortedAddrIDList PairList) map[string]int32 {
 
 	r := ring.New(sortedAddrIDListLength) // new ring
@@ -221,14 +216,13 @@ func (peers *PeerList) getBalancedPeerMap(sortedAddrIDListLength int, sortedAddr
 	return newPeerMap
 }
 
-
 /* Show()
 *
 * To shows all addresses and their corresponding IDs.
 * For example, it returns "This is PeerMap: \n addr=127.0.0.1, id=1".
 *
-*/
-func(peers *PeerList) Show() string {
+ */
+func (peers *PeerList) Show() string {
 	rs := ""
 	peers.mux.Lock()
 	defer peers.mux.Unlock()
@@ -245,17 +239,16 @@ func(peers *PeerList) Show() string {
 	//rs = fmt.Sprintf("This is the PeerMap: %s\n", hex.EncodeToString(sum[:])) + rs
 	rs = fmt.Sprintf("This is the PeerMap: \n") + rs
 	fmt.Print(rs)
-	return  rs
+	return rs
 }
-
 
 /* Register()
 *
 * Register() is used to set ID.
 * You can consider it as "SetId()".
 *
-*/
-func(peers *PeerList) Register(id int32) {
+ */
+func (peers *PeerList) Register(id int32) {
 	peers.mux.Lock()
 	peers.selfId = id
 	fmt.Printf("SelfId=%v\n", id)
@@ -266,7 +259,7 @@ func(peers *PeerList) Register(id int32) {
 *
 * Copy func returns a copy of the peerMap
 *
-*/
+ */
 func (peers *PeerList) Copy() map[string]int32 {
 
 	peers.mux.Lock()
@@ -282,19 +275,18 @@ func (peers *PeerList) Copy() map[string]int32 {
 *
 * Return peerList.SelfId
 *
-*/
-func(peers *PeerList) GetSelfId() int32 {
+ */
+func (peers *PeerList) GetSelfId() int32 {
 	return peers.selfId
 }
-
 
 /* PeerMapToJson()
 *
 * The "PeerMapJson" in HeartBeatData is the JSON format of "PeerList.peerMap"
 * It is the result of "PeerList.PeerMapToJSON()" function.
 *
-*/
-func(peers *PeerList) PeerMapToJson() (string, error) {
+ */
+func (peers *PeerList) PeerMapToJson() (string, error) {
 	jsonBytes, err := json.Marshal(peers.peerMap)
 	return string(jsonBytes), err
 }
@@ -303,7 +295,7 @@ func(peers *PeerList) PeerMapToJson() (string, error) {
 *
 * To inject PeerMap to PeerMap List
 *
-*/
+ */
 func (peers *PeerList) InjectPeerMapJson(peerMapJsonStr string, selfAddr string) {
 	var newPeerMap map[string]int32
 	err := json.Unmarshal([]byte(peerMapJsonStr), &newPeerMap)
@@ -322,7 +314,7 @@ func (peers *PeerList) InjectPeerMapJson(peerMapJsonStr string, selfAddr string)
 *
 * To encode PeerMap into Json
 *
-*/
+ */
 func (peers *PeerList) EncodePeerMapToJSON() (string, error) {
 	jsonBytes, err := json.Marshal(peers.peerMap)
 	return string(jsonBytes), err
@@ -332,7 +324,7 @@ func (peers *PeerList) EncodePeerMapToJSON() (string, error) {
 *
 * To Test Rebalance() function
 *
-*/
+ */
 func TestPeerListRebalance() {
 	peers := NewPeerList(5, 4)
 	peers.Add("1111", 1)
