@@ -14,7 +14,6 @@ import (
 	"bytes"
 	"fmt"
 	dsModels "github.com/edgexfoundry/device-sdk-go/pkg/models"
-	"github.com/edgexfoundry/device-simple/src/data"
 	"github.com/edgexfoundry/go-mod-core-contracts/clients/logger"
 	contract "github.com/edgexfoundry/go-mod-core-contracts/models"
 	"image"
@@ -30,24 +29,6 @@ type SimpleDriver struct {
 	asyncCh      chan<- *dsModels.AsyncValues
 	switchButton bool
 }
-
-//// counters
-//type counters struct {
-//	supplierCharge     int32
-//	supplierRate       int32
-//	supplierChargeRate int32
-//	isSupplying        int32
-//	toSupply           int32
-//	sellRate           int32
-//	consumerCharge     int32
-//	consumerRate       int32
-//	require            int32
-//	isReceiving        int32
-//	toReceive          int32
-//	buyRate            int32
-//}
-//
-//var Counters = counters{}
 
 func getImageBytes(imgFile string, buf *bytes.Buffer) error {
 	// Read existing image from file
@@ -104,118 +85,74 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 	//supply device
 	//data.GetSupplyDevice()
 	if reqs[0].DeviceResourceName == "supplierCharge" { // supply charge
-		//Counters.supplierCharge++
-		////reading := generateOnceAndReadFromFileAfter(Counters.supplierCharge, 100, "supplierChargeValue.txt", 1)
-		//data.GetSupplyDevice().SupplierCharge =
-		//	generateOnceAndReadFromFileAfter(Counters.supplierCharge, 100, "supplierChargeValue.txt", data.GetSupplyDevice().SupplierChargeRate)
 		driverSupplierChargeUpdate()
-		log.Println("supplierCharge value: ", data.GetSupplierCharge())
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetSupplierCharge()))
+		log.Println("supplierCharge value: ", GetSupplierCharge())
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetSupplierCharge()))
 		res[0] = cv
-	} //dynamic
+	}
 	if reqs[0].DeviceResourceName == "supplyRate" { // supply rate
-		//Counters.supplierRate++
-		//data.GetSupplyDevice().SupplyRate =
-		//	generateOnceAndReadFromFileAfter(Counters.supplierRate, 10, "supplierRateValue.txt", 0)
-		log.Println("supplyRate value: ", data.GetSupplyRate())
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetSupplyRate()))
+		log.Println("supplyRate value: ", GetSupplyRate())
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetSupplyRate()))
 		res[0] = cv
 	}
 	if reqs[0].DeviceResourceName == "supplierChargeRate" { // supply charge rate
-		//Counters.supplierChargeRate++
-		//data.GetSupplyDevice().SupplierChargeRate =
-		//	generateOnceAndReadFromFileAfter(Counters.supplierChargeRate, 10, "supplierChargeRateValue.txt", 0)
-		log.Println("supplierChargeRate value: ", data.GetSupplierChargeRate())
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetSupplierChargeRate()))
+		log.Println("supplierChargeRate value: ", GetSupplierChargeRate())
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetSupplierChargeRate()))
 		res[0] = cv
 	}
 	if reqs[0].DeviceResourceName == "isSupplying" { // is Supplying
-		//Counters.isSupplying++
-		//data.GetSupplyDevice().IsSupplying =
-		//	generateOnceAndReadFromFileAfter(Counters.isSupplying, 0, "isSupplyingValue.txt", 0)
-		if data.GetIsSupplying() == 0 && data.GetHasOffered() == false {
+		if GetIsSupplying() == 0 && GetHasOffered() == false {
 			driverSupplierSurplusUpdate()
 		}
-		log.Println("isSupplying value: ", data.GetIsSupplying())
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetIsSupplying()))
+		log.Println("isSupplying value: ", GetIsSupplying())
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetIsSupplying()))
 		res[0] = cv
 	}
 	if reqs[0].DeviceResourceName == "toSupply" { // to supply
-		//Counters.toSupply++
-		//data.GetSupplyDevice().ToSupply =
-		//	generateOnceAndReadFromFileAfter(Counters.toSupply, 0, "toSupplyValue.txt", 0)
-		log.Println("toSupply value: ", data.GetToSupply())
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetToSupply()))
+		log.Println("toSupply value: ", GetToSupply())
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetToSupply()))
 		res[0] = cv
 	}
 	if reqs[0].DeviceResourceName == "sellRate" { // sell rate
-		//Counters.sellRate++
-		//data.GetSupplyDevice().SellRate =
-		//	generateOnceAndReadFromFileAfter(Counters.sellRate, 20, "sellRateValue.txt", 0)
 		driverSellRateUpdate()
-		log.Println("sellRate value: ", data.GetSellRate())
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetSellRate()))
+		log.Println("sellRate value: ", GetSellRate())
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetSellRate()))
 		res[0] = cv
 	} // dynamic
 
 	//consume device
 	//data.GetConsumeDevice()
 	if reqs[0].DeviceResourceName == "consumerCharge" { // consumer charge
-		//Counters.consumerCharge++
-		//data.GetConsumeDevice().ConsumerCharge =
-		//	generateOnceAndReadFromFileAfter(Counters.consumerCharge, 50, "consumerChargeValue.txt", -data.GetConsumeDevice().ConsumerDischargeRate)
 		driverConsumerChargeUpdate()
-		log.Println("consumerCharge value: ", int32(data.GetConsumerCharge()))
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetConsumerCharge()))
+		log.Println("consumerCharge value: ", int32(GetConsumerCharge()))
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetConsumerCharge()))
 		res[0] = cv
 	} //dynamic
 	if reqs[0].DeviceResourceName == "consumerDischargeRate" { // consumer rate
-		//Counters.consumerRate++
-		//data.GetConsumeDevice().ConsumerDischargeRate =
-		//	generateOnceAndReadFromFileAfter(Counters.consumerRate, 10, "consumerRateValue.txt", 0)
-		log.Println("consumerDischargeRate value: ", int32(data.GetConsumerDischargeRate()))
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetConsumerDischargeRate()))
+		log.Println("consumerDischargeRate value: ", int32(GetConsumerDischargeRate()))
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetConsumerDischargeRate()))
 		res[0] = cv
 	}
 	if reqs[0].DeviceResourceName == "require" { // consumer require units
-		//Counters.require++
-		//if data.GetConsumeDevice().ConsumerCharge < 40 && data.GetConsumeDevice().HasAsked == false {
-		//	data.GetConsumeDevice().Require = 100
-		//	data.GetConsumeDevice().HasAsked = true
-		//} else {
-		//	data.GetConsumeDevice().Require = 0
-		//}
-		//data.GetConsumeDevice().Require =
-		//	writeAndReadFromFileAfter(Counters.require, data.GetConsumeDevice().Require, "requireValue.txt", 0)
-		//generateOnceAndReadFromFileAfter(Counters.require, 10, "requireValue.txt", 0)
 		driverConsumerRequireUpdate()
-		log.Println("require value: ", int32(data.GetRequire()))
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetRequire()))
+		log.Println("require value: ", int32(GetRequire()))
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetRequire()))
 		res[0] = cv
 	} //todo : bc tx
 	if reqs[0].DeviceResourceName == "isReceiving" { // consumer require units
-		//Counters.isReceiving++
-		//data.GetConsumeDevice().IsReceiving =
-		//	generateOnceAndReadFromFileAfter(Counters.isReceiving, 0, "isReceivingValue.txt", 0)
-		log.Println("isReceiving value: ", int32(data.GetIsReceiving()))
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetIsReceiving()))
+		log.Println("isReceiving value: ", int32(GetIsReceiving()))
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetIsReceiving()))
 		res[0] = cv
 	}
 	if reqs[0].DeviceResourceName == "toReceive" { // consumer require units
-		//Counters.toReceive++
-		//data.GetConsumeDevice().ToReceive =
-		//	generateOnceAndReadFromFileAfter(Counters.toReceive, 0, "toReceiveValue.txt", 0)
-		log.Println("toReceive value: ", int32(data.GetToReceive()))
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetToReceive()))
+		log.Println("toReceive value: ", int32(GetToReceive()))
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetToReceive()))
 		res[0] = cv
 	}
 	if reqs[0].DeviceResourceName == "buyRate" { // buy rate
-		//Counters.buyRate++
-		//data.GetConsumeDevice().BuyRate =
-		//	generateOnceAndReadFromFileAfter(Counters.buyRate, 30, "buyRateValue.txt", 0)
 		driverBuyRateUpdate()
-		log.Println("buyRate value: ", data.GetBuyRate())
-		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(data.GetBuyRate()))
+		log.Println("buyRate value: ", GetBuyRate())
+		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetBuyRate()))
 		res[0] = cv
 	} // dynamic
 

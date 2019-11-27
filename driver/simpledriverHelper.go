@@ -3,97 +3,96 @@ package driver
 import (
 	"bytes"
 	"fmt"
-	"github.com/edgexfoundry/device-simple/src/data"
 	"net/http"
 )
 
 func driverSupplierChargeUpdate() {
-	supplierCharge := data.GetSupplierCharge()
-	supplierChargeRate := data.GetSupplierChargeRate()
-	isSupplying := data.GetIsSupplying()
-	toSupply := data.GetToSupply()
-	supplyRate := data.GetSupplyRate()
+	supplierCharge := GetSupplierCharge()
+	supplierChargeRate := GetSupplierChargeRate()
+	isSupplying := GetIsSupplying()
+	toSupply := GetToSupply()
+	supplyRate := GetSupplyRate()
 
 	supplierCharge = supplierCharge + supplierChargeRate
 	if isSupplying > 0 {
 		if toSupply > supplyRate {
 			supplierCharge -= supplyRate
-			data.SetToSupply(-supplyRate)
+			SetToSupply(-supplyRate)
 		} else {
 			supplierCharge -= toSupply
-			data.SupplyCompleteCleanup()
+			SupplyCompleteCleanup()
 		}
 	}
 
-	data.SetSupplierCharge(supplierCharge)
+	SetSupplierCharge(supplierCharge)
 }
 
 func driverConsumerChargeUpdate() {
-	consumerCharge := data.GetConsumerCharge()
-	consumerDischargeRate := data.GetConsumerDischargeRate()
-	isReceiving := data.GetIsReceiving()
-	toReceive := data.GetToReceive()
-	toReceiveRate := data.GetToReceiveRate()
+	consumerCharge := GetConsumerCharge()
+	consumerDischargeRate := GetConsumerDischargeRate()
+	isReceiving := GetIsReceiving()
+	toReceive := GetToReceive()
+	toReceiveRate := GetToReceiveRate()
 
 	consumerCharge = consumerCharge - consumerDischargeRate
 	if isReceiving > 0 {
 		if toReceive > 0 {
 			if toReceive > toReceiveRate {
 				consumerCharge += toReceiveRate
-				data.SetToReceive(-toReceiveRate)
+				SetToReceive(-toReceiveRate)
 			} else {
 				consumerCharge += toReceive
-				data.ConsumeCompleteCleanup()
+				ConsumeCompleteCleanup()
 			}
 		}
 	}
 
-	data.SetConsumerCharge(consumerCharge)
+	SetConsumerCharge(consumerCharge)
 }
 
 func driverSupplierSurplusUpdate() {
-	supplierCharge := data.GetSupplierCharge()
+	supplierCharge := GetSupplierCharge()
 	//max := data.GetSupplierMaxCharge()
 
-	threshold := data.GetSellThreshold()
+	threshold := GetSellThreshold()
 	if supplierCharge > threshold {
-		data.SetSurplus(supplierCharge - threshold)
-		fmt.Println("Supplier value : ", data.GetSurplus())
-		if data.GetHasOffered() == false {
+		SetSurplus(supplierCharge - threshold)
+		fmt.Println("Supplier value : ", GetSurplus())
+		if GetHasOffered() == false {
 			//todo : send surplus tx to blockchain, check isSupplying
 		}
-		data.SetHasOffered(true)
+		SetHasOffered(true)
 	}
 
 }
 
 func driverConsumerRequireUpdate() {
-	consumerCharge := data.GetConsumerCharge()
+	consumerCharge := GetConsumerCharge()
 	//max := data.GetConsumerMaxCharge()
 
-	threshold := data.GetBuyThreshold()
+	threshold := GetBuyThreshold()
 	if consumerCharge < threshold {
 		//data.SetRequire(max - threshold)
-		data.SetRequire(threshold + 250 - consumerCharge)
-		fmt.Println("Require value : ", data.GetRequire())
-		if data.GetHasAsked() == false {
+		SetRequire(threshold + 250 - consumerCharge)
+		fmt.Println("Require value : ", GetRequire())
+		if GetHasAsked() == false {
 			//todo : send requirement tx to blockchain, check isReceiving
-			uri := "http//:" + data.GetNodeId().Address + ":" + data.GetNodeId().Port + "/postevent"
+			uri := "http//:" + GetNodeId().Address + ":" + GetNodeId().Port + "/postevent"
 			body := "ok" //todo : create consumer transaction
 			fmt.Println("driverConsumerRequireUpdate : " + uri)
 			http.Post(uri, "application/json", bytes.NewBuffer([]byte(body)))
 
 		}
-		data.SetHasAsked(true)
+		SetHasAsked(true)
 
 	}
 }
 
 func driverSellRateUpdate() {
-	sellRate := data.GetSellRate()
-	sellBaseRate := float64(data.GetSellBaseRate())
-	supplierCharge := float64(data.GetSupplierCharge())
-	max := float64(data.GetSupplierMaxCharge())
+	sellRate := GetSellRate()
+	sellBaseRate := float64(GetSellBaseRate())
+	supplierCharge := float64(GetSupplierCharge())
+	max := float64(GetSupplierMaxCharge())
 	//threshold := float64(data.GetSellThreshold())
 
 	change := sellBaseRate * (max / supplierCharge)
@@ -101,15 +100,15 @@ func driverSellRateUpdate() {
 	if sellRate < 1 {
 		sellRate = 1
 	}
-	data.SetSellRate(sellRate)
+	SetSellRate(sellRate)
 
 }
 
 func driverBuyRateUpdate() {
-	buyRate := data.GetBuyRate()
-	buyBaseRate := float64(data.GetBuyBaseRate())
-	consumerCharge := float64(data.GetConsumerCharge())
-	max := float64(data.GetConsumerMaxCharge())
+	buyRate := GetBuyRate()
+	buyBaseRate := float64(GetBuyBaseRate())
+	consumerCharge := float64(GetConsumerCharge())
+	max := float64(GetConsumerMaxCharge())
 	//threshold := float64(data.GetBuyThreshold())
 
 	change := buyBaseRate * (max / consumerCharge)
@@ -120,5 +119,5 @@ func driverBuyRateUpdate() {
 	if buyRate > 100 {
 		buyRate = 100
 	}
-	data.SetBuyRate(buyRate)
+	SetBuyRate(buyRate)
 }
