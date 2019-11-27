@@ -10,7 +10,6 @@ type nodeId struct {
 	Port               string
 	EdgeXAddress       string
 	TaskManagerAddress string
-	TaskManagerPort    string
 	Separator          string
 	Peers              []PeerInfo
 }
@@ -18,14 +17,13 @@ type nodeId struct {
 var instanceNodeId *nodeId
 var onceNodeId sync.Once
 
-func SetNodeId(address string, port string, taskManagerAddress string, taskManagerPort string) *nodeId {
+func SetNodeId(address string, port string, taskManagerAddress string, edgeXAddress string) *nodeId {
 	onceNodeId.Do(func() {
 		instanceNodeId = &nodeId{
 			Address:            address,
 			Port:               port,
-			EdgeXAddress:       "",
+			EdgeXAddress:       edgeXAddress,
 			TaskManagerAddress: taskManagerAddress,
-			TaskManagerPort:    taskManagerPort,
 			Separator:          ":",
 			Peers:              make([]PeerInfo, 0),
 		}

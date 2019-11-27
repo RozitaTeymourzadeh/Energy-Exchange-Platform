@@ -4,13 +4,13 @@ import (
 	"errors"
 	"fmt"
 	"github.com/edgexfoundry/device-simple/src/data"
-	"github.com/edgexfoundry/device-simple/src/parser"
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 )
 
 //////////////////////////
@@ -20,6 +20,88 @@ import (
 /////////////////////////
 
 //var TASKMANAGER_ADDRESS = "http://localhost:6686"
+
+func Periodic() {
+	fmt.Println("Periodic")
+	time.Sleep(1 * time.Second)
+	for true {
+		makeDecision()
+		time.Sleep(10 * time.Second)
+	}
+}
+
+func makeDecision() {
+	DEVICELIST = getAllDevices( /*data.GetNodeId().ConnectingAddress*/ )
+	SUPPLYDEVICEDETAILS = generateSupplyDeviceTypeBoard("supply")
+	CONSUMEDEVICEDETAILS = generateConsumeDeviceTypeBoard("consume")
+
+	fmt.Println("Decision : ")
+	if len(CONSUMEDEVICEDETAILS) < 1 {
+		//_, _ = w.Write([]byte("No consume device"))
+		fmt.Println("No consume device")
+
+	} else if len(SUPPLYDEVICEDETAILS) < 1 {
+		//_, _ = w.Write([]byte("No supply device"))
+		fmt.Println("No supply device")
+
+	} else {
+
+		str := "Dummy makeDecisionHandlerHelper : todo : makeDecisionHandlerHelper()" //todo : makeDecisionHandlerHelper()
+		fmt.Println(str)
+
+	} // end of else
+
+}
+
+func getAllDevices() data.DeviceList {
+	dl := data.NewDeviceList()
+	// start of get self devices ////
+	devices := updateDeviceListWithSelfDevices()
+	for _, device := range devices.Devices {
+		device.PeerId = data.GetNodeId().Address + ":" + data.GetNodeId().Port
+		dl.Devices = append(dl.Devices, device) /// to read SBC and create board
+	}
+	// end of get self devices ////
+	if len(data.GetNodeId().GetPeers()) > 0 {
+		for _, peer := range data.GetNodeId().GetPeers() {
+			uri := "http://" + peer.IpAdd + ":" + peer.Port + "/sendDeviceList"
+			fmt.Println("Sending device req to : ", uri)
+			resp, err := http.Get(uri)
+			if err != nil {
+				fmt.Println("Error in getting all devices")
+			} else {
+				defer resp.Body.Close()
+				bytesRead, _ := ioutil.ReadAll(resp.Body)
+				peerDeviceList := data.DeviceListFromJson(bytesRead)
+				for _, val := range peerDeviceList.Devices {
+					val.PeerId = peer.IpAdd + ":" + peer.Port
+					dl.Devices = append(dl.Devices, val)
+				}
+			}
+
+		}
+	}
+
+	return dl
+}
+
+func updateDeviceListWithSelfDevices() data.DeviceList { // todo : read SBC and make board
+	//data.GetSupplyDeviceBoard()
+	//todo : update by reading canonical SBC
+	resp, err := http.Get("http://" + data.GetNodeId().Address + ":" + data.GetNodeId().Port + "/" + "getallselfdevices")
+	if err != nil {
+		fmt.Println("Error in getting all devices : in : updateDeviceTypeBoards")
+	}
+	defer resp.Body.Close()
+	bytesRead, _ := ioutil.ReadAll(resp.Body)
+
+	deviceList := data.DeviceListFromJson(bytesRead)
+	for _, device := range deviceList.Devices {
+		fmt.Println("In updateDeviceTypeBoards : " + device.PeerId + " - " + device.Id + " - " + device.Name)
+	}
+	return deviceList
+
+}
 
 func SendDeviceList(w http.ResponseWriter, r *http.Request) {
 	//uri := "http://localhost:48082/api/v1/device"
@@ -82,7 +164,9 @@ func SupplierTx(w http.ResponseWriter, r *http.Request) {
 		log.Println(errors.New("Cannot read Change value in param: " + tx.PowerUnits))
 	}
 
-	parser.UpdateValueInFile("../../cmd/device-simple/supplierChargeValue.txt", -changeValue)
+	//parser.UpdateValueInFile("../../cmd/device-simple/supplierChargeValue.txt", -changeValue)
+	newVal := data.GetSupplierCharge() - changeValue
+	data.SetSupplierCharge(newVal)
 
 	sendTransactionToConsumer(tx)
 }
@@ -106,7 +190,9 @@ func ConsumerTx(w http.ResponseWriter, r *http.Request) {
 		log.Println(errors.New("Cannot read Change value in param: " + tx.PowerUnits))
 	}
 
-	parser.UpdateValueInFile("../../cmd/device-simple/consumerChargeValue.txt", changeValue)
+	//parser.UpdateValueInFile("../../cmd/device-simple/consumerChargeValue.txt", changeValue)
+	newVal := data.GetConsumerCharge() + changeValue
+	data.SetConsumerCharge(newVal)
 }
 
 //// moved from handlers.go
@@ -122,10 +208,11 @@ func GetAllSelfDevices(w http.ResponseWriter, r *http.Request) {
 	defer resp.Body.Close()
 	bytesRead, _ := ioutil.ReadAll(resp.Body)
 
-	deviceList := data.DeviceListFromJson(bytesRead)
-	//deviceList.AddAllToDevices(&Devices)
-
-	w.Write([]byte(deviceList.ShowDeviceInList()))
+	w.WriteHeader(http.StatusOK)
+	w.Write(bytesRead)
+	//deviceList := data.DeviceListFromJson(bytesRead)
+	//
+	//w.Write([]byte(deviceList.ShowDeviceInList()))
 
 }
 

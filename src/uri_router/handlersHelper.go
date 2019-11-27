@@ -11,30 +11,6 @@ import (
 	"strings"
 )
 
-func getAllDevices() data.DeviceList {
-	dl := data.NewDeviceList()
-	if len(data.GetNodeId().GetPeers()) > 0 {
-		for _, peer := range data.GetNodeId().GetPeers() {
-			uri := "http://" + peer.IpAdd + ":" + peer.Port + "/sendDeviceList"
-			fmt.Println("Sending device req to : ", uri)
-			resp, err := http.Get(uri)
-			if err != nil {
-				fmt.Println("Error in getting all devices")
-			}
-			defer resp.Body.Close()
-			bytesRead, _ := ioutil.ReadAll(resp.Body)
-			peerDeviceList := data.DeviceListFromJson(bytesRead)
-			for _, val := range peerDeviceList.Devices {
-				val.PeerId = peer.IpAdd + ":" + peer.Port
-				dl.Devices = append(dl.Devices, val)
-			}
-
-		}
-	}
-
-	return dl
-}
-
 func GetSelfDevices() {
 	uri := "http://" + data.GetNodeId().EdgeXAddress + ":48082/api/v1/device"
 
@@ -69,6 +45,7 @@ func generateSupplyDeviceTypeBoard(deviceType string) []data.DeviceTypeDetails {
 			//uri := "http://" + d.PeerId + ":48080/api/v1/event/device/" + d.Name + "/" + "10"
 			//uri := "http://" + d.PeerId + ":9999/sendDeviceEvents/" + d.Name + "/" + "10"
 			uri := "http://" + d.PeerId + "/sendDeviceEvents/" + d.Name + "/" + "10"
+			fmt.Println("calling for device events : " + uri)
 			resp, err := http.Get(uri)
 
 			if err != nil {
@@ -175,17 +152,6 @@ func generateConsumeDeviceTypeBoard(deviceType string) []data.DeviceTypeDetails 
 		}
 	}
 	return sl
-}
-
-func updateDeviceTypeBoards() {
-	//data.GetSupplyDeviceBoard()
-	for _, d := range DEVICELIST.Devices {
-		fmt.Println(": : : Device in DEVICELIST.Devices : : :")
-		fmt.Println("Device d.PeerId : " + d.PeerId)
-		fmt.Println("Device d.Name : " + d.Name)
-		fmt.Println("Device d.Id : " + d.Id)
-
-	}
 }
 
 func sendTransactionToSupplier(tx data.Transaction) {

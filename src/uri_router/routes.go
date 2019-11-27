@@ -15,10 +15,10 @@ type Routes []Route
 
 var routes = Routes{
 	Route{
-		"Start",
+		"Eep",
 		"GET",
-		"/start",
-		Start,
+		"/eep",
+		Eep,
 	},
 	Route{
 		"Index",
@@ -26,12 +26,19 @@ var routes = Routes{
 		"/",
 		Index,
 	},
+	//Route{
+	//	"Register",
+	//	"POST",
+	//	"/register",
+	//	Register,
+	//},
 	Route{
-		"Register",
-		"POST",
-		"/register",
-		Register,
+		"ShowPeers",
+		"GET",
+		"/showpeers",
+		ShowPeers,
 	},
+
 	Route{
 		"ShowLatestDeviceData",
 		"GET",
@@ -112,5 +119,68 @@ var routes = Routes{
 		"/consumertx",
 		ConsumerTx,
 		//	localhost:9999/consumertx
+	},
+
+	/////////blockchain
+	Route{
+		"Canonical",
+		"GET",
+		"/canonical",
+		Canonical,
+	},
+	Route{
+		"Show",
+		"GET",
+		"/show",
+		Show,
+	},
+	Route{
+		"Upload",
+		"POST",
+		"/upload",
+		Upload,
+	},
+	Route{
+		"UploadBlock",
+		"GET",
+		"/block/{height}/{hash}",
+		UploadBlock,
+	},
+	Route{
+		"HeartBeatReceive",
+		"POST",
+		"/heartbeat/receive",
+		HeartBeatReceive,
+	},
+	Route{
+		"Start",
+		"GET",
+		"/start",
+		Start,
+	},
+	//Route{
+	//	"GetEvent",
+	//	"GET",
+	//	"/getevent",
+	//	Event,
+	//},
+	//ToDo Post Transaction
+	Route{
+		"PostEvent",
+		"POST",
+		"/postevent",
+		Event,
+	},
+	Route{
+		"GetEvent",
+		"GET",
+		"/getQueryEvent",
+		QueryEvent,
+	},
+	Route{
+		"PostEvent",
+		"POST",
+		"/postQueryEvent",
+		QueryEvent,
 	},
 }

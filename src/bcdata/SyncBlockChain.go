@@ -1,9 +1,9 @@
-package data
+package bcdata
 
 import (
 	//"MerklePatriciaTree/p5/Blockchain_Application_P5/p4"
 	"fmt"
-	p4 "github.com/edgexfoundry/device-simple/src/blockchain/block"
+	p4 "github.com/edgexfoundry/device-simple/src/block"
 	"sync"
 )
 
@@ -13,7 +13,7 @@ import (
 *
  */
 type SyncBlockChain struct {
-	bc p4.BlockChain
+	bc  p4.BlockChain
 	mux sync.Mutex
 }
 
@@ -31,7 +31,7 @@ func NewBlockChain() SyncBlockChain {
 * Takes a block as the parameter, and returns its parent block.
 *
  */
-func (sbc *SyncBlockChain) GetParentBlock(block p4.Block) p4.Block  {
+func (sbc *SyncBlockChain) GetParentBlock(block p4.Block) p4.Block {
 	sbc.mux.Lock()
 	defer sbc.mux.Unlock()
 	return sbc.bc.GetParentBlock(block)
@@ -65,7 +65,7 @@ func (sbc *SyncBlockChain) Get(height int32) ([]p4.Block, bool) {
 *
  */
 func (sbc *SyncBlockChain) GetBlock(height int32, hash string) (p4.Block, bool) {
- 	return sbc.bc.GetBlock(height, hash)
+	return sbc.bc.GetBlock(height, hash)
 }
 
 /* Insert()
@@ -78,8 +78,6 @@ func (sbc *SyncBlockChain) Insert(block p4.Block) {
 	sbc.bc.Insert(block)
 	sbc.mux.Unlock()
 }
-
-
 
 /* CheckParentHash()
 *
@@ -103,8 +101,6 @@ func (sbc *SyncBlockChain) CheckParentHash(insertBlock p4.Block) bool {
 	}
 	return false
 }
-
-
 
 /* UpdateEntireBlockChain()
 *
@@ -151,10 +147,11 @@ func (sbc *SyncBlockChain) GenBlock(mpt p4.MerklePatriciaTrie, nonce string) p4.
 	}
 
 	var newBlock p4.Block
-	newBlock.Initial(currHeight+1, parentHash, mpt,nonce)
+	newBlock.Initial(currHeight+1, parentHash, mpt, nonce)
 
 	return newBlock
 }
+
 /* Show()
 *
 * To Show current BlockChain

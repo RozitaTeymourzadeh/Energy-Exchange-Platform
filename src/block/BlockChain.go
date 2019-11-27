@@ -9,7 +9,6 @@ import (
 	"strings"
 )
 
-
 /* Show()
 *
 * To Print blockChain
@@ -46,12 +45,12 @@ func (bc *BlockChain) Show() string {
  */
 func (blockChain *BlockChain) Canonical() string {
 	rs := ""
-	forksBlocks:= blockChain.GetLatestBlocks()
+	forksBlocks := blockChain.GetLatestBlocks()
 	for i, currentBlock := range forksBlocks {
 		height := blockChain.Length
 		rs += "\n"
 		rs += fmt.Sprintf("Chain # %d:\n ", i)
-		for  height > 0{
+		for height > 0 {
 			rs += fmt.Sprintf("height=%d, timestamp=%d, hash=%s, parentHash=%s, size=%d , value=%s\n",
 				currentBlock.Header.Height, currentBlock.Header.Timestamp, currentBlock.Header.Hash,
 				currentBlock.Header.ParentHash, currentBlock.Header.Size, currentBlock.Value)
@@ -61,7 +60,7 @@ func (blockChain *BlockChain) Canonical() string {
 	}
 	rs += "\n"
 	fmt.Println(rs)
- return rs
+	return rs
 }
 
 /* GetBlock()
@@ -71,11 +70,11 @@ func (blockChain *BlockChain) Canonical() string {
  */
 func (blockChain *BlockChain) GetBlock(height int32, hash string) (Block, bool) {
 	isAvali := false
-	block:= Block{}
+	block := Block{}
 	blocks := blockChain.Chain[height]
 	lenBlock := len(blocks)
-	if lenBlock != 0{
-		for i:=0; i < lenBlock; i++{
+	if lenBlock != 0 {
+		for i := 0; i < lenBlock; i++ {
 			if blocks[i].Header.Hash == hash {
 				block = blocks[i]
 				isAvali = true
@@ -85,7 +84,6 @@ func (blockChain *BlockChain) GetBlock(height int32, hash string) (Block, bool) 
 	}
 	return block, isAvali
 }
-
 
 /*-------------------------STRUCT---------------------------------------------------*/
 /* Struct data structure for variables
@@ -109,7 +107,7 @@ type BlockChain struct {
 *
 * To Initialize blockChain
 *
-*/
+ */
 func (blockChain *BlockChain) Initial() {
 	blockChain.Chain = make(map[int32][]Block)
 	blockChain.Length = 0
@@ -119,10 +117,10 @@ func (blockChain *BlockChain) Initial() {
 *
 * To Create empty New Block Chain
 *
-*/
-func NewBlockChain() BlockChain{
+ */
+func NewBlockChain() BlockChain {
 	return BlockChain{
-		Chain: make(map[int32][]Block),
+		Chain:  make(map[int32][]Block),
 		Length: 0,
 	}
 }
@@ -149,11 +147,11 @@ func (blockChain *BlockChain) GetLatestBlocks() []Block {
  */
 func (blockChain *BlockChain) GetParentBlock(block Block) Block {
 
-	parentBlock:= Block{}
+	parentBlock := Block{}
 	blocks := blockChain.Chain[block.Header.Height-1]
 	lenBlock := len(blocks)
-	if lenBlock != 0{
-		for i:=0; i < lenBlock; i++{
+	if lenBlock != 0 {
+		for i := 0; i < lenBlock; i++ {
 			if blocks[i].Header.Hash == block.Header.ParentHash {
 				parentBlock = blocks[i]
 				return parentBlock
@@ -163,7 +161,6 @@ func (blockChain *BlockChain) GetParentBlock(block Block) Block {
 	return parentBlock
 }
 
-
 /* Get
 *
 * To return blocks in chain with certain height
@@ -172,13 +169,12 @@ func (blockChain *BlockChain) GetParentBlock(block Block) Block {
  */
 func (blockChain *BlockChain) Get(height int32) ([]Block, bool) {
 	found := false
-	if blockChain.Chain[height] != nil{
+	if blockChain.Chain[height] != nil {
 		found = true
 		return blockChain.Chain[height], found
 	}
 	return blockChain.Chain[height], found
 }
-
 
 /* ConvertIntToString()
 *
@@ -290,24 +286,23 @@ func (blockChain *BlockChain) MarshalJSON() ([]byte, error) {
 	return json.Marshal(blocks)
 }
 
-
 func (blockChain *BlockChain) GetEventInfornation(eventId string) string {
 	rs := ""
-	forksBlocks:= blockChain.GetLatestBlocks()
+	forksBlocks := blockChain.GetLatestBlocks()
 	for i, currentBlock := range forksBlocks {
 		height := blockChain.Length
 		rs += "\n"
 		rs += fmt.Sprintf("Chain # %d:\n ", i+1)
-		for  height > 0{
+		for height > 0 {
 			for _, valueObject := range currentBlock.Value.db {
 				if strings.Contains(valueObject.String(), eventId) {
 					fmt.Println("TransactionObject:", valueObject.String())
-					rs += fmt.Sprintf("Value=%s\n", valueObject.String());
-				}else{
-					fmt.Println("eventId:", eventId," does not exist in our BlockChain!")
+					rs += fmt.Sprintf("Value=%s\n", valueObject.String())
+				} else {
+					fmt.Println("eventId:", eventId, " does not exist in our BlockChain!")
 				}
 			}
-			currentBlock, _= blockChain.GetBlock(currentBlock.Header.Height-1, currentBlock.Header.ParentHash)
+			currentBlock, _ = blockChain.GetBlock(currentBlock.Header.Height-1, currentBlock.Header.ParentHash)
 			height = height - 1
 		}
 	}

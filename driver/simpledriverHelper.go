@@ -1,8 +1,10 @@
 package driver
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/edgexfoundry/device-simple/src/data"
+	"net/http"
 )
 
 func driverSupplierChargeUpdate() {
@@ -67,14 +69,19 @@ func driverSupplierSurplusUpdate() {
 
 func driverConsumerRequireUpdate() {
 	consumerCharge := data.GetConsumerCharge()
-	max := data.GetConsumerMaxCharge()
+	//max := data.GetConsumerMaxCharge()
 
 	threshold := data.GetBuyThreshold()
 	if consumerCharge < threshold {
-		data.SetRequire(max - threshold)
+		//data.SetRequire(max - threshold)
+		data.SetRequire(threshold + 250 - consumerCharge)
 		fmt.Println("Require value : ", data.GetRequire())
 		if data.GetHasAsked() == false {
 			//todo : send requirement tx to blockchain, check isReceiving
+			uri := "http//:" + data.GetNodeId().Address + ":" + data.GetNodeId().Port + "/postevent"
+			body := "ok" //todo : create consumer transaction
+			fmt.Println("driverConsumerRequireUpdate : " + uri)
+			http.Post(uri, "application/json", bytes.NewBuffer([]byte(body)))
 
 		}
 		data.SetHasAsked(true)

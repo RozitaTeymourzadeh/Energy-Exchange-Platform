@@ -44,6 +44,17 @@ func NewDeviceMap() DeviceMap {
 	}
 }
 
+func (dm *DeviceMap) DeviceMapToList() []Device {
+	devices := make([]Device, 0)
+	if len(dm.Devices) > 0 {
+		for _, d := range dm.Devices {
+			devices = append(devices, d)
+		}
+
+	}
+	return devices
+}
+
 //
 func DeviceListFromJson(jsonBytes []byte) DeviceList {
 	dl := NewDeviceList()

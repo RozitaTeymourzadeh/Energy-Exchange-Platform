@@ -1,7 +1,6 @@
-package data
+package bcdata
 
 import "encoding/json"
-
 
 /* RegisterDate
 *
@@ -10,7 +9,7 @@ import "encoding/json"
 *
  */
 type RegisterData struct {
-	AssignedId int32 `json:"assignedId"`
+	AssignedId  int32  `json:"assignedId"`
 	PeerMapJson string `json:"peerMapJson"`
 }
 
@@ -20,7 +19,7 @@ type RegisterData struct {
 *
  */
 func NewRegisterData(id int32, peerMapJson string) RegisterData {
-	 r := RegisterData{AssignedId:id,PeerMapJson:peerMapJson}
+	r := RegisterData{AssignedId: id, PeerMapJson: peerMapJson}
 	return r
 }
 
