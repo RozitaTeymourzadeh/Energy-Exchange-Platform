@@ -9,6 +9,7 @@ import (
 	"crypto/rsa"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"golang.org/x/crypto/sha3"
 	"io/ioutil"
@@ -38,13 +39,14 @@ var RECEIVE_PATH = "/heartbeat/receive"
 var STOP_GEN_BLOCK = false
 var NONCE_ZERO = "000"
 
-var newTransactionObject Transaction
+//var newTransactionObject Transaction
 var TxPool TransactionPool
 var Balance int = 10000
 var TransactionMap map[string]Transaction
 var minerKey *rsa.PrivateKey
-var Verified bool = false
-var enoughBalance bool = false
+
+//var Verified bool = false
+//var enoughBalance bool = false
 var transactionReady = false
 var SignatureV []byte
 var hashed []byte
@@ -110,8 +112,9 @@ func Start(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("Port Register!", Peers.GetSelfId())
 	}
 	fmt.Println("Host is : ", r.Host)
-	SELF_ADDR = r.Host
-	if r.Host != FIRST_PEER {
+	//SELF_ADDR = r.Host
+	//if r.Host != FIRST_PEER {
+	if SELF_ADDR != FIRST_PEER {
 		fmt.Println("Not First node: download().")
 		Download()
 	} else {
@@ -443,6 +446,16 @@ func ForwardHeartBeat(heartBeatData HeartBeatData) {
 	}
 }
 
+func SendHeartBeatToSelf(hbd HeartBeatData) {
+	hbd.Hops = 1
+	heartBeatData, _ := json.Marshal(hbd)
+	resp, err := http.Post("http://"+GetNodeId().GetAddressPort()+"/heartbeat/receive",
+		"application/json; charset=UTF-8", strings.NewReader(string(heartBeatData)))
+	if err != nil || resp.StatusCode != 200 {
+		fmt.Println("FATAL : in SendHeartBeatToSelf : ", err)
+	}
+}
+
 /* StartHeartBeat
 *
 * Start a while loop. Inside the loop, sleep for randomly 5~10 seconds,
@@ -484,7 +497,10 @@ func StartHeartBeat() {
 		fmt.Println("response Status:", resp.Status)
 		fmt.Println("response Headers:", resp.Header)
 		body, _ := ioutil.ReadAll(resp.Body)
-		fmt.Println("response Body:", string(body))
+		if heartBearData.IfNewBlock || heartBearData.IfValidTransaction {
+			fmt.Println("response Body:", string(body))
+		}
+
 	}
 }
 
@@ -509,38 +525,43 @@ func StartTryingNonce() {
 		if transaction != nil {
 			transactionJSON, _ = transaction.EncodeToJson()
 
-			if Verified && enoughBalance {
-
-				encryptedPKCS1v15 := []byte(transactionJSON)
-				decryptedPKCS1v15 := DecryptPKCS(minerKey, encryptedPKCS1v15)
-				Verified, _ := VerifyPKCS(&minerKey.PublicKey, h, hashed, SignatureV)
-				fmt.Println("Decrypted message is: ", decryptedPKCS1v15)
-				fmt.Println("Signature verified: ", Verified)
-				fmt.Println("User has enough money: ", enoughBalance)
-
-			}
-			newMpt.Insert(transaction.EventId, transactionJSON)
-			validateNonce := StringRandom(16)
-			hashPuzzle := string(blocks[0].Header.Hash) + string(validateNonce) + string(newMpt.GetRoot())
-			sum := sha3.Sum256([]byte(hashPuzzle))
-			if strings.HasPrefix(hex.EncodeToString(sum[:]), NONCE_ZERO) {
-				peerMapJson, _ := Peers.PeerMapToJson()
-				transactionJSON, _ = transaction.EncodeToJson()
-				heartBeatData := PrepareHeartBeatData(&SBC, Peers.GetSelfId(), peerMapJson, SELF_ADDR, true, validateNonce,
-					newMpt, &minerKey.PublicKey, isValidTransaction, transactionJSON)
-				heartBlock := Block{}
-				heartBlock.DecodeFromJSON(heartBeatData.BlockJson)
-				fmt.Println("heartBlock.Root:", string(heartBlock.Value.GetRoot()))
-				testPuzzle := string(heartBlock.Header.ParentHash) + string(heartBlock.Header.Nonce) + string(heartBlock.Value.GetRoot())
-				sum = sha3.Sum256([]byte(testPuzzle))
-				ForwardHeartBeat(heartBeatData)
-				isValidTransaction = false
-				TxPool.DeleteFromTransactionPool(transaction.EventId)
-				if STOP_GEN_BLOCK {
-					fmt.Println("Stop Generating Block.")
-					goto GetLatestBlock
+			//if true /*Verified && enoughBalance*/ {
+			//
+			//	encryptedPKCS1v15 := []byte(transactionJSON)
+			//	decryptedPKCS1v15 := DecryptPKCS(minerKey, encryptedPKCS1v15)
+			//	Verified, _ := VerifyPKCS(&minerKey.PublicKey, h, hashed, SignatureV)
+			//	fmt.Println("Decrypted message is: ", decryptedPKCS1v15)
+			//	fmt.Println("Signature verified: ", Verified)
+			//	fmt.Println("User has enough money: ", enoughBalance)
+			//
+			//}
+			if len(transactionJSON) > 0 {
+				newMpt.Insert(transaction.EventId, transactionJSON)
+				validateNonce := StringRandom(16)
+				hashPuzzle := string(blocks[0].Header.Hash) + string(validateNonce) + string(newMpt.GetRoot())
+				sum := sha3.Sum256([]byte(hashPuzzle))
+				if strings.HasPrefix(hex.EncodeToString(sum[:]), NONCE_ZERO) {
+					peerMapJson, _ := Peers.PeerMapToJson()
+					transactionJSON, _ = transaction.EncodeToJson()
+					heartBeatData := PrepareHeartBeatData(&SBC, Peers.GetSelfId(), peerMapJson, SELF_ADDR, true, validateNonce,
+						newMpt, &minerKey.PublicKey, isValidTransaction, transactionJSON)
+					heartBlock := Block{}
+					heartBlock.DecodeFromJSON(heartBeatData.BlockJson)
+					fmt.Println("heartBlock.Root:", string(heartBlock.Value.GetRoot()))
+					testPuzzle := string(heartBlock.Header.ParentHash) + string(heartBlock.Header.Nonce) + string(heartBlock.Value.GetRoot())
+					sum = sha3.Sum256([]byte(testPuzzle))
+					//SendHeartBeatToSelf(heartBeatData)  // todo :test
+					SBC.Insert(heartBlock) //todo: test
+					ForwardHeartBeat(heartBeatData)
+					isValidTransaction = false
+					TxPool.DeleteFromTransactionPool(transaction.EventId)
+					if STOP_GEN_BLOCK {
+						fmt.Println("Stop Generating Block.")
+						goto GetLatestBlock
+					}
 				}
 			}
+
 		} else {
 		}
 	}
@@ -565,75 +586,22 @@ func Event(w http.ResponseWriter, r *http.Request) {
 	//fmt.Println("PWD:",dir)
 	//http.ServeFile(w, r, "Event.html")
 	case "POST":
+		//read request body
+		body, err := readRequestBody(r)
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+		}
 
-		//if err := r.ParseForm(); err != nil {
-		//	fmt.Fprintf(w, "ParseForm() err: %v", err)
-		//	return
-		//}
-		//fmt.Fprintf(w, "HTTP Post = %v\n", r.PostForm)
-		//eventName := r.FormValue("eventName")
-		////eventDate := r.FormValue("eventDate")
-		//eventDescription := r.FormValue("eventDescription")
-		////fmt.Fprintf(w, "Event ID: %s\n", eventId)
-		//fmt.Fprintf(w, "Event Name: %s\n", eventName)
-		////fmt.Fprintf(w, "Event Date: %d\n", eventDate)
-		//fmt.Fprintf(w, "Event Description: %s\n", eventDescription)
+		//convert json in body to tx
+		tx := TransactionFromJSON(body)
 
-		// todo : logic to read request body and parse it to transaction
+		fmt.Println("Received body : " + string(body))
 
-		eventName := "default"
-		eventDescription := "default"
-		eventId := StringRandom(16)
-		Timestamp := time.Now().Unix()
-
-		SupplierName := "default"
-		SupplierId := "default"
-		SupplierAddress := "default"
-		ConsumerName := "default"
-		ConsumerId := "default"
-		ConsumerAddress := "default"
-		PowerUnits := "default"
-		EventType := "default"
-
-		buf := bytes.Buffer{}
-		//ToDo To be removed
-		buf.WriteString(eventName)
-		buf.WriteString(eventDescription)
-
-		//buf.WriteString(SupplierName)
-		//buf.WriteString(SupplierId)
-		//buf.WriteString(SupplierAddress)
-		//buf.WriteString(ConsumerName)
-		//buf.WriteString(ConsumerId)
-		//buf.WriteString(ConsumerAddress)
-		//buf.WriteString(PowerUnits)
-		//buf.WriteString(ConsumerAddress)
-		//buf.WriteString(EventType)
-
-		//result := buf.String()
-		PowerFee := 50 //bcdata.PowerFeeCalculation(result) // todo : change logic to - require * supplier
-		/*Block Validation */
-		if Balance-PowerFee >= 0 {
-			Balance = Balance - PowerFee
-			//minershortKey:= rsa.PublicKey{}
-			//newTransactionObject := data.NewTransaction(eventId, &minerKey.PublicKey, eventName, newTimestamp, eventDescription, transactionFee, userBalance)
-			newTransactionObject := NewTransaction(eventId, SupplierName, SupplierId, SupplierAddress, ConsumerName, ConsumerId, ConsumerAddress, PowerUnits, Timestamp, PowerFee, Balance, EventType)
-			fmt.Println("Transaction:", newTransactionObject)
-			transactionJSON, _ := newTransactionObject.EncodeToJson()
-			fmt.Println("Transaction JSON:", transactionJSON)
-			if transactionReady {
-				encryptedPKCS1v15 := EncryptPKCS(&minerKey.PublicKey, transactionJSON)
-				fmt.Println("encryptedPKCS1v15 is:", encryptedPKCS1v15)
-				encryptedPKCS1v15Str := string(encryptedPKCS1v15)
-				h, hashed, signature := SignPKCS(encryptedPKCS1v15Str, minerKey) //Private Key
-				fmt.Println("User Signature is:", signature)
-				fmt.Println("h is:", h)
-				fmt.Println("hashed is:", hashed)
-			}
-			go TxPool.AddToTransactionPool(newTransactionObject)
-			fmt.Fprintf(w, "User's has enough balance to add Transaction !-) Balance = %d\n", Balance)
+		if tx.EventId != "" {
+			go TxPool.AddToTransactionPool(tx)
+			fmt.Fprintf(w, "Tx added to pool !-) Balance = %d\n", Balance)
 		} else {
-			fmt.Fprintf(w, "User's has not got enough balance to add Transaction! Sorry!Balance = %d\n", Balance)
+			w.WriteHeader(http.StatusBadRequest)
 		}
 	default:
 		fmt.Fprintf(w, "FATAL: Wrong HTTP Request!")
@@ -669,4 +637,13 @@ func QueryEvent(w http.ResponseWriter, r *http.Request) {
 	default:
 		fmt.Fprintf(w, "Wrong method !")
 	}
+}
+
+func readRequestBody(r *http.Request) ([]byte, error) {
+	reqBody, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		return []byte{}, errors.New("cannot read request body")
+	}
+	defer r.Body.Close()
+	return reqBody, nil
 }

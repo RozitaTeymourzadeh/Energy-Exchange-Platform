@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"net/http"
+	"strconv"
 )
 
 func driverSupplierChargeUpdate() {
@@ -75,17 +76,34 @@ func driverConsumerRequireUpdate() {
 		//data.SetRequire(max - threshold)
 		SetRequire(threshold + 250 - consumerCharge)
 		fmt.Println("Require value : ", GetRequire())
-		if GetHasAsked() == false {
-			//todo : send requirement tx to blockchain, check isReceiving
-			uri := "http//:" + GetNodeId().Address + ":" + GetNodeId().Port + "/postevent"
-			body := "ok" //todo : create consumer transaction
-			fmt.Println("driverConsumerRequireUpdate : " + uri)
-			http.Post(uri, "application/json", bytes.NewBuffer([]byte(body)))
+		fmt.Println("HasAsked value : ", GetHasAsked())
+		if GetHasAsked() == false && GetRequire() > 0 {
+			newTx := NewTransaction("require", GetConsumeDeviceName(), GetConsumeDeviceId(), GetConsumeDeviceAddress(),
+				strconv.Itoa(GetRequire()), strconv.Itoa(GetConsumerCharge()), strconv.Itoa(GetConsumerDischargeRate()), strconv.Itoa(GetBuyRate()),
+				"", "", "", "", "", "", Balance)
+			eventId := newTx.GetEventId()
+			newTx.EventId = eventId
+			go sendTxToAll(newTx) //todo : send requirement tx to blockchain, check isReceiving
 
 		}
-		SetHasAsked(true)
 
 	}
+}
+
+func sendTxToAll(newTx Transaction) {
+	body, err := newTx.TransactionToJSON()
+	if err == nil {
+		uri := "http://" + GetNodeId().Address + ":" + GetNodeId().Port + "/postevent"
+		fmt.Println("require tx to : " + uri)
+		http.Post(uri, "application/json", bytes.NewBuffer(body))
+		SetHasAsked(true)
+		for peer, _ := range Peers.Copy() {
+			uri := "http//:" + peer + "/postevent"
+			fmt.Println("require tx to : " + uri)
+			http.Post(uri, "application/json", bytes.NewBuffer(body))
+		}
+	}
+
 }
 
 func driverSellRateUpdate() {

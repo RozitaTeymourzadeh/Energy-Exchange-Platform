@@ -3,6 +3,9 @@ package driver
 import (
 	//"bytes"
 	"fmt"
+	"runtime"
+	"strconv"
+
 	//"github.com/edgexfoundry/device-simple/driver"
 	"html/template"
 	"log"
@@ -156,7 +159,7 @@ func ReadDeviceData(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println("coreDataEvent:")
 	for _, coreDataEvent := range cdes.DataEvents {
-		fmt.Println(string(coreDataEvent.CoreDataEventToJson()))
+		//fmt.Println(string(coreDataEvent.CoreDataEventToJson()))
 		DeviceEventsDS.AddToDeviceEvents(coreDataEvent)
 	}
 
@@ -171,4 +174,15 @@ func ReadDeviceData(w http.ResponseWriter, r *http.Request) {
 	//_ , _ = w.Write([]byte(DeviceEventsDS.ShowDevice(vars["deviceName"])))
 	_, _ = w.Write([]byte(DeviceEventsDS.ShowDeviceEvents(vars["deviceName"])))
 
+}
+
+// get the count of number of go routines in the system.
+func countGoRoutines() int {
+	return runtime.NumGoroutine()
+}
+
+func getGoroutinesCountHandler(w http.ResponseWriter, r *http.Request) {
+	// Get the count of number of go routines running.
+	count := countGoRoutines()
+	w.Write([]byte(strconv.Itoa(count)))
 }

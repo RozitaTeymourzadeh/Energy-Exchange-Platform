@@ -7,6 +7,12 @@ import (
 )
 
 type ConsumeDevice struct {
+
+	// todo add
+	ConsumeDeviceName    string
+	ConsumeDeviceId      string
+	ConsumeDeviceAddress string
+	//
 	consumerCharge        int
 	consumerDischargeRate int
 	require               int
@@ -45,6 +51,18 @@ func GetConsumeDevice() *ConsumeDevice {
 
 	})
 	return consumeDevice
+}
+
+func GetConsumeDeviceName() string {
+	return consumeDevice.ConsumeDeviceName
+}
+
+func GetConsumeDeviceId() string {
+	return consumeDevice.ConsumeDeviceId
+}
+
+func GetConsumeDeviceAddress() string {
+	return consumeDevice.ConsumeDeviceAddress
 }
 
 func GetConsumerCharge() int {
@@ -89,6 +107,22 @@ func GetConsumerMaxCharge() int {
 
 func GetBuyThreshold() int {
 	return consumeDevice.buyThreshold
+}
+
+func SetConsumeDeviceName(change string) {
+	consumeDevice.mux.Lock()
+	defer consumeDevice.mux.Unlock()
+	consumeDevice.ConsumeDeviceName = change
+}
+func SetConsumeDeviceId(change string) {
+	consumeDevice.mux.Lock()
+	defer consumeDevice.mux.Unlock()
+	consumeDevice.ConsumeDeviceId = change
+}
+func SetConsumeDeviceAddress(change string) {
+	consumeDevice.mux.Lock()
+	defer consumeDevice.mux.Unlock()
+	consumeDevice.ConsumeDeviceAddress = change
 }
 
 func SetConsumerCharge(change int) {

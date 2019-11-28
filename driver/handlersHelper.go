@@ -1,11 +1,9 @@
 package driver
 
 import (
-	"bytes"
 	"fmt"
 	//"github.com/edgexfoundry/device-simple/driver/data"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -25,6 +23,16 @@ func GetSelfDevices() {
 	for _, device := range deviceList.Devices {
 		device.PeerId = GetNodeId().Address + ":" + GetNodeId().Port
 		SELFDEVICES.Devices[device.Id] = device
+		if strings.HasPrefix(device.Name, "Supply") {
+			SetSupplyDeviceName(device.Name)
+			SetSupplyDeviceId(device.Id)
+			SetSupplyDeviceAddress(GetNodeId().Address + ":" + GetNodeId().Port)
+		}
+		if strings.HasPrefix(device.Name, "Consume") {
+			SetConsumeDeviceName(device.Name)
+			SetConsumeDeviceId(device.Id)
+			SetConsumeDeviceAddress(GetNodeId().Address + ":" + GetNodeId().Port)
+		}
 	}
 }
 
@@ -112,7 +120,7 @@ func generateConsumeDeviceTypeBoard(deviceType string) []DeviceTypeDetails {
 			}
 			defer resp.Body.Close()
 			bytesRead, _ := ioutil.ReadAll(resp.Body)
-			fmt.Println("CoreDataEventsFromJson : !!! ::: " + string(bytesRead))
+			//fmt.Println("CoreDataEventsFromJson : !!! ::: " + string(bytesRead))
 
 			cdes := CoreDataEventsFromJson(bytesRead)
 			if len(cdes.DataEvents) > 0 && strings.Contains(strings.ToLower(cdes.DataEvents[0].Device), strings.ToLower(deviceType)) {
@@ -152,49 +160,49 @@ func generateConsumeDeviceTypeBoard(deviceType string) []DeviceTypeDetails {
 	return sl
 }
 
-func sendTransactionToSupplier(tx Transaction) {
-	txJson, err := tx.TransactionToJSON()
-	if err != nil {
-		log.Print("Cannot create transaction")
-		return
-	}
+//func sendTransactionToSupplier(tx Transaction) {
+//	txJson, err := tx.TransactionToJSON()
+//	if err != nil {
+//		log.Print("Cannot create transaction")
+//		return
+//	}
+//
+//	//uri := "http://localhost:48081/api/v1/deviceprofile/id/" + vars["deviceId"]
+//	//uri := "http://" + tx.SupplierAddress + ":9999/suppliertx"
+//	uri := "http://" + tx.SupplierAddress + "/suppliertx"
+//	log.Println("sending post req to : " + uri)
+//	client := &http.Client{}
+//	// creating request
+//	req, _ := http.NewRequest(http.MethodPost, uri, bytes.NewBuffer(txJson))
+//	// fetching response
+//	resp, err := client.Do(req)
+//	if err != nil {
+//		fmt.Println("error in reading response body in start reading")
+//	}
+//	defer resp.Body.Close()
+//}
 
-	//uri := "http://localhost:48081/api/v1/deviceprofile/id/" + vars["deviceId"]
-	//uri := "http://" + tx.SupplierAddress + ":9999/suppliertx"
-	uri := "http://" + tx.SupplierAddress + "/suppliertx"
-	log.Println("sending post req to : " + uri)
-	client := &http.Client{}
-	// creating request
-	req, _ := http.NewRequest(http.MethodPost, uri, bytes.NewBuffer(txJson))
-	// fetching response
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Println("error in reading response body in start reading")
-	}
-	defer resp.Body.Close()
-}
-
-func sendTransactionToConsumer(tx Transaction) {
-	txJson, err := tx.TransactionToJSON()
-	if err != nil {
-		log.Print("Cannot create transaction")
-		return
-	}
-
-	//uri := "http://localhost:48081/api/v1/deviceprofile/id/" + vars["deviceId"]
-	//uri := "http://" + tx.ConsumerAddress + ":9999/consumertx"
-	uri := "http://" + tx.ConsumerAddress + "/consumertx"
-	log.Println("sending post req to : " + uri)
-	client := &http.Client{}
-	// creating request
-	req, _ := http.NewRequest(http.MethodPost, uri, bytes.NewBuffer(txJson))
-	// fetching response
-	resp, err := client.Do(req)
-	if err != nil {
-		fmt.Println("error in reading response body in start reading")
-	}
-	defer resp.Body.Close()
-}
+//func sendTransactionToConsumer(tx Transaction) {
+//	txJson, err := tx.TransactionToJSON()
+//	if err != nil {
+//		log.Print("Cannot create transaction")
+//		return
+//	}
+//
+//	//uri := "http://localhost:48081/api/v1/deviceprofile/id/" + vars["deviceId"]
+//	//uri := "http://" + tx.ConsumerAddress + ":9999/consumertx"
+//	uri := "http://" + tx.ConsumerAddress + "/consumertx"
+//	log.Println("sending post req to : " + uri)
+//	client := &http.Client{}
+//	// creating request
+//	req, _ := http.NewRequest(http.MethodPost, uri, bytes.NewBuffer(txJson))
+//	// fetching response
+//	resp, err := client.Do(req)
+//	if err != nil {
+//		fmt.Println("error in reading response body in start reading")
+//	}
+//	defer resp.Body.Close()
+//}
 
 //func generateDeviceTypeBoard(deviceType string) []data.DeviceTypeDetails {
 //

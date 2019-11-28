@@ -7,6 +7,12 @@ import (
 )
 
 type SupplyDevice struct {
+
+	// todo add
+	SupplyDeviceName    string
+	SupplyDeviceId      string
+	SupplyDeviceAddress string
+	//
 	supplierCharge     int
 	supplierChargeRate int
 	supplyRate         int
@@ -46,6 +52,18 @@ func GetSupplyDevice() *SupplyDevice {
 
 	})
 	return supplyDevice
+}
+
+func GetSupplyDeviceName() string {
+	return supplyDevice.SupplyDeviceName
+}
+
+func GetSupplyDeviceId() string {
+	return supplyDevice.SupplyDeviceId
+}
+
+func GetSupplyDeviceAddress() string {
+	return supplyDevice.SupplyDeviceAddress
 }
 
 func GetSupplierCharge() int {
@@ -94,6 +112,22 @@ func GetSupplierMaxCharge() int {
 
 func GetSellThreshold() int {
 	return supplyDevice.sellThreshold
+}
+
+func SetSupplyDeviceName(change string) {
+	supplyDevice.mux.Lock()
+	defer supplyDevice.mux.Unlock()
+	supplyDevice.SupplyDeviceName = change
+}
+func SetSupplyDeviceId(change string) {
+	supplyDevice.mux.Lock()
+	defer supplyDevice.mux.Unlock()
+	supplyDevice.SupplyDeviceId = change
+}
+func SetSupplyDeviceAddress(change string) {
+	supplyDevice.mux.Lock()
+	defer supplyDevice.mux.Unlock()
+	supplyDevice.SupplyDeviceAddress = change
 }
 
 func SetSupplierCharge(change int) {

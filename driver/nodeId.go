@@ -40,6 +40,11 @@ func (nid *nodeId) SetEdgeXAddress(edgeAddress string) {
 	nid.EdgeXAddress = edgeAddress
 }
 
+func (nid *nodeId) GetAddressPort() string {
+	fmt.Println(nid.Address + ":" + nid.Port)
+	return nid.Address + ":" + nid.Port
+}
+
 func (nid *nodeId) GetPeers() []PeerInfo {
 	for _, peer := range nid.Peers {
 		fmt.Println("IP: " + peer.IpAdd)

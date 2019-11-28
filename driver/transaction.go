@@ -1,11 +1,14 @@
 package driver
 
 import (
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
+	"golang.org/x/crypto/sha3"
 	"log"
 	"sync"
+	"time"
 )
 
 /* Transaction Struct
@@ -24,18 +27,28 @@ import (
 //}
 
 type Transaction struct {
-	EventId         string `json:"eventId"`
-	SupplierName    string `json:"supplierName"`
-	SupplierId      string `json:"supplierId"`
-	SupplierAddress string `json:"supplierAddress"`
-	ConsumerName    string `json:"consumerName"`
-	ConsumerId      string `json:"consumerId"`
-	ConsumerAddress string `json:"consumerAddress"`
-	PowerUnits      string `json:"powerUnits"`
-	Timestamp       int64  `json:"eventDate"`
-	PowerFee        int    `json:"powerFee"`
-	Balance         int    `json:"balance"`
-	EventType       string `json:"eventType"` // requirement , supply
+	EventType string `json:"eventType"` // require , supply
+	EventId   string `json:"eventId"`
+	Timestamp int64  `json:"eventDate"`
+	// only for requirement tx
+	ConsumerName          string `json:"consumerName"`
+	ConsumerId            string `json:"consumerId"`
+	ConsumerAddress       string `json:"consumerAddress"`
+	ConsumerRequire       string `json:"consumerRequire"`
+	ConsumerCharge        string `json:"consumerCharge"`
+	ConsumerDischargeRate string `json:"consumerDischargeCharge"`
+	BuyRate               string `json:"buyRate"`
+	// for supply
+	RequireEventId     string `json:"requirementEventId"`
+	SupplierName       string `json:"supplierName"`
+	SupplierId         string `json:"supplierId"`
+	SupplierAddress    string `json:"supplierAddress"`
+	SupplierToSupply   string `json:"supplierToSupply"`
+	SupplierSupplyRate string `json:"supplierSupplyRate"`
+	//PowerUnits      string `json:"powerUnits"`
+
+	EventFee int `json:"eventFee"`
+	Balance  int `json:"balance"`
 }
 
 /* TransactionPool Struct
@@ -54,23 +67,39 @@ type TransactionPool struct {
 * To return new transaction data
 *
  */
-func NewTransaction(EventId string, SupplierName string, SupplierId string, SupplierAddress string,
-	ConsumerName string, ConsumerId string, ConsumerAddress string,
-	PowerUnits string, Timestamp int64, PowerFee int, Balance int, EventType string) Transaction {
+func NewTransaction(eventType string, consumerName string, consumerId string, consumerAddress string, consumerRequire string,
+	consumerCharge string, consumerDischargeRate string, buyRate string, requireEventId string, supplierName string, supplierId string,
+	supplierAddress string, supplierToSupply string, supplierSupplyRate string, balance int) Transaction {
 	return Transaction{
-		EventId:         EventId,
-		SupplierName:    SupplierName,
-		SupplierId:      SupplierId,
-		SupplierAddress: SupplierAddress,
-		ConsumerName:    ConsumerName,
-		ConsumerId:      ConsumerId,
-		ConsumerAddress: ConsumerAddress,
-		PowerUnits:      PowerUnits,
-		Timestamp:       Timestamp,
-		PowerFee:        PowerFee,
-		Balance:         Balance,
-		EventType:       EventType,
+		EventType:             eventType,
+		EventId:               "",
+		Timestamp:             time.Now().Unix(),
+		ConsumerName:          consumerName,
+		ConsumerId:            consumerId,
+		ConsumerAddress:       consumerAddress,
+		ConsumerRequire:       consumerRequire,
+		ConsumerCharge:        consumerCharge,
+		ConsumerDischargeRate: consumerDischargeRate,
+		BuyRate:               buyRate,
+		RequireEventId:        requireEventId,
+		SupplierName:          supplierName,
+		SupplierId:            supplierId,
+		SupplierAddress:       supplierAddress,
+		SupplierToSupply:      supplierToSupply,
+		SupplierSupplyRate:    supplierSupplyRate,
+		EventFee:              1,
+		Balance:               balance,
 	}
+}
+
+func (tx *Transaction) GetEventId() string {
+	jsonbarr, err := json.Marshal(&tx)
+	if err != nil {
+		fmt.Println("Cannot create Event id, " + err.Error())
+		return ""
+	}
+	eventId := sha3.Sum256(jsonbarr)
+	return hex.EncodeToString(eventId[:])
 }
 
 /* TransactionFeeCalculation()
@@ -171,13 +200,21 @@ func (txp *TransactionPool) GetTransactionPoolMap() map[string]Transaction {
 func (txp *TransactionPool) GetOneTxFromPool(TxPool TransactionPool, userBalance int) *Transaction {
 
 	if len(TxPool.GetTransactionPoolMap()) > 0 {
-		for _, transactionObject := range TxPool.GetTransactionPoolMap() {
-			if userBalance >= transactionObject.PowerFee {
-				transactionObject.Balance = transactionObject.Balance - transactionObject.PowerFee
-				//TODO check how to add
-				//fmt.Println("transactionObject.Balance:",transactionObject.Balance)
-				return &transactionObject
+		for _, tx := range TxPool.GetTransactionPoolMap() {
+			if tx.EventType == "require" {
+				return &tx
 			}
+			if tx.EventType == "supply" {
+				if tx.SupplierToSupply > tx.ConsumerRequire {
+					return &tx
+				}
+			}
+			//if userBalance >= transactionObject.EventFee {
+			//	transactionObject.Balance = transactionObject.Balance - transactionObject.EventFee
+			//	//TODO check how to add
+			//	//fmt.Println("transactionObject.Balance:",transactionObject.Balance)
+			//	return &transactionObject
+			//}
 		}
 	}
 	return nil

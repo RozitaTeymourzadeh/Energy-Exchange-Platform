@@ -1,15 +1,12 @@
 package driver
 
 import (
-	"errors"
 	"fmt"
 	//"github.com/edgexfoundry/device-simple/driver/data"
 	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
-	"strconv"
 	"time"
 )
 
@@ -46,8 +43,8 @@ func makeDecision() {
 
 	} else {
 
-		//str := "Dummy makeDecisionHandlerHelper : todo : makeDecisionHandlerHelper()" //todo : makeDecisionHandlerHelper()
-		str := makeDecisionHandlerHelper()
+		str := "Dummy makeDecisionHandlerHelper : todo : makeDecisionHandlerHelper()" //todo : makeDecisionHandlerHelper()
+		//str := makeDecisionHandlerHelper()
 		fmt.Println(str)
 
 	} // end of else
@@ -139,62 +136,62 @@ func SendDeviceEvents(w http.ResponseWriter, r *http.Request) {
 	}
 	defer resp.Body.Close()
 	bytesRead, _ := ioutil.ReadAll(resp.Body)
-	fmt.Println(string(bytesRead))
+	//fmt.Println(string(bytesRead))
 
 	w.WriteHeader(http.StatusOK)
 	w.Write(bytesRead)
 
 }
 
-func SupplierTx(w http.ResponseWriter, r *http.Request) {
-	log.Println("Supplier tx recv'ed")
-
-	bytesRead, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		log.Println(errors.New("error in reading req body of SupplierTx"))
-	}
-	defer r.Body.Close()
-
-	tx := TransactionFromJSON(bytesRead)
-
-	//pwd, _ := os.Getwd()
-	//fmt.Println("Current working dir is : " + pwd)
-
-	changeValue, err := strconv.Atoi(tx.PowerUnits)
-	if err != nil {
-		log.Println(errors.New("Cannot read Change value in param: " + tx.PowerUnits))
-	}
-
-	//parser.UpdateValueInFile("../../cmd/device-simple/supplierChargeValue.txt", -changeValue)
-	newVal := GetSupplierCharge() - changeValue
-	SetSupplierCharge(newVal)
-
-	sendTransactionToConsumer(tx)
-}
-
-func ConsumerTx(w http.ResponseWriter, r *http.Request) {
-	log.Println("Consumer tx recv'ed")
-
-	bytesRead, err := ioutil.ReadAll(r.Body)
-	if err != nil {
-		log.Println(errors.New("error in reading req body of ConsumerTx"))
-	}
-	defer r.Body.Close()
-
-	tx := TransactionFromJSON(bytesRead)
-
-	pwd, _ := os.Getwd()
-	fmt.Println("Current working dir is : " + pwd)
-
-	changeValue, err := strconv.Atoi(tx.PowerUnits)
-	if err != nil {
-		log.Println(errors.New("Cannot read Change value in param: " + tx.PowerUnits))
-	}
-
-	//parser.UpdateValueInFile("../../cmd/device-simple/consumerChargeValue.txt", changeValue)
-	newVal := GetConsumerCharge() + changeValue
-	SetConsumerCharge(newVal)
-}
+//func SupplierTx(w http.ResponseWriter, r *http.Request) {
+//	log.Println("Supplier tx recv'ed")
+//
+//	bytesRead, err := ioutil.ReadAll(r.Body)
+//	if err != nil {
+//		log.Println(errors.New("error in reading req body of SupplierTx"))
+//	}
+//	defer r.Body.Close()
+//
+//	tx := TransactionFromJSON(bytesRead)
+//
+//	//pwd, _ := os.Getwd()
+//	//fmt.Println("Current working dir is : " + pwd)
+//
+//	changeValue, err := strconv.Atoi(tx.PowerUnits)
+//	if err != nil {
+//		log.Println(errors.New("Cannot read Change value in param: " + tx.PowerUnits))
+//	}
+//
+//	//parser.UpdateValueInFile("../../cmd/device-simple/supplierChargeValue.txt", -changeValue)
+//	newVal := GetSupplierCharge() - changeValue
+//	SetSupplierCharge(newVal)
+//
+//	sendTransactionToConsumer(tx)
+//}
+//
+//func ConsumerTx(w http.ResponseWriter, r *http.Request) {
+//	log.Println("Consumer tx recv'ed")
+//
+//	bytesRead, err := ioutil.ReadAll(r.Body)
+//	if err != nil {
+//		log.Println(errors.New("error in reading req body of ConsumerTx"))
+//	}
+//	defer r.Body.Close()
+//
+//	tx := TransactionFromJSON(bytesRead)
+//
+//	pwd, _ := os.Getwd()
+//	fmt.Println("Current working dir is : " + pwd)
+//
+//	changeValue, err := strconv.Atoi(tx.PowerUnits)
+//	if err != nil {
+//		log.Println(errors.New("Cannot read Change value in param: " + tx.PowerUnits))
+//	}
+//
+//	//parser.UpdateValueInFile("../../cmd/device-simple/consumerChargeValue.txt", changeValue)
+//	newVal := GetConsumerCharge() + changeValue
+//	SetConsumerCharge(newVal)
+//}
 
 //// moved from handlers.go
 

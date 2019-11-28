@@ -106,20 +106,20 @@ var routes = Routes{
 		"/sendDeviceEvents/{deviceName}/{noOfReadings}",
 		SendDeviceEvents,
 	},
-	Route{
-		"SupplierTx",
-		"POST",
-		"/suppliertx",
-		SupplierTx,
-		//	localhost:9999/suppliertx
-	},
-	Route{
-		"ConsumerTx",
-		"POST",
-		"/consumertx",
-		ConsumerTx,
-		//	localhost:9999/consumertx
-	},
+	//Route{
+	//	"SupplierTx",
+	//	"POST",
+	//	"/suppliertx",
+	//	SupplierTx,
+	//	//	localhost:9999/suppliertx
+	//},
+	//Route{
+	//	"ConsumerTx",
+	//	"POST",
+	//	"/consumertx",
+	//	ConsumerTx,
+	//	//	localhost:9999/consumertx
+	//},
 
 	/////////blockchain
 	Route{
@@ -182,5 +182,11 @@ var routes = Routes{
 		"POST",
 		"/postQueryEvent",
 		QueryEvent,
+	},
+	Route{
+		"getGoroutinesCountHandler",
+		"GET",
+		"/_count",
+		getGoroutinesCountHandler,
 	},
 }
