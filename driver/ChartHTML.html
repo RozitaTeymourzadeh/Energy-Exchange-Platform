@@ -32,6 +32,10 @@
         var newcharge1 = [10, 20, 30, 40, 50, 60, 70];
         var oldcharge2 = [99, 80, 75, 62, 50, 40, 35];
         var newcharge2 = [5, 15, 55, 40, 10, 50, 25];
+        var oldcharge3 = [39, 80, 25, 62, 10, 15, 38];
+        var newcharge3 = [15, 25, 65, 30, 10, 55, 10];
+        var oldcharge4 = [90, 80, 70, 10, 20, 30, 35];
+        var newcharge4 = [13, 15, 25, 30, 40, 50, 65];
         var ctx = document.getElementById('myChart').getContext('2d');
         var chart = new Chart(ctx, {
         // The type of chart we want to create
@@ -50,6 +54,16 @@
                 // backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(102,174,255)',
                 data: oldcharge2,
+            }, {
+                label: 'Device C Charge Level',
+                // backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(54,255,49)',
+                data: oldcharge3,
+            }, {
+                label: 'Device D Charge Level',
+                // backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(197,104,255)',
+                data: oldcharge4,
             }]
         },
 
@@ -60,6 +74,8 @@
         function updateChart(){
             chart.data.datasets[0].data = newcharge1;
             chart.data.datasets[1].data = newcharge2;
+            chart.data.datasets[2].data = newcharge3;
+            chart.data.datasets[3].data = newcharge4;
             chart.update();
         }
 
