@@ -15,7 +15,9 @@
     <div class="col-md-6 offset-md-3">
         <div class="card">
             <div class="card-body">
-                <h3>Device Charge<button class="btn btn-success" onclick="updateChart()">Update</button></h3>
+                <h3>Device Charge<button class="btn btn-success" onclick="updateChart()">Update</button>
+                    <button class="btn btn-info" onclick="addValue()">Next</button>
+                </h3>
             </div>
             <div class="card-body">
                 <canvas id="myChart"></canvas>
@@ -77,7 +79,21 @@
             chart.data.datasets[2].data = newcharge3;
             chart.data.datasets[3].data = newcharge4;
             chart.update();
-        }
+        };
+
+        // pop = remove last value
+        // shift = remove first value
+        // unshift = add the value at the very begining of the array
+        // push = add the value at the very end of the array
+
+        function  addValue() {
+            // chart.data.datasets[0].data.shift();
+            chart.data.datasets[0].data.shift();
+            chart.data.datasets[0].data.push(999);
+            chart.data.labels.push("January");
+            chart.update();
+
+        };
 
     </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
