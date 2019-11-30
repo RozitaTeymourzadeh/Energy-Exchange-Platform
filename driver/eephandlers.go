@@ -1,6 +1,8 @@
 package driver
 
 import (
+	"strings"
+
 	//"bytes"
 	"fmt"
 	"runtime"
@@ -34,6 +36,10 @@ var SELFDEVICES = NewDeviceMap()
 var SUPPLYDEVICEDETAILS = make([]DeviceTypeDetails, 0)
 var CONSUMEDEVICEDETAILS = make([]DeviceTypeDetails, 0)
 var TRANSACTIONS = make([]Transaction, 0)
+
+/// new datastructures
+var LASTREADFORHEIGHT = 1
+var OPENCONSUMETXS = NewTransactionPool() //make(map[string]Transaction)
 
 //var PageVars = resources.NewPageVars()
 
@@ -185,4 +191,14 @@ func getGoroutinesCountHandler(w http.ResponseWriter, r *http.Request) {
 	// Get the count of number of go routines running.
 	count := countGoRoutines()
 	w.Write([]byte(strconv.Itoa(count)))
+}
+
+func OpenConsumerTx(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	sb := strings.Builder{}
+	sb.WriteString("OpenConsumerTxs:\n\n")
+	for _, tx := range OPENCONSUMETXS.Pool {
+		sb.WriteString(tx.EventId)
+	}
+	w.Write([]byte(sb.String()))
 }

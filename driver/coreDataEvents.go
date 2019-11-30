@@ -29,7 +29,7 @@ func CoreDataEventsFromJson(jsonbytes []byte) *CoreDataEvents {
 	cdes := CoreDataEvents{
 		DataEvents: []CoreDataEvent{},
 	}
-	fmt.Println("Recv in CoreDataEventsFromJson : \n", string(jsonbytes))
+	//fmt.Println("Recv in CoreDataEventsFromJson : \n", string(jsonbytes))
 	err := json.Unmarshal(jsonbytes, &cdes.DataEvents)
 	if err != nil {
 		fmt.Println("Error in FromJson of coreDataEvents.go")

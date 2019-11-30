@@ -70,7 +70,7 @@ type TransactionPool struct {
 func NewTransaction(eventType string, consumerName string, consumerId string, consumerAddress string, consumerRequire string,
 	consumerCharge string, consumerDischargeRate string, buyRate string, requireEventId string, supplierName string, supplierId string,
 	supplierAddress string, supplierToSupply string, supplierSupplyRate string, balance int) Transaction {
-	return Transaction{
+	tx := Transaction{
 		EventType:             eventType,
 		EventId:               "",
 		Timestamp:             time.Now().Unix(),
@@ -90,6 +90,10 @@ func NewTransaction(eventType string, consumerName string, consumerId string, co
 		EventFee:              1,
 		Balance:               balance,
 	}
+	eventId := tx.GetEventId()
+	tx.EventId = eventId
+
+	return tx
 }
 
 func (tx *Transaction) GetEventId() string {
@@ -198,6 +202,8 @@ func (txp *TransactionPool) GetTransactionPoolMap() map[string]Transaction {
 *
  */
 func (txp *TransactionPool) GetOneTxFromPool(TxPool TransactionPool, userBalance int) *Transaction {
+	txp.mux.Lock()
+	defer txp.mux.Unlock()
 
 	if len(TxPool.GetTransactionPoolMap()) > 0 {
 		for _, tx := range TxPool.GetTransactionPoolMap() {
@@ -205,9 +211,9 @@ func (txp *TransactionPool) GetOneTxFromPool(TxPool TransactionPool, userBalance
 				return &tx
 			}
 			if tx.EventType == "supply" {
-				if tx.SupplierToSupply > tx.ConsumerRequire {
-					return &tx
-				}
+				//if tx.SupplierToSupply >= tx.ConsumerRequire {
+				return &tx
+				//}
 			}
 			//if userBalance >= transactionObject.EventFee {
 			//	transactionObject.Balance = transactionObject.Balance - transactionObject.EventFee

@@ -18,7 +18,7 @@ func driverSupplierChargeUpdate() {
 	if isSupplying > 0 {
 		if toSupply > supplyRate {
 			supplierCharge -= supplyRate
-			SetToSupply(-supplyRate)
+			SetToSupply(toSupply - supplyRate)
 		} else {
 			supplierCharge -= toSupply
 			SupplyCompleteCleanup()
@@ -40,7 +40,7 @@ func driverConsumerChargeUpdate() {
 		if toReceive > 0 {
 			if toReceive > toReceiveRate {
 				consumerCharge += toReceiveRate
-				SetToReceive(-toReceiveRate)
+				SetToReceive(toReceive - toReceiveRate)
 			} else {
 				consumerCharge += toReceive
 				ConsumeCompleteCleanup()
@@ -58,12 +58,8 @@ func driverSupplierSurplusUpdate() {
 	threshold := GetSellThreshold()
 	if supplierCharge > threshold {
 		SetSurplus(supplierCharge - threshold)
-		fmt.Println("Supplier value : ", GetSurplus())
-		if GetHasOffered() == false {
-			//todo : send surplus tx to blockchain, check isSupplying
-		}
-		SetHasOffered(true)
 	}
+	fmt.Println("Surplus value : ", GetSurplus())
 
 }
 
@@ -74,23 +70,21 @@ func driverConsumerRequireUpdate() {
 	threshold := GetBuyThreshold()
 	if consumerCharge < threshold {
 		//data.SetRequire(max - threshold)
-		SetRequire(threshold + 250 - consumerCharge)
+		SetRequire(threshold - consumerCharge)
 		fmt.Println("Require value : ", GetRequire())
 		fmt.Println("HasAsked value : ", GetHasAsked())
 		if GetHasAsked() == false && GetRequire() > 0 {
 			newTx := NewTransaction("require", GetConsumeDeviceName(), GetConsumeDeviceId(), GetConsumeDeviceAddress(),
 				strconv.Itoa(GetRequire()), strconv.Itoa(GetConsumerCharge()), strconv.Itoa(GetConsumerDischargeRate()), strconv.Itoa(GetBuyRate()),
 				"", "", "", "", "", "", Balance)
-			eventId := newTx.GetEventId()
-			newTx.EventId = eventId
-			go sendTxToAll(newTx) //todo : send requirement tx to blockchain, check isReceiving
+			go sendCnTxToAll(newTx) //todo : send requirement tx to blockchain, check isReceiving
 
 		}
 
 	}
 }
 
-func sendTxToAll(newTx Transaction) {
+func sendCnTxToAll(newTx Transaction) {
 	body, err := newTx.TransactionToJSON()
 	if err == nil {
 		uri := "http://" + GetNodeId().Address + ":" + GetNodeId().Port + "/postevent"

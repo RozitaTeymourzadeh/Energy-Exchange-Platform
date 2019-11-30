@@ -38,15 +38,15 @@ func GetConsumeDevice() *ConsumeDevice {
 		consumeDevice = &ConsumeDevice{}
 
 		consumeDevice.maxCharge = 1000
-		consumeDevice.buyThreshold = consumeDevice.maxCharge - 200 //todo : change
+		consumeDevice.buyThreshold = consumeDevice.maxCharge/2 + consumeDevice.maxCharge/4
 		consumeDevice.hasAsked = false
 		consumeDevice.consumerCharge = consumeDevice.maxCharge/2 + rand.Intn(consumeDevice.maxCharge/2)
-		consumeDevice.consumerDischargeRate = 5 + rand.Intn(5)
+		consumeDevice.consumerDischargeRate = 10 + rand.Intn(5)
 		consumeDevice.require = 0
 		consumeDevice.isReceiving = 0
 		consumeDevice.toReceive = 0
-		consumeDevice.buyRate = 10
-		consumeDevice.buyBaseRate = 10
+		consumeDevice.buyRate = 15
+		consumeDevice.buyBaseRate = 15
 		consumeDevice.toReceiveRate = 0
 
 	})

@@ -647,3 +647,14 @@ func readRequestBody(r *http.Request) ([]byte, error) {
 	defer r.Body.Close()
 	return reqBody, nil
 }
+
+func GetTxpool(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	sb := strings.Builder{}
+	sb.WriteString("Tx pool:\n\n")
+	for _, tx := range TxPool.Pool {
+		txJson, _ := tx.TransactionToJSON()
+		sb.WriteString(string(txJson) + "\n\n")
+	}
+	w.Write([]byte(sb.String()))
+}

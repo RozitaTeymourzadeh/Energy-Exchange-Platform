@@ -121,6 +121,13 @@ var routes = Routes{
 	//	//	localhost:9999/consumertx
 	//},
 
+	Route{
+		"OpenConsumerTx",
+		"GET",
+		"/opentx",
+		OpenConsumerTx,
+	},
+
 	/////////blockchain
 	Route{
 		"Canonical",
@@ -186,7 +193,13 @@ var routes = Routes{
 	Route{
 		"getGoroutinesCountHandler",
 		"GET",
-		"/_count",
+		"/count",
 		getGoroutinesCountHandler,
+	},
+	Route{
+		"GetTxpool",
+		"GET",
+		"/txpool",
+		GetTxpool,
 	},
 }

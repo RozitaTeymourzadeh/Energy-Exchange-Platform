@@ -39,11 +39,11 @@ func GetSupplyDevice() *SupplyDevice {
 		supplyDevice = &SupplyDevice{}
 
 		supplyDevice.maxCharge = 1000
-		supplyDevice.sellThreshold = supplyDevice.maxCharge / 2
+		supplyDevice.sellThreshold = supplyDevice.maxCharge / 4
 		supplyDevice.hasOffered = false
 		supplyDevice.supplierCharge = supplyDevice.maxCharge/2 + rand.Intn(supplyDevice.maxCharge/2)
-		supplyDevice.supplierChargeRate = 7
-		supplyDevice.supplyRate = 5 + rand.Intn(5)
+		supplyDevice.supplierChargeRate = 13 + rand.Intn(5)
+		supplyDevice.supplyRate = 11 + rand.Intn(5)
 		supplyDevice.surplus = 0
 		supplyDevice.isSupplying = 0
 		supplyDevice.toSupply = 0
