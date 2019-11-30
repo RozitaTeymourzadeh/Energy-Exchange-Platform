@@ -6,13 +6,14 @@ type PageVars struct {
 	SupplyDevicesDetails  []DeviceTypeDetails
 	ConsumeDevicesDetails []DeviceTypeDetails
 	Transactions          []Transaction
+
 	// transaction history :
 	Body string
 }
 
 func NewPageVars() PageVars {
 	pv := PageVars{
-		Title:                 "",
+		Title:                 "EEP",
 		DeviceList:            make([]Device, 0),
 		SupplyDevicesDetails:  make([]DeviceTypeDetails, 0),
 		ConsumeDevicesDetails: make([]DeviceTypeDetails, 0),
