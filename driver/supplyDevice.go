@@ -28,6 +28,9 @@ type SupplyDevice struct {
 	sellThreshold int
 
 	mux sync.RWMutex
+
+	last100SDReadings    []int
+	last100SDReadingsMux sync.RWMutex
 }
 
 var supplyDevice *SupplyDevice
@@ -36,7 +39,9 @@ var sonce sync.Once
 func GetSupplyDevice() *SupplyDevice {
 	sonce.Do(func() {
 		fmt.Println("Init SupplyDevice")
-		supplyDevice = &SupplyDevice{}
+		supplyDevice = &SupplyDevice{
+			last100SDReadings: []int{},
+		}
 
 		supplyDevice.maxCharge = 1000
 		supplyDevice.sellThreshold = supplyDevice.maxCharge / 4
@@ -112,6 +117,12 @@ func GetSupplierMaxCharge() int {
 
 func GetSellThreshold() int {
 	return supplyDevice.sellThreshold
+}
+
+func GetLast100SDReadings() []int {
+	supplyDevice.last100SDReadingsMux.Lock()
+	defer supplyDevice.last100SDReadingsMux.Unlock()
+	return supplyDevice.last100SDReadings
 }
 
 func SetSupplyDeviceName(change string) {
@@ -195,6 +206,15 @@ func SetSupplierMaxCharge(change int) {
 	supplyDevice.mux.Lock()
 	defer supplyDevice.mux.Unlock()
 	supplyDevice.maxCharge = change
+}
+
+func AddToLast100SDReadings(value int) {
+	supplyDevice.last100SDReadingsMux.Lock()
+	defer supplyDevice.last100SDReadingsMux.Unlock()
+	supplyDevice.last100SDReadings = append([]int{value}, supplyDevice.last100SDReadings...)
+	if len(supplyDevice.last100SDReadings) > 100 {
+		supplyDevice.last100SDReadings = supplyDevice.last100SDReadings[:100]
+	}
 }
 
 func SupplyCompleteCleanup() {

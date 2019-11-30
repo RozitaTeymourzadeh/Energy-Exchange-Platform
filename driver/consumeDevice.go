@@ -27,6 +27,9 @@ type ConsumeDevice struct {
 	buyThreshold  int
 
 	mux sync.RWMutex
+
+	last100CDReadings    []int
+	last100CDReadingsMux sync.RWMutex
 }
 
 var consumeDevice *ConsumeDevice
@@ -35,7 +38,9 @@ var conce sync.Once
 func GetConsumeDevice() *ConsumeDevice {
 	conce.Do(func() {
 		fmt.Println("Init ConsumeDevice")
-		consumeDevice = &ConsumeDevice{}
+		consumeDevice = &ConsumeDevice{
+			last100CDReadings: []int{},
+		}
 
 		consumeDevice.maxCharge = 1000
 		consumeDevice.buyThreshold = consumeDevice.maxCharge/2 + consumeDevice.maxCharge/4
@@ -107,6 +112,12 @@ func GetConsumerMaxCharge() int {
 
 func GetBuyThreshold() int {
 	return consumeDevice.buyThreshold
+}
+
+func GetLast100CDReadings() []int {
+	consumeDevice.last100CDReadingsMux.Lock()
+	defer consumeDevice.last100CDReadingsMux.Unlock()
+	return consumeDevice.last100CDReadings
 }
 
 func SetConsumeDeviceName(change string) {
@@ -184,6 +195,15 @@ func SetToReceiveRate(change int) {
 	consumeDevice.mux.Lock()
 	defer consumeDevice.mux.Unlock()
 	consumeDevice.toReceiveRate = change
+}
+
+func AddToLast100CDReadings(value int) {
+	consumeDevice.last100CDReadingsMux.Lock()
+	defer consumeDevice.last100CDReadingsMux.Unlock()
+	consumeDevice.last100CDReadings = append([]int{value}, consumeDevice.last100CDReadings...)
+	if len(consumeDevice.last100CDReadings) > 100 {
+		consumeDevice.last100CDReadings = consumeDevice.last100CDReadings[:100]
+	}
 }
 
 func ConsumeCompleteCleanup() {

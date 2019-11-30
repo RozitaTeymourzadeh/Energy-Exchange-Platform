@@ -1,6 +1,7 @@
 package driver
 
 import (
+	"encoding/json"
 	"strings"
 
 	//"bytes"
@@ -201,4 +202,28 @@ func OpenConsumerTx(w http.ResponseWriter, r *http.Request) {
 		sb.WriteString(tx.EventId)
 	}
 	w.Write([]byte(sb.String()))
+}
+
+func SendLast100SDReadings(w http.ResponseWriter, r *http.Request) {
+	readings := GetLast100SDReadings()
+	barr, err := json.Marshal(&readings)
+	if err != nil {
+		w.WriteHeader(http.StatusNoContent)
+		w.Write([]byte("no content"))
+	} else {
+		w.WriteHeader(http.StatusOK)
+		w.Write(barr)
+	}
+}
+
+func SendLast100CDReadings(w http.ResponseWriter, r *http.Request) {
+	readings := GetLast100CDReadings()
+	barr, err := json.Marshal(&readings)
+	if err != nil {
+		w.WriteHeader(http.StatusNoContent)
+		w.Write([]byte("no content"))
+	} else {
+		w.WriteHeader(http.StatusOK)
+		w.Write(barr)
+	}
 }

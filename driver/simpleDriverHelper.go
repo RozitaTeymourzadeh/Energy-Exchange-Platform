@@ -26,6 +26,7 @@ func driverSupplierChargeUpdate() {
 	}
 
 	SetSupplierCharge(supplierCharge)
+	AddToLast100SDReadings(supplierCharge)
 }
 
 func driverConsumerChargeUpdate() {
@@ -49,6 +50,7 @@ func driverConsumerChargeUpdate() {
 	}
 
 	SetConsumerCharge(consumerCharge)
+	AddToLast100CDReadings(consumerCharge)
 }
 
 func driverSupplierSurplusUpdate() {

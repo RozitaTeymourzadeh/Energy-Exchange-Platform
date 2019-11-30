@@ -127,6 +127,18 @@ var routes = Routes{
 		"/opentx",
 		OpenConsumerTx,
 	},
+	Route{
+		"SendLast100SDReadings",
+		"GET",
+		"/getsdreadings",
+		SendLast100SDReadings,
+	},
+	Route{
+		"SendLast100CDReadings",
+		"GET",
+		"/getcdreadings",
+		SendLast100CDReadings,
+	},
 
 	/////////blockchain
 	Route{
