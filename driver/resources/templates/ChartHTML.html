@@ -126,8 +126,10 @@
 
     <script>
 
-        function getData() {
-            const Url='http://10.7.52.166:6686/getsdreadings';
+        const Url1='http://10.7.52.166:6686/getsdreadings';
+        const Url2='http://10.7.52.166:6686/getcdreadings';
+        function getData(url, ds) {
+
             $.ajax({
                 url: Url,
                 crossDomain: true,
@@ -135,7 +137,8 @@
                 type: 'get',
                 success: function (responseData, textStatus, jqXHR) {
                     console.log(responseData);
-                    newcharge1 = responseData
+                    // newcharge1 = responseData
+                    ds = responseData
                     addValue();
                 },
                 error: function (responseData, textStatus, errorThrown) {
@@ -149,8 +152,8 @@
         let label = 6;
         let oldcharge1 = [0, 10, 5, 2, 20, 30, 45];
         let newcharge1 = [10, 20, 30, 40, 50, 60, 70];
-        // let oldcharge2 = [99, 80, 75, 62, 50, 40, 35];
-        // let newcharge2 = [5, 15, 55, 40, 10, 50, 25];
+        let oldcharge2 = [99, 80, 75, 62, 50, 40, 35];
+        let newcharge2 = [5, 15, 55, 40, 10, 50, 25];
         // let oldcharge3 = [39, 80, 25, 62, 10, 15, 38];
         // let newcharge3 = [15, 25, 65, 30, 10, 55, 10];
         // let oldcharge4 = [90, 80, 70, 10, 20, 30, 35];
@@ -158,7 +161,8 @@
 
         setInterval(function (){
 
-            getData();
+            getData(Url1, newcharge1);
+            getData(Url2, newcharge2)
            // console.log(newcharge1)
 
 
@@ -238,14 +242,14 @@
         function  addValue() {
 
             chart.data.datasets[0].data.shift();
-            console.log(newcharge1[0])
+            //console.log(newcharge1[0])
             chart.data.datasets[0].data.push(newcharge1[0]);
 
             // chart.data.datasets[0].data.shift();
             // chart.data.datasets[0].data.push(999);
             //
-            // chart.data.datasets[1].data.shift();
-            // chart.data.datasets[1].data.push(800);
+            chart.data.datasets[1].data.shift();
+            chart.data.datasets[1].data.push(newcharge2[0]);
             //
             // chart.data.datasets[2].data.shift();
             // chart.data.datasets[2].data.push(700);

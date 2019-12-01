@@ -4,7 +4,7 @@ package driver
 type DeviceTypeDetails struct {
 	DeviceAddress string // ip and port
 	DeviceName    string
-	Id            string
+	DeviceId      string
 	//Reading
 	//supplier//
 	SupplierCharge     int

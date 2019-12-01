@@ -70,7 +70,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 	p := PageVars{
 		Title:                 APPNAME,
-		DeviceList:            DEVICELIST.Devices, //SELFDEVICES.DeviceMapToList(),
+		DeviceMap:             DEVICELIST.Devices, //SELFDEVICES.DeviceMapToList(),
 		SupplyDevicesDetails:  SUPPLYDEVICEDETAILS,
 		ConsumeDevicesDetails: CONSUMEDEVICEDETAILS,
 		Transactions:          TRANSACTIONS,

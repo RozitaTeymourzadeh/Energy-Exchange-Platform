@@ -28,7 +28,7 @@ func Periodic() {
 		readBlockchainAndUpdateStates(LASTREADFORHEIGHT) // updated open tx map
 		makeSupplyDecision()
 
-		//makeDecision()
+		makeDecision()
 
 		time.Sleep(10 * time.Second)
 	}
@@ -99,8 +99,9 @@ func readBlockchainAndUpdateStates(lastReadForHeight int) {
 					if tx.EventType == "require" {
 						if _, ok := OPENCONSUMETXS.Pool[tx.EventId]; !ok {
 							// deduct balance for self tx
-							if tx.ConsumerId == GetConsumeDeviceId() {
+							if tx.ConsumerId == GetConsumeDeviceId() { // self tx
 								Balance -= tx.EventFee
+								TRANSACTIONS = append([]Transaction{tx}, TRANSACTIONS...)
 							}
 							fmt.Println("Adding tx to OPENCONSUMETXS")
 							OPENCONSUMETXS.Pool[tx.EventId] = tx
@@ -112,15 +113,18 @@ func readBlockchainAndUpdateStates(lastReadForHeight int) {
 						buyRate, _ := strconv.Atoi(tx.BuyRate)
 						supplierSupplyRate, _ := strconv.Atoi(tx.SupplierSupplyRate)
 
+						selfInSupplierField := false
+						selfInConsumerField := false
 						if tx.SupplierAddress == GetSupplyDeviceAddress() &&
 							tx.SupplierId == GetSupplyDeviceId() { // Supplier - self in supply tx
 							// deduct balance for self tx
 							Balance -= tx.EventFee
-
 							SetIsSupplying(1)
 							SetToSupply(toSupply)
 							fmt.Println("proxy of  : send energy to consumer")
 							Balance += toSupply * buyRate
+
+							selfInSupplierField = true
 						}
 
 						if tx.ConsumerAddress == GetConsumeDeviceAddress() &&
@@ -130,7 +134,14 @@ func readBlockchainAndUpdateStates(lastReadForHeight int) {
 							SetToReceiveRate(supplierSupplyRate)
 							fmt.Println("proxy of  : receive energy from supplier") // todo
 							Balance -= toSupply * buyRate
+
+							selfInConsumerField = true
 						}
+
+						if selfInSupplierField || selfInConsumerField {
+							TRANSACTIONS = append([]Transaction{tx}, TRANSACTIONS...)
+						}
+
 					}
 				}
 
@@ -229,25 +240,25 @@ func getAllDevices() DeviceList {
 		dl.Devices = append(dl.Devices, device) /// to read SBC and create board
 	}
 	// end of get self devices ////
-	if len(GetNodeId().GetPeers()) > 0 {
-		for _, peer := range GetNodeId().GetPeers() {
-			uri := "http://" + peer.IpAdd + ":" + peer.Port + "/sendDeviceList"
-			fmt.Println("Sending device req to : ", uri)
-			resp, err := http.Get(uri)
-			if err != nil {
-				fmt.Println("Error in getting all devices")
-			} else {
-				defer resp.Body.Close()
-				bytesRead, _ := ioutil.ReadAll(resp.Body)
-				peerDeviceList := DeviceListFromJson(bytesRead)
-				for _, val := range peerDeviceList.Devices {
-					val.PeerId = peer.IpAdd + ":" + peer.Port
-					dl.Devices = append(dl.Devices, val)
-				}
-			}
-
-		}
-	}
+	//if len(GetNodeId().GetPeers()) > 0 {
+	//	for _, peer := range GetNodeId().GetPeers() {
+	//		uri := "http://" + peer.IpAdd + ":" + peer.Port + "/sendDeviceList"
+	//		fmt.Println("Sending device req to : ", uri)
+	//		resp, err := http.Get(uri)
+	//		if err != nil {
+	//			fmt.Println("Error in getting all devices")
+	//		} else {
+	//			defer resp.Body.Close()
+	//			bytesRead, _ := ioutil.ReadAll(resp.Body)
+	//			peerDeviceList := DeviceListFromJson(bytesRead)
+	//			for _, val := range peerDeviceList.Devices {
+	//				val.PeerId = peer.IpAdd + ":" + peer.Port
+	//				dl.Devices = append(dl.Devices, val)
+	//			}
+	//		}
+	//
+	//	}
+	//}
 
 	return dl
 }

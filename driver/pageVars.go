@@ -2,7 +2,7 @@ package driver
 
 type PageVars struct {
 	Title                 string
-	DeviceList            []Device
+	DeviceMap             []Device
 	SupplyDevicesDetails  []DeviceTypeDetails
 	ConsumeDevicesDetails []DeviceTypeDetails
 	Transactions          []Transaction
@@ -14,7 +14,7 @@ type PageVars struct {
 func NewPageVars() PageVars {
 	pv := PageVars{
 		Title:                 "EEP",
-		DeviceList:            make([]Device, 0),
+		DeviceMap:             make([]Device, 0),
 		SupplyDevicesDetails:  make([]DeviceTypeDetails, 0),
 		ConsumeDevicesDetails: make([]DeviceTypeDetails, 0),
 		Body:                  "",

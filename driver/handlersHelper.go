@@ -5,7 +5,6 @@ import (
 	//"github.com/edgexfoundry/device-simple/driver/data"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 	"strings"
 )
 
@@ -46,117 +45,128 @@ func GetSelfDevices() {
 func generateSupplyDeviceTypeBoard(deviceType string) []DeviceTypeDetails {
 
 	sl := make([]DeviceTypeDetails, 0)
-
-	for _, d := range DEVICELIST.Devices {
-
-		if strings.HasPrefix(d.Name, "Supply") {
-			//uri := "http://" + d.PeerId + ":48080/api/v1/event/device/" + d.Name + "/" + "10"
-			//uri := "http://" + d.PeerId + ":9999/sendDeviceEvents/" + d.Name + "/" + "10"
-			uri := "http://" + d.PeerId + "/sendDeviceEvents/" + d.Name + "/" + "10"
-			fmt.Println("calling for device events : " + uri)
-			resp, err := http.Get(uri)
-
-			if err != nil {
-				fmt.Println("error in reading response body in startreading")
-			}
-			defer resp.Body.Close()
-			bytesRead, _ := ioutil.ReadAll(resp.Body)
-			//fmt.Println(string(bytesRead))
-
-			cdes := CoreDataEventsFromJson(bytesRead)
-			// iterate through cdes to get only "supply" device
-			//fmt.Println("strings.ToLower(cdes.DataEvents[0].Device), strings.ToLower(deviceType) : "+ strings.ToLower(deviceType))
-			if len(cdes.DataEvents) > 0 && strings.Contains(strings.ToLower(cdes.DataEvents[0].Device), strings.ToLower(deviceType)) {
-				updatedSupplierCharge := false
-				updatedSupplierRate := false
-				dl := DeviceTypeDetails{}
-				dl.DeviceAddress = d.PeerId
-				dl.DeviceName = cdes.DataEvents[0].Device
-				dl.Id = cdes.DataEvents[0].Id
-				for _, cde := range cdes.DataEvents {
-
-					for _, reading := range cde.Readings {
-						if strings.Contains(reading.Name, "supplierCharge") && updatedSupplierCharge == false {
-							updatedSupplierCharge = true
-							//dl.Charge = cdes.DataEvents[0].Readings[0].Value
-							dl.SupplierCharge, err = strconv.Atoi(reading.Value)
-						} else if strings.Contains(reading.Name, "supplyRate") && updatedSupplierRate == false {
-							updatedSupplierRate = true
-							//dl.Rate = cdes.DataEvents[0].Readings[0].Value
-							dl.SupplyRate, err = strconv.Atoi(reading.Value)
-						} else {
-							continue
-						}
-					}
-					if updatedSupplierCharge && updatedSupplierRate {
-						sl = append(sl, dl)
-						break
-					}
-					//if strings.Contains(strings.ToLower(cdes.DataEvents[0].Device), strings.ToLower(deviceType)) {
-
-					//}
-				}
-			}
-
-		}
-	}
+	sd := DeviceTypeDetails{}
+	sd.DeviceName = GetSupplyDeviceName()
+	sd.DeviceId = GetSupplyDeviceId()
+	sd.SupplierCharge = GetSupplierCharge()
+	sd.SellRate = GetSellRate()
+	sl = append(sl, sd)
+	//for _, d := range DEVICELIST.Devices {
+	//
+	//	if strings.HasPrefix(d.Name, "Supply") {
+	//		//uri := "http://" + d.PeerId + ":48080/api/v1/event/device/" + d.Name + "/" + "10"
+	//		//uri := "http://" + d.PeerId + ":9999/sendDeviceEvents/" + d.Name + "/" + "10"
+	//		uri := "http://" + d.PeerId + "/sendDeviceEvents/" + d.Name + "/" + "10"
+	//		fmt.Println("calling for device events : " + uri)
+	//		resp, err := http.Get(uri)
+	//
+	//		if err != nil {
+	//			fmt.Println("error in reading response body in startreading")
+	//		}
+	//		defer resp.Body.Close()
+	//		bytesRead, _ := ioutil.ReadAll(resp.Body)
+	//		//fmt.Println(string(bytesRead))
+	//
+	//		cdes := CoreDataEventsFromJson(bytesRead)
+	//		// iterate through cdes to get only "supply" device
+	//		//fmt.Println("strings.ToLower(cdes.DataEvents[0].Device), strings.ToLower(deviceType) : "+ strings.ToLower(deviceType))
+	//		if len(cdes.DataEvents) > 0 && strings.Contains(strings.ToLower(cdes.DataEvents[0].Device), strings.ToLower(deviceType)) {
+	//			updatedSupplierCharge := false
+	//			updatedSupplierRate := false
+	//			dl := DeviceTypeDetails{}
+	//			dl.DeviceAddress = d.PeerId
+	//			dl.DeviceName = cdes.DataEvents[0].Device
+	//			dl.Id = cdes.DataEvents[0].Id
+	//			for _, cde := range cdes.DataEvents {
+	//
+	//				for _, reading := range cde.Readings {
+	//					if strings.Contains(reading.Name, "supplierCharge") && updatedSupplierCharge == false {
+	//						updatedSupplierCharge = true
+	//						//dl.Charge = cdes.DataEvents[0].Readings[0].Value
+	//						dl.SupplierCharge, err = strconv.Atoi(reading.Value)
+	//					} else if strings.Contains(reading.Name, "supplyRate") && updatedSupplierRate == false {
+	//						updatedSupplierRate = true
+	//						//dl.Rate = cdes.DataEvents[0].Readings[0].Value
+	//						dl.SupplyRate, err = strconv.Atoi(reading.Value)
+	//					} else {
+	//						continue
+	//					}
+	//				}
+	//				if updatedSupplierCharge && updatedSupplierRate {
+	//					sl = append(sl, dl)
+	//					break
+	//				}
+	//				//if strings.Contains(strings.ToLower(cdes.DataEvents[0].Device), strings.ToLower(deviceType)) {
+	//
+	//				//}
+	//			}
+	//		}
+	//
+	//	}
+	//}
 	return sl
 }
 
 func generateConsumeDeviceTypeBoard(deviceType string) []DeviceTypeDetails {
 
 	sl := make([]DeviceTypeDetails, 0)
+	cd := DeviceTypeDetails{}
+	cd.DeviceName = GetConsumeDeviceName()
+	cd.DeviceId = GetConsumeDeviceId()
+	cd.ConsumerCharge = GetConsumerCharge()
+	cd.BuyRate = GetBuyRate()
 
-	for _, d := range DEVICELIST.Devices {
-
-		if strings.HasPrefix(d.Name, "Consume") {
-			//uri := "http://" + d.PeerId + ":48080/api/v1/event/device/" + d.Name + "/" + "10"
-			//uri := "http://" + d.PeerId + ":9999/sendDeviceEvents/" + d.Name + "/" + "10"
-			uri := "http://" + d.PeerId + "/sendDeviceEvents/" + d.Name + "/" + "10"
-			resp, err := http.Get(uri)
-
-			if err != nil {
-				fmt.Println("error in reading response body in startreading")
-			}
-			defer resp.Body.Close()
-			bytesRead, _ := ioutil.ReadAll(resp.Body)
-			//fmt.Println("CoreDataEventsFromJson : !!! ::: " + string(bytesRead))
-
-			cdes := CoreDataEventsFromJson(bytesRead)
-			if len(cdes.DataEvents) > 0 && strings.Contains(strings.ToLower(cdes.DataEvents[0].Device), strings.ToLower(deviceType)) {
-				updatedConsumerCharge := false
-				updatedconsumerDischargeRate := false
-				dl := DeviceTypeDetails{}
-				dl.DeviceAddress = d.PeerId
-				dl.DeviceName = cdes.DataEvents[0].Device
-				dl.Id = cdes.DataEvents[0].Id
-				for _, cde := range cdes.DataEvents {
-
-					for _, reading := range cde.Readings {
-						if strings.Contains(reading.Name, "consumerCharge") && updatedConsumerCharge == false {
-							updatedConsumerCharge = true
-							//dl.Charge = cdes.DataEvents[0].Readings[0].Value
-							dl.ConsumerCharge, err = strconv.Atoi(reading.Value)
-						} else if strings.Contains(reading.Name, "consumerDischargeRate") && updatedconsumerDischargeRate == false {
-							updatedconsumerDischargeRate = true
-							//dl.Rate = cdes.DataEvents[0].Readings[0].Value
-							dl.ConsumerDischargeRate, err = strconv.Atoi(reading.Value)
-						} else {
-							continue
-						}
-					}
-					if updatedConsumerCharge && updatedconsumerDischargeRate {
-						sl = append(sl, dl)
-						break
-					}
-					//if strings.Contains(strings.ToLower(cdes.DataEvents[0].Device), strings.ToLower(deviceType)) {
-
-					//}
-				}
-			}
-
-		}
-	}
+	sl = append(sl, cd)
+	//for _, d := range DEVICELIST.Devices {
+	//
+	//	if strings.HasPrefix(d.Name, "Consume") {
+	//		//uri := "http://" + d.PeerId + ":48080/api/v1/event/device/" + d.Name + "/" + "10"
+	//		//uri := "http://" + d.PeerId + ":9999/sendDeviceEvents/" + d.Name + "/" + "10"
+	//		uri := "http://" + d.PeerId + "/sendDeviceEvents/" + d.Name + "/" + "10"
+	//		resp, err := http.Get(uri)
+	//
+	//		if err != nil {
+	//			fmt.Println("error in reading response body in startreading")
+	//		}
+	//		defer resp.Body.Close()
+	//		bytesRead, _ := ioutil.ReadAll(resp.Body)
+	//		//fmt.Println("CoreDataEventsFromJson : !!! ::: " + string(bytesRead))
+	//
+	//		cdes := CoreDataEventsFromJson(bytesRead)
+	//		if len(cdes.DataEvents) > 0 && strings.Contains(strings.ToLower(cdes.DataEvents[0].Device), strings.ToLower(deviceType)) {
+	//			updatedConsumerCharge := false
+	//			updatedconsumerDischargeRate := false
+	//			dl := DeviceTypeDetails{}
+	//			dl.DeviceAddress = d.PeerId
+	//			dl.DeviceName = cdes.DataEvents[0].Device
+	//			dl.Id = cdes.DataEvents[0].Id
+	//			for _, cde := range cdes.DataEvents {
+	//
+	//				for _, reading := range cde.Readings {
+	//					if strings.Contains(reading.Name, "consumerCharge") && updatedConsumerCharge == false {
+	//						updatedConsumerCharge = true
+	//						//dl.Charge = cdes.DataEvents[0].Readings[0].Value
+	//						dl.ConsumerCharge, err = strconv.Atoi(reading.Value)
+	//					} else if strings.Contains(reading.Name, "consumerDischargeRate") && updatedconsumerDischargeRate == false {
+	//						updatedconsumerDischargeRate = true
+	//						//dl.Rate = cdes.DataEvents[0].Readings[0].Value
+	//						dl.ConsumerDischargeRate, err = strconv.Atoi(reading.Value)
+	//					} else {
+	//						continue
+	//					}
+	//				}
+	//				if updatedConsumerCharge && updatedconsumerDischargeRate {
+	//					sl = append(sl, dl)
+	//					break
+	//				}
+	//				//if strings.Contains(strings.ToLower(cdes.DataEvents[0].Device), strings.ToLower(deviceType)) {
+	//
+	//				//}
+	//			}
+	//		}
+	//
+	//	}
+	//}
 	return sl
 }
 

@@ -21,7 +21,6 @@
 <body>
 
 <h2>Energy Exchange Platform</h2>
-<img src="img/a.jpg">
 
 
 
@@ -58,7 +57,7 @@
                 </tr>
                 </thead>
                 <tbody >
-                {{ range $i, $sequence := .DeviceList }}
+                {{ range $i, $sequence := .DeviceMap }}
                     <tr>
                         <th scope="row">{{ $i }}</th>
                         <td>{{ $sequence.PeerId }}</td>
@@ -79,7 +78,8 @@
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
                     <th scope="col">Device ID</th>
-                    <th scope="col">Charge Level</th>
+                    <th scope="col">Current Charge Level(kWh)</th>
+                    <th scope="col">Current Sell Rate($)</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -87,8 +87,10 @@
                     <tr>
                         <th scope="row">{{ $i }}</th>
                         <td>{{ $sequence.DeviceName }}</td>
-                        <td>{{ $sequence.Id }}</td>
+                        <td>{{ $sequence.DeviceId }}</td>
                         <td>{{ $sequence.SupplierCharge }}</td>
+                        <td>{{ $sequence.SellRate }}</td>
+
                     </tr>
                 {{ end }}
                 </tbody>
@@ -103,7 +105,8 @@
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
                     <th scope="col">Device ID</th>
-                    <th scope="col">Charge Level</th>
+                    <th scope="col">Current Charge Level(kWh)</th>
+                    <th scope="col">Current Buy Rate($)</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -111,8 +114,9 @@
                     <tr>
                         <th scope="row">{{ $i }}</th>
                         <td>{{ $sequence.DeviceName }}</td>
-                        <td>{{ $sequence.Id }}</td>
+                        <td>{{ $sequence.DeviceId }}</td>
                         <td>{{ $sequence.ConsumerCharge }}</td>
+                        <td>{{ $sequence.BuyRate }}</td>
                     </tr>
                 {{ end }}
                 </tbody>
@@ -125,22 +129,24 @@
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Transaction Type</th>
                     <th scope="col">Supplier Name</th>
                     <th scope="col">Supplier ID</th>
                     <th scope="col">Consumer Name</th>
                     <th scope="col">Consumer ID</th>
-                    <th scope="col">Power Unit (kWh)</th>
+                    <th scope="col">Consumer Require(kWh)</th>
                 </tr>
                 </thead>
                 <tbody>
                 {{ range $i, $sequence := .Transactions }}
                     <tr>
                         <th scope="row">{{ $i }}</th>
+                        <td>{{ $sequence.EventType }}</td>
                         <td>{{ $sequence.SupplierName }}</td>
                         <td>{{ $sequence.SupplierId }}</td>
                         <td>{{ $sequence.ConsumerName }}</td>
                         <td>{{ $sequence.ConsumerId }}</td>
-                        <td>{{ $sequence.PowerUnits }}</td>
+                        <td>{{ $sequence.ConsumerRequire }}</td>
                     </tr>
                 {{ end }}
                 </tbody>

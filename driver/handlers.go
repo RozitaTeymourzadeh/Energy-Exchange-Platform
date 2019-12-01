@@ -27,13 +27,14 @@ var Peers PeerList
 var Heart HeartBeatData
 var ifStarted bool
 
-var TA_SERVER = "http://10.7.52.166:6686"
+var TA_SERVER = "http://10.10.34.153:6686"
+var FIRST_PEER = "10.10.34.153:6686" //
+var SELF_ADDR = "10.10.34.153:6686"  //"localhost:6686"
 var REGISTER_SERVER = TA_SERVER + "/peer"
 var ASK_PEERS = "/block"
-var SELF_ADDR = "10.7.52.166:6686" //"localhost:6686"
 var EDGEX_IP = "localhost"
 var SELF_ID = 0
-var FIRST_PEER = "10.7.52.166:6686" //
+
 var BC_DOWNLOAD_SERVER = FIRST_PEER + "/upload"
 var RECEIVE_PATH = "/heartbeat/receive"
 var STOP_GEN_BLOCK = false

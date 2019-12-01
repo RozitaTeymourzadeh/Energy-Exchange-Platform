@@ -25,6 +25,13 @@ func driverSupplierChargeUpdate() {
 		}
 	}
 
+	if supplierCharge < 0 {
+		supplierCharge = 0
+	}
+	if supplierCharge > 1000 {
+		supplierCharge = 1000
+	}
+
 	SetSupplierCharge(supplierCharge)
 	AddToLast100SDReadings(supplierCharge)
 }
@@ -47,6 +54,13 @@ func driverConsumerChargeUpdate() {
 				ConsumeCompleteCleanup()
 			}
 		}
+	}
+
+	if consumerCharge < 0 {
+		consumerCharge = 0
+	}
+	if consumerCharge > 1000 {
+		consumerCharge = 1000
 	}
 
 	SetConsumerCharge(consumerCharge)
