@@ -205,6 +205,7 @@ func OpenConsumerTx(w http.ResponseWriter, r *http.Request) {
 }
 
 func SendLast100SDReadings(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Headers", "Authorization")
 	readings := GetLast100SDReadings()
 	barr, err := json.Marshal(&readings)
 	if err != nil {
@@ -212,11 +213,15 @@ func SendLast100SDReadings(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("no content"))
 	} else {
 		w.WriteHeader(http.StatusOK)
+
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
 		w.Write(barr)
 	}
 }
 
 func SendLast100CDReadings(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	readings := GetLast100CDReadings()
 	barr, err := json.Marshal(&readings)
 	if err != nil {
@@ -224,6 +229,8 @@ func SendLast100CDReadings(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("no content"))
 	} else {
 		w.WriteHeader(http.StatusOK)
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		//w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Write(barr)
 	}
 }
