@@ -139,6 +139,18 @@ var routes = Routes{
 		"/getcdreadings",
 		SendLast100CDReadings,
 	},
+	Route{
+		"SendSdDeviceInfo",
+		"GET",
+		"/sendSdDeviceInfo",
+		SendSdDeviceInfo,
+	},
+	Route{
+		"SendCdDeviceInfo",
+		"GET",
+		"/sendCdDeviceInfo",
+		SendCdDeviceInfo,
+	},
 
 	/////////blockchain
 	Route{

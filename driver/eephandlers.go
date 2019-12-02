@@ -234,3 +234,33 @@ func SendLast100CDReadings(w http.ResponseWriter, r *http.Request) {
 		w.Write(barr)
 	}
 }
+
+func SendSdDeviceInfo(w http.ResponseWriter, r *http.Request) {
+	//w.Header().Set("Access-Control-Allow-Origin", "*")
+	devicesInfo := generateSupplyDeviceTypeBoard("supply")
+	deviceInfo := devicesInfo[0]
+	barr, err := json.Marshal(&deviceInfo)
+	if err != nil {
+		w.WriteHeader(http.StatusNoContent)
+		w.Write([]byte("no content"))
+	} else {
+		w.WriteHeader(http.StatusOK)
+		//w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Write(barr)
+	}
+}
+
+func SendCdDeviceInfo(w http.ResponseWriter, r *http.Request) {
+	//w.Header().Set("Access-Control-Allow-Origin", "*")
+	devicesInfo := generateConsumeDeviceTypeBoard("supply")
+	deviceInfo := devicesInfo[0]
+	barr, err := json.Marshal(&deviceInfo)
+	if err != nil {
+		w.WriteHeader(http.StatusNoContent)
+		w.Write([]byte("no content"))
+	} else {
+		w.WriteHeader(http.StatusOK)
+		//w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Write(barr)
+	}
+}
