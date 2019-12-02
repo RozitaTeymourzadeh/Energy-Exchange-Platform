@@ -17,51 +17,94 @@
 <div class="navbar"><span>Real-Time chart</span></div>
 <div class="wrapper">
 
-        <div id="chart"></div>
+    <div id="chart"></div>
 
-        <script>
-            function getData() {
-                // return Math.random();
-                const Url='http://10.7.52.166:6686/getsdreadings';
-                $.ajax({
-                    url: Url,
-                    dataType: 'text',
-                    crossDomain: true,
-                    headers: { },
-                    type: 'get',
-                    success: function (responseData, textStatus, jqXHR) {
-                        console.log(responseData);
-                        return responseData
-                    },
-                    error: function (responseData, textStatus, errorThrown) {
-                        console.log('POST failed.');
-                        return []
+    <script>
+        let sdvalue = 0;
+        let cdvalue = 0;
+        const sdUrl='http://192.168.1.106:6686/getsdreadings';
+        const cdUrl='http://192.168.1.106:6686/getcdreadings';
+
+        function getSdData() {
+            // value =  Math.random();
+            $.ajax({
+                url: sdUrl,
+                crossDomain: true,
+                headers: { },
+                type: 'get',
+                success: function (responseData) {
+                    // console.log(responseData[0]);
+                    sdvalue = responseData[0];
+                },
+                error: function (responseData) {
+                    console.log('POST failed.');
+                    sdvalue = 0;
+                }
+            });
+            console.log(sdvalue);
+            return sdvalue;
+        }
+
+        function getCdData() {
+            // value =  Math.random();
+            $.ajax({
+                url: cdUrl,
+                crossDomain: true,
+                headers: { },
+                type: 'get',
+                success: function (responseData) {
+                    // console.log(responseData[0]);
+                    cdvalue = responseData[0];
+                },
+                error: function (responseData) {
+                    console.log('POST failed.');
+                    cdvalue = 0;
+                }
+            });
+            console.log(cdvalue);
+            return cdvalue;
+        }
+
+        let time = new Date();
+        Plotly.plot('chart',[{
+            x: [time],
+            y:[getSdData()],
+            name: 'Supply Device',
+            mode: 'lines',
+            line: {color: '#7FF671'}
+        }, {
+            x: [time],
+            y:[getCdData()],
+            name: 'Consume Device',
+            mode: 'lines',
+            line: {color: '#FF9671'}
+        }]);
+
+        var cnt = 0;
+        setInterval(function (){
+            let time = new Date();
+            let update = {
+                x:  [[time],[time]],
+                y: [[getSdData()],[getCdData()]]
+            };
+
+            Plotly.extendTraces('chart', update, [0,1])
+
+            // Plotly.extendTraces('chart',{
+            //     x:  [[time], [time]],
+            //     y:[[getSdData()],[getCdData()]]
+            // }, [0,1]);
+            cnt++;
+
+            if(cnt > 500) {
+                Plotly.relayout('chart',{
+                    xaxis: {
+                        range: [cnt-500,cnt]
                     }
                 });
             }
-
-
-            Plotly.plot('chart',[{
-                y:[getData()],
-                type:'line'
-            }]);
-
-            var cnt = 0;
-
-            setInterval(function (){
-
-                Plotly.extendTraces('chart',{ y:[[getData()]]}, [0]);
-                cnt++;
-
-                if(cnt > 500) {
-                    Plotly.relayout('chart',{
-                        xaxis: {
-                            range: [cnt-500,cnt]
-                        }
-                    });
-                }
-            },200);
-        </script>
+        },8000);
+    </script>
 
 </div>
 </body>

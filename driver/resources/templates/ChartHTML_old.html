@@ -75,8 +75,8 @@
     <div class="col-md-11">
         <div class="card">
             <div class="card-body">
-                <h3><button class="btn btn-success" onclick="updateChart()">Update</button>
-                    <button class="btn btn-info" onclick="addValue(1, 1)">Next</button>
+                <h3><button class="btn btn-success" onclick="updateChart(0), updateChart(1)">Update</button>
+                    <button class="btn btn-info" onclick="addValue(0), addValue(1)">Next</button>
                 </h3>
             </div>
             <div class="card-body">
@@ -126,6 +126,22 @@
 
 <script>
 
+
+    let cnt = 0;
+    let label = 6;
+    let oldcharge1 = [0, 10, 5, 2, 20, 30, 45];
+    let newcharge1 = [0, 10, 5, 2, 20, 30, 45];
+    let oldcharge2 = [99, 80, 75, 62, 50, 40, 35];
+    let newcharge2 = [99, 80, 75, 62, 50, 40, 35];
+    // let oldcharge3 = [39, 80, 25, 62, 10, 15, 38];
+    // let newcharge3 = [15, 25, 65, 30, 10, 55, 10];
+    // let oldcharge4 = [90, 80, 70, 10, 20, 30, 35];
+    // let newcharge4 = [13, 15, 25, 30, 40, 50, 65];
+
+    const Url1='http://192.168.1.106:6686/getsdreadings';
+    const Url2='http://192.168.1.106:6686/getcdreadings';
+    const URLS = [Url1, Url2];
+
     function getData(Url, i,  value) {
         //const Url='http://192.168.1.106:6686/getsdreadings';
         $.ajax({
@@ -147,20 +163,6 @@
         });
     }
 
-    let cnt = 0;
-    let label = 6;
-    let oldcharge1 = [0];
-    let newcharge1 = [0, 0, 0, 0, 0, 0, 0,];
-    let oldcharge2 = [99];
-    let newcharge2 = [5, 15, 55, 40, 10, 50, 25];
-    // let oldcharge3 = [39, 80, 25, 62, 10, 15, 38];
-    // let newcharge3 = [15, 25, 65, 30, 10, 55, 10];
-    // let oldcharge4 = [90, 80, 70, 10, 20, 30, 35];
-    // let newcharge4 = [13, 15, 25, 30, 40, 50, 65];
-
-    const Url1='http://192.168.1.106:6686/getsdreadings';
-    const Url2='http://192.168.1.106:6686/getcdreadings';
-    const URLS = [Url1, Url2];
 
     setInterval(function (){
 
@@ -173,13 +175,9 @@
                 getData(URLS[i], i, newcharge2);
             }
         }
-        chartUpdate();
-        // getData(Url, 0, newcharge1);
-        // // console.log(newcharge1
-        // getData(Url2, 1, newcharge2);
+        updateChartCustom();
 
     },8000);
-    //todo : find why 2 ? ====> coz of addValue last lines
 
 
     var ctx = document.getElementById('myChart').getContext('2d');
@@ -190,15 +188,18 @@
         // The data for our dataset
         data: {
             // labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+
             labels: [0,1,2,3,4,5,6],
             datasets: [{
                 label: 'Device A Charge Level',
+                // backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(255, 99, 132)',
-                data: newcharge1, //oldcharge1,
+                data: newcharge1,//newcharge1, //oldcharge1,
             }, {
-                label: 'Device B Charge Level',
-                borderColor: 'rgb(102,174,255)',
-                data: newcharge2,
+                    label: 'Device B Charge Level',
+                    // backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(102,174,255)',
+                    data: newcharge2,//newcharge2,//oldcharge2,
                 },
                 // {
                 //     label: 'Device C Charge Level',
@@ -237,13 +238,13 @@
         }
     });
 
-    // function updateChart(){
-    //     chart.data.datasets[0].data = newcharge1;
-    //     // chart.data.datasets[1].data = newcharge2;
-    //     // chart.data.datasets[2].data = newcharge3;
-    //     // chart.data.datasets[3].data = newcharge4;
-    //     chart.update();
-    // };
+    function updateChart(){
+        chart.data.datasets[0].data = newcharge1;
+        chart.data.datasets[1].data = newcharge2;
+        // chart.data.datasets[2].data = newcharge3;
+        // chart.data.datasets[3].data = newcharge4;
+        chart.update();
+    };
 
     // pop = remove last value
     // shift = remove first value
@@ -253,23 +254,20 @@
     function  addValue(datasetIndex, value) {
 
         if(datasetIndex === 0) {
-            chart.data.datasets[datasetIndex].data.shift();
-            //console.log(newcharge1[datasetIndex])
-            chart.data.datasets[datasetIndex].data.push(value[0]);
+            chart.data.datasets[0].data.shift();
+            console.log(newcharge1[0])
+            chart.data.datasets[0].data.push(value[0]);
+        }
+        if(datasetIndex === 1) {
+            chart.data.datasets[1].data.shift();
+            chart.data.datasets[1].data.push(value[0]);
         }
 
 
-        // chart.data.datasets[0].data.shift();
-        // console.log(newcharge1[0])
-        // chart.data.datasets[0].data.push(newcharge1[0]);
 
         // chart.data.datasets[0].data.shift();
         // chart.data.datasets[0].data.push(999);
         //
-        if(datasetIndex === 1) {
-            chart.data.datasets[datasetIndex].data.shift();
-            chart.data.datasets[datasetIndex].data.push(value[0]);
-        }
 
         //
         // chart.data.datasets[2].data.shift();
@@ -280,7 +278,7 @@
 
     };
 
-    function chartUpdate() {
+    function updateChartCustom() {
         label = label + 1;
         chart.data.labels.shift();
         chart.data.labels.push(label);
@@ -288,20 +286,20 @@
         chart.update();
     }
 
-    // function addData(chart, label, data) {
-    //     chart.data.labels.push(label);
-    //     chart.data.datasets.forEach((dataset) => {
-    //         dataset.data.push(data);
-    //     });
-    //     chart.update();
-    // };
-    // function removeData(chart) {
-    //     chart.data.labels.pop();
-    //     chart.data.datasets.forEach((dataset) => {
-    //         dataset.data.pop();
-    //     });
-    //     chart.update();
-    // };
+    function addData(chart, label, data) {
+        chart.data.labels.push(label);
+        chart.data.datasets.forEach((dataset) => {
+            dataset.data.push(data);
+        });
+        chart.update();
+    };
+    function removeData(chart) {
+        chart.data.labels.pop();
+        chart.data.datasets.forEach((dataset) => {
+            dataset.data.pop();
+        });
+        chart.update();
+    };
 
 
 
