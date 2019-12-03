@@ -96,6 +96,8 @@ func readBlockchainAndUpdateStates(lastReadForHeight int) {
 			for _, txStr := range txList {
 				tx := TransactionFromJSON([]byte(txStr))
 				if tx.EventId != "" {
+					ALLTRANSACTIONS = append([]Transaction{tx}, ALLTRANSACTIONS...)
+
 					if tx.EventType == "require" {
 						if _, ok := OPENCONSUMETXS.Pool[tx.EventId]; !ok {
 							// deduct balance for self tx

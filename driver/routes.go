@@ -166,6 +166,12 @@ var routes = Routes{
 		Show,
 	},
 	Route{
+		"ShowTxList",
+		"GET",
+		"/txs",
+		ShowTxList,
+	},
+	Route{
 		"Upload",
 		"POST",
 		"/upload",

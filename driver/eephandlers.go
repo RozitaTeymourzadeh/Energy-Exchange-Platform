@@ -37,6 +37,7 @@ var SELFDEVICES = NewDeviceMap()
 var SUPPLYDEVICEDETAILS = make([]DeviceTypeDetails, 0)
 var CONSUMEDEVICEDETAILS = make([]DeviceTypeDetails, 0)
 var TRANSACTIONS = make([]Transaction, 0)
+var ALLTRANSACTIONS = make([]Transaction, 0)
 
 /// new datastructures
 var LASTREADFORHEIGHT = 1

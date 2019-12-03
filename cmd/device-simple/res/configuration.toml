@@ -1,6 +1,6 @@
 [Service]
 Host = "localhost"
-Port = 49997
+Port = 49992
 ConnectRetries = 3
 Labels = []
 OpenMsg = "device simple started"

@@ -660,3 +660,58 @@ func GetTxpool(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Write([]byte(sb.String()))
 }
+
+//func Showsbc(w http.ResponseWriter, r *http.Request) {
+//
+//	fmt.Println("showsbc : ")
+//
+//	tempBlockSlice := make([]Block, 0)
+//	height := SBC.bc.Length // length of blockchain
+//
+//	for height > 1 {
+//		forkBlocks, _ := SBC.Get(height)
+//		if len(forkBlocks) == 1 {
+//			tempBlock := forkBlocks[0]
+//			tempBlockSlice = append(tempBlockSlice, tempBlock) // appending
+//			if height > 2 {
+//				tempParentBlock := SBC.GetParentBlock(tempBlock)
+//				//tempBlockSlice = append([]Block{tempParentBlock}, tempBlockSlice...) // prepending
+//				tempBlock = tempParentBlock
+//				height = tempBlock.Header.Height
+//			}
+//		}
+//	}
+//
+//	//tempTxsSlice := make([]Transaction, 0)
+//	str := strings.Builder{}
+//	str.WriteString("show sbc :")
+//
+//	for _, block := range tempBlockSlice {
+//		txList := block.Value.LeafList()
+//		for _, txStr := range txList {
+//			//tx := TransactionFromJSON([]byte(txStr))
+//			str.WriteString(txStr + "\n")
+//		}
+//	}
+//
+//	w.WriteHeader(http.StatusOK)
+//	w.Write([]byte(str.String()))
+//
+//}
+
+func ShowTxList(w http.ResponseWriter, r *http.Request) {
+	p := PageVars{
+		Title:                 APPNAME,
+		IpPort:                GetNodeId().Address + ":" + GetNodeId().Port,
+		DeviceMap:             DEVICELIST.Devices, //SELFDEVICES.DeviceMapToList(),
+		SupplyDevicesDetails:  SUPPLYDEVICEDETAILS,
+		ConsumeDevicesDetails: CONSUMEDEVICEDETAILS,
+		Transactions:          ALLTRANSACTIONS,
+		SdReadings:            GetLast100SDReadings(),
+		CdReadings:            GetLast100CDReadings(),
+	}
+
+	//x := p.SupplyDevicesDetails
+	//fmt.Println(len(x))
+	render(w, "txns.html", p)
+}
