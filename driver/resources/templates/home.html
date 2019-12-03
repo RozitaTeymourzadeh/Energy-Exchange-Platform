@@ -4,14 +4,18 @@
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
+    <!--<meta http-equiv="refresh" content="10" />-->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="../../main.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
     <link href='https://fonts.googleapis.com/css?family=Rosario:400' rel='stylesheet' type='text/css'>
+
+    <!-- Latest compiled and minified plotly.js JavaScript -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
     <title>{{.Title}}</title>
 
@@ -21,8 +25,6 @@
 <body>
 
 <h2>Energy Exchange Platform</h2>
-
-
 
 <nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary p-4 sticky-top">
     <a class="navbar-brand" href="/">Power Flow</a>
@@ -39,10 +41,9 @@
     </div>
 </nav>
 
-
 <div class="bg bg-light">
 
-    <div class="mainbody ">
+    <div id="thisdiv" class="mainbody ">
 
         <H4 class="p-3 mb-0 mt-4 bg-light text-black">List of Device(s)</H4>
         <div class="table-responsive">
@@ -135,6 +136,7 @@
                     <th scope="col">Consumer Name</th>
                     <th scope="col">Consumer ID</th>
                     <th scope="col">Consumer Require(kWh)</th>
+                    <th scope="col">Supplier ToSupply(kWh)</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -147,13 +149,20 @@
                         <td>{{ $sequence.ConsumerName }}</td>
                         <td>{{ $sequence.ConsumerId }}</td>
                         <td>{{ $sequence.ConsumerRequire }}</td>
+                        <td>{{ $sequence.SupplierToSupply }}</td>
                     </tr>
                 {{ end }}
                 </tbody>
             </table>
         </div>
 
+    </div>
 
+    <div class="">
+        <h3>Overview </h3>
+        <div class="container">
+            <div id="chart"></div>
+        </div>
     </div>
 
 
@@ -167,13 +176,168 @@
     <BR> <B><I>@CS690 Master Project</I></B>
 </div>
 
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+<!--  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
 <!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<!-- plotly -->
+<script>
+
+    let sdvalue = 0;
+    let fullSdValue;
+    let cdvalue = 0;
+    let fullCdValue;
+    let peer = {{.IpPort}};//'192.168.11.20';
+    // let sdUrl='http://192.168.11.20:6686/getsdreadings';
+    // let cdUrl='http://192.168.11.20:6686/getcdreadings';
+    let sdUrl='http://'+peer+'/getsdreadings';
+    let cdUrl='http://'+peer+'/getcdreadings';
+
+    function getSdData() {
+        // value =  Math.random();
+        $.ajax({
+            url: sdUrl,
+            crossDomain: true,
+            headers: { },
+            type: 'get',
+            success: function (responseData) {
+                // console.log(responseData[0]);
+                sdvalue = responseData[0];
+            },
+            error: function (responseData) {
+                console.log('POST failed.');
+                sdvalue = 0;
+            }
+        });
+        console.log(sdvalue);
+        return sdvalue;
+
+    }
+
+    function getCdData() {
+        // value =  Math.random();
+        $.ajax({
+            url: cdUrl,
+            crossDomain: true,
+            headers: { },
+            type: 'get',
+            success: function (responseData) {
+                // console.log(responseData[0]);
+                cdvalue = responseData[0];
+            },
+            error: function (responseData) {
+                console.log('POST failed.');
+                cdvalue = 0;
+            }
+        });
+        console.log(cdvalue);
+        return cdvalue;
+
+    }
+
+    var layout = {
+        title:'Charge Level in : '+ peer,
+        width: 1200,
+        height: 600,
+        xaxis: {
+            showline: false,
+            showgrid: false,
+            showticklabels: true,
+            linecolor: 'rgb(204,204,204)',
+            linewidth: 2,
+            autotick: true,
+            ticks: 'outside',
+            tickcolor: 'rgb(0,0,0)',
+            tickwidth: 2,
+            ticklen: 5,
+            tickfont: {
+                family: 'Arial',
+                size: 12,
+                color: 'rgb(82, 82, 82)'
+            }
+        },
+        yaxis: {
+            showgrid: false,
+            zeroline: false,
+            showline: false,
+            showticklabels: true,
+            autotick: true,
+            ticks: 'outside',
+            tickcolor: 'rgb(0,0,0)',
+            tickwidth: 2,
+            ticklen: 5,
+            tickfont: {
+                family: 'Arial',
+                size: 12,
+                color: 'rgb(82, 82, 82)'
+            }
+        },
+        legend: {
+            y: 0.5,
+            // traceorder: 'reversed',
+            font: {size: 18},
+            yref: 'paper'
+        }
+    };
+
+    let time = new Date();
+    Plotly.plot('chart',[{
+            x: [time],
+            y:[getSdData()],
+            name: 'Supply Device',
+            mode: 'lines+markers',
+            line: {color: '#396AB1',width: 4},
+            marker: {
+                size: 12
+            }
+        }, {
+            x: [time],
+            y:[getCdData()],
+            name: 'Consume Device',
+            mode: 'lines+markers',
+            line: {color: '#948B3D',width: 4},
+            marker: {
+                size: 12
+            }
+        }],
+        layout,
+        {responsive: true});
+
+
+    var cnt = 0;
+    setInterval(function (){
+        $('#thisdiv').load(document.URL +  ' #thisdiv');
+
+
+
+        let time = new Date();
+        let update = {
+            x:  [[time],[time]],
+            y: [[getSdData()],[getCdData()]]
+        };
+
+        Plotly.extendTraces('chart', update, [0,1])
+
+        cnt++;
+
+        if(cnt > 500) {
+            Plotly.relayout('chart',{
+                xaxis: {
+                    range: [cnt-500,cnt]
+                }
+            });
+        }
+    },8000);
+</script>
+<!-- end of plotly -->
 
 </body>
 </html>

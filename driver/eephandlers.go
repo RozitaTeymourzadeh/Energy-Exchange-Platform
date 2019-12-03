@@ -70,10 +70,13 @@ func Index(w http.ResponseWriter, r *http.Request) {
 
 	p := PageVars{
 		Title:                 APPNAME,
+		IpPort:                GetNodeId().Address + ":" + GetNodeId().Port,
 		DeviceMap:             DEVICELIST.Devices, //SELFDEVICES.DeviceMapToList(),
 		SupplyDevicesDetails:  SUPPLYDEVICEDETAILS,
 		ConsumeDevicesDetails: CONSUMEDEVICEDETAILS,
 		Transactions:          TRANSACTIONS,
+		SdReadings:            GetLast100SDReadings(),
+		CdReadings:            GetLast100CDReadings(),
 	}
 
 	//x := p.SupplyDevicesDetails

@@ -166,7 +166,7 @@ func makeSupplyDecision() {
 		for _, cnTx := range OPENCONSUMETXS.Pool {
 			require, _ := strconv.Atoi(cnTx.ConsumerRequire)
 			buyRate, _ := strconv.Atoi(cnTx.BuyRate)
-			if buyRate >= sellRate && surplus > 150 {
+			if buyRate >= sellRate && surplus > 50 {
 				if require <= surplus {
 					spTx := createSupplyTx(cnTx, strconv.Itoa(require))
 					sendSpTxToAll(spTx)

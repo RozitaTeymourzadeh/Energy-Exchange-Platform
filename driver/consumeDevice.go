@@ -50,8 +50,8 @@ func GetConsumeDevice() *ConsumeDevice {
 		consumeDevice.require = 0
 		consumeDevice.isReceiving = 0
 		consumeDevice.toReceive = 0
-		consumeDevice.buyRate = 15
-		consumeDevice.buyBaseRate = 15
+		consumeDevice.buyRate = 12
+		consumeDevice.buyBaseRate = 12
 		consumeDevice.toReceiveRate = 0
 
 	})
