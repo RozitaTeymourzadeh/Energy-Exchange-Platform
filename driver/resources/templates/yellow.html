@@ -16,7 +16,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <style>
         * {
@@ -75,6 +75,7 @@
     <div class="col-md-11">
         <div class="card">
             <div class="card-body">
+                <div id="IP"></div>
                 <h3><button class="btn btn-success" onclick="updateChart(0), updateChart(1)">Update</button>
                     <button class="btn btn-info" onclick="addValue(0), addValue(1)">Next</button>
                 </h3>
@@ -104,28 +105,51 @@
 
 <div class="row">
     <div class="column" style="background-color:#aaa;">
-        <h2>Device A</h2>
+        <h2>Supplier Device </h2>
         <p id="sdInfo"></p>
     </div>
     <div class="column" style="background-color:#bbb;">
-        <h2>Device B</h2>
+        <h2>Consumer Device </h2>
         <p id="cdInfo"></p>
+
     </div>
 </div>
 
 <div class="row">
     <div class="column" style="background-color:#ccc;">
-        <h2>Device C</h2>
-        <p>Device Information..</p>
+        <h2>Sell Rate</h2>
+        <p id="sellRate"></p>
     </div>
     <div class="column" style="background-color:#ddd;">
-        <h2>Device D</h2>
-        <p>Device Information..</p>
+        <h2>Buy Rate</h2>
+        <p id="buyRate"></p>
     </div>
 </div>
 
-<script>
 
+<script>
+    var deviveIp;
+    function callback(response){
+        console.log(response)
+
+        document.getElementById("IP").innerHTML = response.IPv4;
+        deviceIP = response.IPv4;
+    }
+
+    $.ajax({
+
+        url:"https://geoip-db.com/jsonp/",
+        dataType: "jsonp"
+    })
+
+</script>
+
+<script>
+    //const Url1= 'http://' + deviceIP +':7777/getsdreadings';
+    const Url1='http://10.0.0.73:7777/getsdreadings';
+    const Url2='http://10.0.0.73:7777/getcdreadings';
+    const Url3 = 'http://10.0.0.73:7777/sendSdDeviceInfo';
+    const Url4 = 'http://10.0.0.73:7777/sendCdDeviceInfo';
 
     let sdInfo;
     let cdInfo;
@@ -137,22 +161,20 @@
 
 
     let cnt = 0;
-    let label = 6;
-    let oldcharge1 = [0, 10, 5, 2, 20, 30, 45];
-    let newcharge1 = [0, 10, 5, 2, 20, 30, 45];
-    let oldcharge2 = [99, 80, 75, 62, 50, 40, 35];
-    let newcharge2 = [99, 80, 75, 62, 50, 40, 35];
+    let label = 8;
+    let oldcharge1 = [0, 10, 5, 2, 20, 30, 45,30,65];
+    let newcharge1 = [0, 10, 5, 2, 20, 30, 45,33,12];
+    let oldcharge2 = [99, 80, 75, 62, 50, 40, 35,22,82];
+    let newcharge2 = [99, 80, 75, 62, 50, 40, 35,45,66];
     // let oldcharge3 = [39, 80, 25, 62, 10, 15, 38];
     // let newcharge3 = [15, 25, 65, 30, 10, 55, 10];
     // let oldcharge4 = [90, 80, 70, 10, 20, 30, 35];
     // let newcharge4 = [13, 15, 25, 30, 40, 50, 65];
 
-    const Url1='http://192.168.1.106:6686/getsdreadings';
-    const Url2='http://192.168.1.106:6686/getcdreadings';
+
     const URLS = [Url1, Url2];
 
-    const Url3 = 'http://192.168.1.106:6686/sendSdDeviceInfo';
-    const Url4 = 'http://192.168.1.106:6686/sendCdDeviceInfo';
+
 
 
     function getData(Url, i,  value) {
@@ -176,7 +198,8 @@
         });
     }
 
-    function getDeviceInfo(Url, value) {
+
+    function getDeviceInfo(Url, flag) {
         //const Url='http://192.168.1.106:6686/getsdreadings';
         $.ajax({
             url: Url,
@@ -184,9 +207,14 @@
             headers: { },
             type: 'get',
             success: function (responseData, textStatus, jqXHR) {
-                console.log(responseData);
-                value = responseData
-
+                console.log('[responseData]',responseData);
+                if(flag){
+                    document.getElementById('sdInfo').innerHTML = responseData.DeviceName.toString();
+                    document.getElementById('sellRate').innerHTML = responseData.SellRate.toString();
+                } else {
+                    document.getElementById('cdInfo').innerHTML = responseData.DeviceName.toString();
+                    document.getElementById('buyRate').innerHTML = responseData.BuyRate.toString();
+                }
             },
             error: function (responseData, textStatus, errorThrown) {
                 console.log('POST failed.');
@@ -195,20 +223,19 @@
         });
     }
 
+        $.getJSON('http://ipinfo.io', function(data){
+        console.log("[Client IP:]",data);
+        });
+
+
 
     setInterval(function (){
 
-        getDeviceInfo(Url3, sdInfo);
-        console.log(sdInfo);
-        getDeviceInfo(Url4, cdInfo);
-        console.log(cdInfo);
-
-        document.getElementById('sdInfo').innerHTML = "sdInfo.toString()";
-        document.getElementById('cdInfo').innerHTML = "cdInfo.toString()";
+        getDeviceInfo(Url3, 1);
+        getDeviceInfo(Url4, 0);
 
         for (var i = 0; i < URLS.length; i++) {
             console.log(URLS[i]);
-            //Do something
             if(i == 0) {
                 getData(URLS[i], i, newcharge1);
             } else if (i == 1) {
@@ -227,16 +254,14 @@
 
         // The data for our dataset
         data: {
-            // labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-
-            labels: [0,1,2,3,4,5,6],
+            labels: [0,1,2,3,4,5,6,7,8],
             datasets: [{
-                label: 'Device A Charge Level',
+                label: 'Supplier Charge Level',
                 // backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(255, 99, 132)',
                 data: newcharge1,//newcharge1, //oldcharge1,
             }, {
-                    label: 'Device B Charge Level',
+                    label: 'Consumer Charge Level',
                     // backgroundColor: 'rgb(255, 99, 132)',
                     borderColor: 'rgb(102,174,255)',
                     data: newcharge2,//newcharge2,//oldcharge2,
@@ -319,7 +344,7 @@
     };
 
     function updateChartCustom() {
-        label = label + 1;
+        label = label + 8;
         chart.data.labels.shift();
         chart.data.labels.push(label);
 
@@ -377,6 +402,7 @@
         });
     }
 </script>
+
 <img src="../../re.jpg" style="width:50%;">
 
 
