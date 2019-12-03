@@ -46,10 +46,20 @@ func generateSupplyDeviceTypeBoard(deviceType string) []DeviceTypeDetails {
 
 	sl := make([]DeviceTypeDetails, 0)
 	sd := DeviceTypeDetails{}
+	sd.DeviceAddress = GetSupplyDeviceAddress()
 	sd.DeviceName = GetSupplyDeviceName()
 	sd.DeviceId = GetSupplyDeviceId()
 	sd.SupplierCharge = GetSupplierCharge()
+	sd.SupplierChargeRate = GetSupplierChargeRate()
+	sd.SupplyRate = GetSupplyRate()
+	sd.Surplus = GetSurplus()
+	sd.IsSupplying = GetIsSupplying()
+	sd.ToSupply = GetToSupply()
 	sd.SellRate = GetSellRate()
+	sd.HasOffered = GetHasOffered()
+	sd.SellThreshold = GetSellThreshold()
+	sd.SupplierMaxCharge = GetSupplierMaxCharge()
+
 	sl = append(sl, sd)
 	//for _, d := range DEVICELIST.Devices {
 	//
@@ -111,10 +121,20 @@ func generateConsumeDeviceTypeBoard(deviceType string) []DeviceTypeDetails {
 
 	sl := make([]DeviceTypeDetails, 0)
 	cd := DeviceTypeDetails{}
+	cd.DeviceAddress = GetConsumeDeviceAddress()
 	cd.DeviceName = GetConsumeDeviceName()
 	cd.DeviceId = GetConsumeDeviceId()
 	cd.ConsumerCharge = GetConsumerCharge()
+	cd.ConsumerDischargeRate = GetConsumerDischargeRate()
+	cd.Require = GetRequire()
+	cd.IsReceiving = GetIsReceiving()
+	cd.ToReceive = GetToReceive()
 	cd.BuyRate = GetBuyRate()
+	cd.BuyBaseRate = GetBuyBaseRate()
+	cd.ToReceiveRate = GetToReceiveRate()
+	cd.HasAsked = GetHasAsked()
+	cd.ConsumerMaxCharge = GetConsumerMaxCharge()
+	cd.BuyThreshold = GetBuyThreshold()
 
 	sl = append(sl, cd)
 	//for _, d := range DEVICELIST.Devices {

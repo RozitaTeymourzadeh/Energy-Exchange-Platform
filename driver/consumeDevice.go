@@ -4,11 +4,10 @@ import (
 	"fmt"
 	"math/rand"
 	"sync"
+	"time"
 )
 
 type ConsumeDevice struct {
-
-	// todo add
 	ConsumeDeviceName    string
 	ConsumeDeviceId      string
 	ConsumeDeviceAddress string
@@ -21,10 +20,11 @@ type ConsumeDevice struct {
 	buyRate               int
 	buyBaseRate           int
 
-	toReceiveRate int
-	hasAsked      bool
-	maxCharge     int
-	buyThreshold  int
+	toReceiveRate  int
+	hasAsked       bool
+	hasAskedAtTime time.Time
+	maxCharge      int
+	buyThreshold   int
 
 	mux sync.RWMutex
 
@@ -50,9 +50,10 @@ func GetConsumeDevice() *ConsumeDevice {
 		consumeDevice.require = 0
 		consumeDevice.isReceiving = 0
 		consumeDevice.toReceive = 0
-		consumeDevice.buyRate = 12
+		consumeDevice.buyRate = 25
 		consumeDevice.buyBaseRate = 12
 		consumeDevice.toReceiveRate = 0
+		consumeDevice.hasAskedAtTime = time.Now()
 
 	})
 	return consumeDevice
@@ -104,6 +105,10 @@ func GetToReceiveRate() int {
 
 func GetHasAsked() bool {
 	return consumeDevice.hasAsked
+}
+
+func GetHasAskedAtTime() time.Time {
+	return consumeDevice.hasAskedAtTime
 }
 
 func GetConsumerMaxCharge() int {
@@ -183,6 +188,12 @@ func SetHasAsked(change bool) {
 	consumeDevice.mux.Lock()
 	defer consumeDevice.mux.Unlock()
 	consumeDevice.hasAsked = change
+}
+
+func SetHasAskedAtTime(change time.Time) {
+	consumeDevice.mux.Lock()
+	defer consumeDevice.mux.Unlock()
+	consumeDevice.hasAskedAtTime = change
 }
 
 func SetConsumerMaxCharge(change int) {

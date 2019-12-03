@@ -77,8 +77,14 @@
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Device Address</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Device ID</th>
+                    <th scope="col">IsSupplying</th>
+                    <th scope="col">ToSupply</th>
+                    <th scope="col">SellThreshold</th>
+                    <th scope="col">Surplus</th>
+                    <th scope="col">Supply Rate(kWh)</th>
+                    <th scope="col">Charge Rate(kWh)</th>
                     <th scope="col">Current Charge Level(kWh)</th>
                     <th scope="col">Current Sell Rate($)</th>
                 </tr>
@@ -87,8 +93,14 @@
                 {{ range $i, $sequence := .SupplyDevicesDetails }}
                     <tr>
                         <th scope="row">{{ $i }}</th>
+                        <td>{{ $sequence.DeviceAddress }}</td>
                         <td>{{ $sequence.DeviceName }}</td>
-                        <td>{{ $sequence.DeviceId }}</td>
+                        <td>{{ $sequence.IsSupplying }}</td>
+                        <td>{{ $sequence.ToSupply }}</td>
+                        <td>{{ $sequence.SellThreshold }}</td>
+                        <td>{{ $sequence.Surplus }}</td>
+                        <td>{{ $sequence.SupplyRate }}</td>
+                        <td>{{ $sequence.SupplierChargeRate }}</td>
                         <td>{{ $sequence.SupplierCharge }}</td>
                         <td>{{ $sequence.SellRate }}</td>
 
@@ -104,8 +116,14 @@
                 <thead class="thead-light">
                 <tr>
                     <th scope="col">#</th>
+                    <th scope="col">Device Address</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Device ID</th>
+                    <th scope="col">IsReceiving</th>
+                    <th scope="col">ToReceive</th>
+                    <th scope="col">BuyThreshold</th>
+                    <th scope="col">Require</th>
+                    <th scope="col">Receive rate</th>
+                    <th scope="col">Discharge Rate(kWh)</th>
                     <th scope="col">Current Charge Level(kWh)</th>
                     <th scope="col">Current Buy Rate($)</th>
                 </tr>
@@ -114,8 +132,14 @@
                 {{ range $i, $sequence := .ConsumeDevicesDetails }}
                     <tr>
                         <th scope="row">{{ $i }}</th>
+                        <td>{{ $sequence.DeviceAddress }}</td>
                         <td>{{ $sequence.DeviceName }}</td>
-                        <td>{{ $sequence.DeviceId }}</td>
+                        <td>{{ $sequence.IsReceiving }}</td>
+                        <td>{{ $sequence.ToReceive }}</td>
+                        <td>{{ $sequence.BuyThreshold }}</td>
+                        <td>{{ $sequence.Require }}</td>
+                        <td>{{ $sequence.ToReceiveRate }}</td>
+                        <td>{{ $sequence.ConsumerDischargeRate }}</td>
                         <td>{{ $sequence.ConsumerCharge }}</td>
                         <td>{{ $sequence.BuyRate }}</td>
                     </tr>
@@ -131,10 +155,10 @@
                 <tr>
                     <th scope="col">Latest</th>
                     <th scope="col">Transaction Type</th>
+                    <th scope="col">Supplier Address</th>
                     <th scope="col">Supplier Name</th>
-                    <th scope="col">Supplier ID</th>
+                    <th scope="col">Consumer Address</th>
                     <th scope="col">Consumer Name</th>
-                    <th scope="col">Consumer ID</th>
                     <th scope="col">Consumer Require(kWh)</th>
                     <th scope="col">Supplier ToSupply(kWh)</th>
                 </tr>
@@ -144,10 +168,10 @@
                     <tr>
                         <th scope="row">{{ $i }}</th>
                         <td>{{ $sequence.EventType }}</td>
+                        <td>{{ $sequence.SupplierAddress }}</td>
                         <td>{{ $sequence.SupplierName }}</td>
-                        <td>{{ $sequence.SupplierId }}</td>
+                        <td>{{ $sequence.ConsumerAddress }}</td>
                         <td>{{ $sequence.ConsumerName }}</td>
-                        <td>{{ $sequence.ConsumerId }}</td>
                         <td>{{ $sequence.ConsumerRequire }}</td>
                         <td>{{ $sequence.SupplierToSupply }}</td>
                     </tr>

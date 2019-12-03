@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 func driverSupplierChargeUpdate() {
@@ -82,6 +83,14 @@ func driverSupplierSurplusUpdate() {
 func driverConsumerRequireUpdate() {
 	consumerCharge := GetConsumerCharge()
 	//max := data.GetConsumerMaxCharge()
+	hasAsked := GetHasAsked()
+	hasAskedAtTime := GetHasAskedAtTime()
+	timeNow := time.Now()
+	duration := timeNow.Sub(hasAskedAtTime)
+	toReceive := GetToReceive()
+	if hasAsked && toReceive == 0 && duration.Seconds() > 45 { // checking if 2 blocks have have increased in SBC
+		SetHasAsked(false) // set hash asked to false, so again ready to create a tx
+	}
 
 	threshold := GetBuyThreshold()
 	if consumerCharge < threshold {
@@ -93,7 +102,7 @@ func driverConsumerRequireUpdate() {
 			newTx := NewTransaction("require", GetConsumeDeviceName(), GetConsumeDeviceId(), GetConsumeDeviceAddress(),
 				strconv.Itoa(GetRequire()), strconv.Itoa(GetConsumerCharge()), strconv.Itoa(GetConsumerDischargeRate()), strconv.Itoa(GetBuyRate()),
 				"", "", "", "", "", "", Balance)
-			go sendCnTxToAll(newTx) //todo : send requirement tx to blockchain, check isReceiving
+			go sendCnTxToAll(newTx) // sending tx to all peers
 
 		}
 
@@ -106,7 +115,8 @@ func sendCnTxToAll(newTx Transaction) {
 		uri := "http://" + GetNodeId().Address + ":" + GetNodeId().Port + "/postevent"
 		fmt.Println("require tx to : " + uri)
 		http.Post(uri, "application/json", bytes.NewBuffer(body))
-		SetHasAsked(true)
+		SetHasAsked(true)             // setting has asked to true
+		SetHasAskedAtTime(time.Now()) // setting has asked at height at current blockchain length
 		for peer, _ := range Peers.Copy() {
 			uri := "http//:" + peer + "/postevent"
 			fmt.Println("require tx to : " + uri)

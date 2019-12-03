@@ -99,7 +99,8 @@ func readBlockchainAndUpdateStates(lastReadForHeight int) {
 					if tx.EventType == "require" {
 						if _, ok := OPENCONSUMETXS.Pool[tx.EventId]; !ok {
 							// deduct balance for self tx
-							if tx.ConsumerId == GetConsumeDeviceId() { // self tx
+							if tx.ConsumerId == GetConsumeDeviceId() &&
+								tx.ConsumerAddress == GetConsumeDeviceAddress() { // self tx
 								Balance -= tx.EventFee
 								TRANSACTIONS = append([]Transaction{tx}, TRANSACTIONS...)
 							}
@@ -115,6 +116,7 @@ func readBlockchainAndUpdateStates(lastReadForHeight int) {
 
 						selfInSupplierField := false
 						selfInConsumerField := false
+
 						if tx.SupplierAddress == GetSupplyDeviceAddress() &&
 							tx.SupplierId == GetSupplyDeviceId() { // Supplier - self in supply tx
 							// deduct balance for self tx
@@ -160,19 +162,34 @@ if it has surplus > requirement
 */
 func makeSupplyDecision() {
 	fmt.Println("In makeSupplyDecision")
-	if GetIsSupplying() == 0 {
+	isSupplying := GetIsSupplying()
+	hasOffered := GetHasOffered()
+	offeredAtTime := GetHasOfferedAtTime()
+	timeNow := time.Now()
+	duration := timeNow.Sub(offeredAtTime).Seconds()
+
+	if duration > 45 && hasOffered && isSupplying == 0 {
+		SetHasOffered(false)
+	}
+
+	if isSupplying == 0 && hasOffered == false {
+		fmt.Println("if GetIsSupplying() == 0")
 		surplus := GetSurplus()
 		sellRate := GetSellRate()
 		for _, cnTx := range OPENCONSUMETXS.Pool {
+			fmt.Println("in for _, cnTx := range OPENCONSUMETXS.Pool")
 			require, _ := strconv.Atoi(cnTx.ConsumerRequire)
 			buyRate, _ := strconv.Atoi(cnTx.BuyRate)
-			if buyRate >= sellRate && surplus > 50 {
+			if buyRate >= sellRate && surplus > 0 {
+				fmt.Println("if buyRate >= sellRate && surplus > 50")
 				if require <= surplus {
 					spTx := createSupplyTx(cnTx, strconv.Itoa(require))
 					sendSpTxToAll(spTx)
+					break
 				} else {
 					spTx := createSupplyTx(cnTx, strconv.Itoa(surplus))
 					sendSpTxToAll(spTx)
+					break
 				}
 
 				//SetHasOffered(true)
@@ -192,6 +209,9 @@ func createSupplyTx(cnTx Transaction, toSupply string) Transaction {
 }
 
 func sendSpTxToAll(newTx Transaction) {
+	SetHasOffered(true)               // setting has offered to true
+	SetHasOfferedAtHeight(time.Now()) // setting has offered at time
+
 	body, err := newTx.TransactionToJSON()
 	if err == nil {
 		uri := "http://" + GetNodeId().Address + ":" + GetNodeId().Port + "/postevent"

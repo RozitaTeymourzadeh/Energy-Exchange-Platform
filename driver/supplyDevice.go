@@ -4,11 +4,10 @@ import (
 	"fmt"
 	"math/rand"
 	"sync"
+	"time"
 )
 
 type SupplyDevice struct {
-
-	// todo add
 	SupplyDeviceName    string
 	SupplyDeviceId      string
 	SupplyDeviceAddress string
@@ -23,9 +22,10 @@ type SupplyDevice struct {
 	sellBaseRate       int
 
 	//toSupplyAddress string
-	hasOffered    bool
-	maxCharge     int
-	sellThreshold int
+	hasOffered       bool
+	hasOfferedAtTime time.Time
+	maxCharge        int
+	sellThreshold    int
 
 	mux sync.RWMutex
 
@@ -109,6 +109,10 @@ func GetSellBaseRate() int {
 
 func GetHasOffered() bool {
 	return supplyDevice.hasOffered
+}
+
+func GetHasOfferedAtTime() time.Time {
+	return supplyDevice.hasOfferedAtTime
 }
 
 func GetSupplierMaxCharge() int {
@@ -200,6 +204,12 @@ func SetHasOffered(change bool) {
 	supplyDevice.mux.Lock()
 	defer supplyDevice.mux.Unlock()
 	supplyDevice.hasOffered = change
+}
+
+func SetHasOfferedAtHeight(change time.Time) {
+	supplyDevice.mux.Lock()
+	defer supplyDevice.mux.Unlock()
+	supplyDevice.hasOfferedAtTime = change
 }
 
 func SetSupplierMaxCharge(change int) {
