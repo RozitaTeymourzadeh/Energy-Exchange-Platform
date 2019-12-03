@@ -125,7 +125,10 @@
 </div>
 
 <script>
-
+    const Url1='http://10.0.0.73:7777/getsdreadings';
+    const Url2='http://10.0.0.73:7777/getcdreadings';
+    const Url3 = 'http://10.0.0.73:7777/sendSdDeviceInfo';
+    const Url4 = 'http://10.0.0.73:7777/sendCdDeviceInfo';
 
     let sdInfo;
     let cdInfo;
@@ -147,12 +150,10 @@
     // let oldcharge4 = [90, 80, 70, 10, 20, 30, 35];
     // let newcharge4 = [13, 15, 25, 30, 40, 50, 65];
 
-    const Url1='http://192.168.1.106:6686/getsdreadings';
-    const Url2='http://192.168.1.106:6686/getcdreadings';
+
     const URLS = [Url1, Url2];
 
-    const Url3 = 'http://192.168.1.106:6686/sendSdDeviceInfo';
-    const Url4 = 'http://192.168.1.106:6686/sendCdDeviceInfo';
+
 
 
     function getData(Url, i,  value) {
@@ -176,7 +177,7 @@
         });
     }
 
-    function getDeviceInfo(Url, value) {
+    function getDeviceInfo(Url, flag) {
         //const Url='http://192.168.1.106:6686/getsdreadings';
         $.ajax({
             url: Url,
@@ -185,8 +186,11 @@
             type: 'get',
             success: function (responseData, textStatus, jqXHR) {
                 console.log(responseData);
-                value = responseData
-
+                if(flag){
+                    document.getElementById('sdInfo').innerHTML = responseData.DeviceId.toString();
+                } else {
+                    document.getElementById('cdInfo').innerHTML = responseData.DeviceId.toString();
+                }
             },
             error: function (responseData, textStatus, errorThrown) {
                 console.log('POST failed.');
@@ -198,13 +202,8 @@
 
     setInterval(function (){
 
-        getDeviceInfo(Url3, sdInfo);
-        console.log(sdInfo);
-        getDeviceInfo(Url4, cdInfo);
-        console.log(cdInfo);
-
-        document.getElementById('sdInfo').innerHTML = "sdInfo.toString()";
-        document.getElementById('cdInfo').innerHTML = "cdInfo.toString()";
+        getDeviceInfo(Url3, 1);
+        getDeviceInfo(Url4, 0);
 
         for (var i = 0; i < URLS.length; i++) {
             console.log(URLS[i]);
@@ -231,12 +230,12 @@
 
             labels: [0,1,2,3,4,5,6],
             datasets: [{
-                label: 'Device A Charge Level',
+                label: 'Supplier Charge Level',
                 // backgroundColor: 'rgb(255, 99, 132)',
                 borderColor: 'rgb(255, 99, 132)',
                 data: newcharge1,//newcharge1, //oldcharge1,
             }, {
-                    label: 'Device B Charge Level',
+                    label: 'Consumer Charge Level',
                     // backgroundColor: 'rgb(255, 99, 132)',
                     borderColor: 'rgb(102,174,255)',
                     data: newcharge2,//newcharge2,//oldcharge2,
