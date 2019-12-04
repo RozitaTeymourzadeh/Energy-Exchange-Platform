@@ -46,7 +46,7 @@ func generateSupplyDeviceTypeBoard(deviceType string) []DeviceTypeDetails {
 
 	sl := make([]DeviceTypeDetails, 0)
 	sd := DeviceTypeDetails{}
-	sd.DeviceAddress = GetSupplyDeviceAddress()
+	sd.DeviceAddress = GetNodeId().GetAddressPort()
 	sd.DeviceName = GetSupplyDeviceName()
 	sd.DeviceId = GetSupplyDeviceId()
 	sd.SupplierCharge = GetSupplierCharge()
@@ -121,7 +121,7 @@ func generateConsumeDeviceTypeBoard(deviceType string) []DeviceTypeDetails {
 
 	sl := make([]DeviceTypeDetails, 0)
 	cd := DeviceTypeDetails{}
-	cd.DeviceAddress = GetConsumeDeviceAddress()
+	cd.DeviceAddress = GetNodeId().GetAddressPort()
 	cd.DeviceName = GetConsumeDeviceName()
 	cd.DeviceId = GetConsumeDeviceId()
 	cd.ConsumerCharge = GetConsumerCharge()
