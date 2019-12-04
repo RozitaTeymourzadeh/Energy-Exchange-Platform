@@ -48,7 +48,7 @@ func GetSupplyDevice() *SupplyDevice {
 		supplyDevice.hasOffered = false
 		supplyDevice.supplierCharge = supplyDevice.maxCharge/2 + rand.Intn(supplyDevice.maxCharge/2)
 		r := rand.New(rand.NewSource(time.Now().Unix()))
-		supplyDevice.supplierChargeRate = 4 + rand.Intn(r.Intn(10))
+		supplyDevice.supplierChargeRate = 4 + r.Intn(10)
 		supplyDevice.supplyRate = 11 + r.Intn(10)
 		supplyDevice.surplus = 0
 		supplyDevice.isSupplying = 0
