@@ -76,8 +76,8 @@
         <div class="card">
             <div class="card-body">
                 <div id="IP"></div>
-                <h3><button class="btn btn-success" onclick="updateChart(0), updateChart(1)">Update</button>
-                    <button class="btn btn-info" onclick="addValue(0), addValue(1)">Next</button>
+                <h3><button class="btn btn-success" onclick="updateChart(0), updateChart(1), updateChart(2), updateChart(3)">Update</button>
+                    <button class="btn btn-info" onclick="addValue(0), addValue(1),addValue(2),addValue(3)">Next</button>
                 </h3>
             </div>
             <div class="card-body">
@@ -106,23 +106,34 @@
 <div class="row">
     <div class="column" style="background-color:#aaa;">
         <h2>Supplier Device </h2>
-        <p id="sdInfo"></p>
+        <p id="sdInfo1"></p>
     </div>
     <div class="column" style="background-color:#bbb;">
         <h2>Consumer Device </h2>
-        <p id="cdInfo"></p>
-
+        <p id="cdInfo1"></p>
+    </div>
+    <div class="column" style="background-color:#aaa;">
+        <h2>Supplier Device </h2>
+        <p id="sdInfo2"></p>
+    </div>
+    <div class="column" style="background-color:#bbb;">
+        <h2>Consumer Device </h2>
+        <p id="cdInfo2"></p>
     </div>
 </div>
 
 <div class="row">
     <div class="column" style="background-color:#ccc;">
-        <h2>Sell Rate</h2>
-        <p id="sellRate"></p>
+        <p id="sellRate1"></p>
     </div>
     <div class="column" style="background-color:#ddd;">
-        <h2>Buy Rate</h2>
-        <p id="buyRate"></p>
+        <p id="buyRate1"></p>
+    </div>
+    <div class="column" style="background-color:#ccc;">
+        <p id="sellRate2"></p>
+    </div>
+    <div class="column" style="background-color:#ddd;">
+        <p id="buyRate2"></p>
     </div>
 </div>
 
@@ -156,13 +167,13 @@
     // const Url7 = 'http://192.168.11.191:6686/sendSdDeviceInfo';
     // const Url8 = 'http://192.168.11.191:6686/sendCdDeviceInfo';
 
+    const Url5='http://10.0.0.73:8888/getsdreadings';
+    const Url6 ='http://10.0.0.73:8888/getcdreadings';
+    const Url7 = 'http://10.0.0.73:8888/sendSdDeviceInfo';
+    const Url8 = 'http://10.0.0.73:8888/sendCdDeviceInfo';
+
     let sdInfo;
     let cdInfo;
-
-    // window.onload = function(){
-    //     document.getElementById('sdInfo').innerHTML = "sdInfo.DeviceId";
-    //     document.getElementById('cdInfo').innerHTML = "cdInfo.toString()";
-    // };
 
 
     let cnt = 0;
@@ -171,13 +182,13 @@
     let newcharge1 = [0, 10, 5, 2, 20, 30, 45,33,12];
     let oldcharge2 = [99, 80, 75, 62, 50, 40, 35,22,82];
     let newcharge2 = [99, 80, 75, 62, 50, 40, 35,45,66];
-    // let oldcharge3 = [39, 80, 25, 62, 10, 15, 38];
-    // let newcharge3 = [15, 25, 65, 30, 10, 55, 10];
-    // let oldcharge4 = [90, 80, 70, 10, 20, 30, 35];
-    // let newcharge4 = [13, 15, 25, 30, 40, 50, 65];
+    let oldcharge3 = [39, 80, 25, 62, 10, 15, 38,22,11];
+    let newcharge3 = [15, 25, 65, 30, 10, 55, 10,15,16];
+    let oldcharge4 = [90, 80, 70, 10, 20, 30, 35,15, 16];
+    let newcharge4 = [13, 15, 25, 30, 40, 50, 65,28,32];
 
 
-    const URLS = [Url1, Url2];
+    const URLS = [Url1, Url2,Url5, Url6];
 
 
 
@@ -213,17 +224,22 @@
             type: 'get',
             success: function (responseData, textStatus, jqXHR) {
                 console.log('[responseData]',responseData);
-                if(flag){
-                    document.getElementById('sdInfo').innerHTML = responseData.DeviceName.toString();
-                    document.getElementById('sellRate').innerHTML = responseData.SellRate.toString();
-                } else {
-                    document.getElementById('cdInfo').innerHTML = responseData.DeviceName.toString();
-                    document.getElementById('buyRate').innerHTML = responseData.BuyRate.toString();
+                if(flag == 1){
+                    document.getElementById('sdInfo1').innerHTML = responseData.DeviceName.toString();
+                    document.getElementById('sellRate1').innerHTML = responseData.SellRate.toString();
+                } else if (flag == 0) {
+                    document.getElementById('cdInfo1').innerHTML = responseData.DeviceName.toString();
+                    document.getElementById('buyRate1').innerHTML = responseData.BuyRate.toString();
+                } else if (flag == 3) {
+                    document.getElementById('cdInfo2').innerHTML = responseData.DeviceName.toString();
+                    document.getElementById('buyRate2').innerHTML = responseData.BuyRate.toString();
+                } else if (flag == 2) {
+                    document.getElementById('cdInfo2').innerHTML = responseData.DeviceName.toString();
+                    document.getElementById('buyRate2').innerHTML = responseData.BuyRate.toString();
                 }
             },
             error: function (responseData, textStatus, errorThrown) {
                 console.log('POST failed.');
-                //return []
             }
         });
     }
@@ -238,6 +254,8 @@
 
         getDeviceInfo(Url3, 1);
         getDeviceInfo(Url4, 0);
+        getDeviceInfo(Url7, 3);
+        getDeviceInfo(Url8, 2);
 
         for (var i = 0; i < URLS.length; i++) {
             console.log(URLS[i]);
@@ -245,6 +263,10 @@
                 getData(URLS[i], i, newcharge1);
             } else if (i == 1) {
                 getData(URLS[i], i, newcharge2);
+            } else if (i == 2) {
+                getData(URLS[i], i, newcharge3);
+            } else if (i == 4) {
+                getData(URLS[i], i, newcharge4);
             }
         }
         updateChartCustom();
@@ -259,29 +281,32 @@
 
         // The data for our dataset
         data: {
-            labels: [0,1,2,3,4,5,6,7,8],
-            datasets: [{
-                label: 'Supplier Charge Level',
-                // backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: newcharge1,//newcharge1, //oldcharge1,
-            }, {
-                    label: 'Consumer Charge Level',
+            labels: [0,8,16,24,32,40,48,56,64],
+            datasets: [
+                {
+                    label: 'Supplier #1 Charge Level',
+                    // backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: newcharge1,
+                },
+                {
+                    label: 'Consumer #1 Charge Level',
                     // backgroundColor: 'rgb(255, 99, 132)',
                     borderColor: 'rgb(102,174,255)',
-                    data: newcharge2,//newcharge2,//oldcharge2,
+                    data: newcharge2,
                 },
-                // {
-                //     label: 'Device C Charge Level',
-                //     // backgroundColor: 'rgb(255, 99, 132)',
-                //     borderColor: 'rgb(54,255,49)',
-                //     data: oldcharge3,
-                // }, {
-                //     label: 'Device D Charge Level',
-                //     // backgroundColor: 'rgb(255, 99, 132)',
-                //     borderColor: 'rgb(197,104,255)',
-                //     data: oldcharge4,
-                // },
+                {
+                    label: 'Supplier #2 Charge Level',
+                    // backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(54,255,49)',
+                    data: newcharge3,
+                },
+                {
+                    label: 'Consumer #2 Charge Level',
+                    // backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(197,104,255)',
+                    data: newcharge4,
+                },
             ]
         },
 
@@ -311,8 +336,8 @@
     function updateChart(){
         chart.data.datasets[0].data = newcharge1;
         chart.data.datasets[1].data = newcharge2;
-        // chart.data.datasets[2].data = newcharge3;
-        // chart.data.datasets[3].data = newcharge4;
+        chart.data.datasets[2].data = newcharge3;
+        chart.data.datasets[3].data = newcharge4;
         chart.update();
     };
 
@@ -323,29 +348,23 @@
 
     function  addValue(datasetIndex, value) {
 
-        if(datasetIndex === 0) {
+        if(datasetIndex == 0) {
             chart.data.datasets[0].data.shift();
             console.log(newcharge1[0])
             chart.data.datasets[0].data.push(value[0]);
         }
-        if(datasetIndex === 1) {
+        if(datasetIndex == 1) {
             chart.data.datasets[1].data.shift();
             chart.data.datasets[1].data.push(value[0]);
         }
-
-
-
-        // chart.data.datasets[0].data.shift();
-        // chart.data.datasets[0].data.push(999);
-        //
-
-        //
-        // chart.data.datasets[2].data.shift();
-        // chart.data.datasets[2].data.push(700);
-        //
-        // chart.data.datasets[3].data.shift();
-        // chart.data.datasets[3].data.push(600);
-
+        if(datasetIndex == 2) {
+            chart.data.datasets[2].data.shift();
+            chart.data.datasets[2].data.push(value[0]);
+        }
+        if(datasetIndex == 1) {
+            chart.data.datasets[3].data.shift();
+            chart.data.datasets[3].data.push(value[0]);
+        }
     };
 
     function updateChartCustom() {
