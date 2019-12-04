@@ -243,6 +243,7 @@ func SendSdDeviceInfo(w http.ResponseWriter, r *http.Request) {
 	//w.Header().Set("Access-Control-Allow-Origin", "*")
 	devicesInfo := generateSupplyDeviceTypeBoard("supply")
 	deviceInfo := devicesInfo[0]
+	deviceInfo.DeviceAddress = GetNodeId().Address + ":" + GetNodeId().Port
 	barr, err := json.Marshal(&deviceInfo)
 	if err != nil {
 		w.WriteHeader(http.StatusNoContent)
@@ -258,6 +259,7 @@ func SendCdDeviceInfo(w http.ResponseWriter, r *http.Request) {
 	//w.Header().Set("Access-Control-Allow-Origin", "*")
 	devicesInfo := generateConsumeDeviceTypeBoard("supply")
 	deviceInfo := devicesInfo[0]
+	deviceInfo.DeviceAddress = GetNodeId().Address + ":" + GetNodeId().Port
 	barr, err := json.Marshal(&deviceInfo)
 	if err != nil {
 		w.WriteHeader(http.StatusNoContent)
