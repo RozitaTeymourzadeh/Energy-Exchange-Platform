@@ -24,7 +24,7 @@
 
 <body>
 
-<h2>Energy Exchange Platform</h2>
+<!--<h2>Energy Exchange Platform</h2>-->
 
 <nav class="navbar navbar-expand-lg navbar navbar-dark bg-primary p-4 sticky-top">
     <a class="navbar-brand" href="/">Power Flow</a>
@@ -148,38 +148,6 @@
             </table>
         </div>
 
-        <H4 class="p-3 mb-0 mt-4 bg-light text-black">Transaction History</H4>
-        <div class="table-responsive">
-            <table class="table table-hover table-striped">
-                <thead class="thead-light">
-                <tr>
-                    <th scope="col">Latest</th>
-                    <th scope="col">Transaction Type</th>
-                    <th scope="col">Supplier Address</th>
-                    <th scope="col">Supplier Name</th>
-                    <th scope="col">Consumer Address</th>
-                    <th scope="col">Consumer Name</th>
-                    <th scope="col">Consumer Require(kWh)</th>
-                    <th scope="col">Supplier ToSupply(kWh)</th>
-                </tr>
-                </thead>
-                <tbody>
-                {{ range $i, $sequence := .Transactions }}
-                    <tr>
-                        <th scope="row">{{ $i }}</th>
-                        <td>{{ $sequence.EventType }}</td>
-                        <td>{{ $sequence.SupplierAddress }}</td>
-                        <td>{{ $sequence.SupplierName }}</td>
-                        <td>{{ $sequence.ConsumerAddress }}</td>
-                        <td>{{ $sequence.ConsumerName }}</td>
-                        <td>{{ $sequence.ConsumerRequire }}</td>
-                        <td>{{ $sequence.SupplierToSupply }}</td>
-                    </tr>
-                {{ end }}
-                </tbody>
-            </table>
-        </div>
-
     </div>
 
     <div class="">
@@ -187,6 +155,40 @@
         <div class="container">
             <div id="chart"></div>
         </div>
+    </div>
+
+    <div id="txsdiv" class="mainbody ">
+        <H4 class="p-3 mb-0 mt-4 bg-light text-black">Transaction History</H4>
+        <div class="table-responsive">
+        <table class="table table-hover table-striped">
+            <thead class="thead-light">
+            <tr>
+                <th scope="col">Latest</th>
+                <th scope="col">Transaction Type</th>
+                <th scope="col">Supplier Address</th>
+                <th scope="col">Supplier Name</th>
+                <th scope="col">Consumer Address</th>
+                <th scope="col">Consumer Name</th>
+                <th scope="col">Consumer Require(kWh)</th>
+                <th scope="col">Supplier ToSupply(kWh)</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{ range $i, $sequence := .Transactions }}
+                <tr>
+                    <th scope="row">{{ $i }}</th>
+                    <td>{{ $sequence.EventType }}</td>
+                    <td>{{ $sequence.SupplierAddress }}</td>
+                    <td>{{ $sequence.SupplierName }}</td>
+                    <td>{{ $sequence.ConsumerAddress }}</td>
+                    <td>{{ $sequence.ConsumerName }}</td>
+                    <td>{{ $sequence.ConsumerRequire }}</td>
+                    <td>{{ $sequence.SupplierToSupply }}</td>
+                </tr>
+            {{ end }}
+            </tbody>
+        </table>
+    </div>
     </div>
 
 
@@ -318,18 +320,18 @@
             y:[getSdData()],
             name: 'Supply Device',
             mode: 'lines+markers',
-            line: {color: '#396AB1',width: 4},
+            line: {color: '#396AB1',width: 3},
             marker: {
-                size: 12
+                size: 6
             }
         }, {
             x: [time],
             y:[getCdData()],
             name: 'Consume Device',
             mode: 'lines+markers',
-            line: {color: '#948B3D',width: 4},
+            line: {color: '#948B3D',width: 3},
             marker: {
-                size: 12
+                size: 6
             }
         }],
         layout,
@@ -339,6 +341,7 @@
     var cnt = 0;
     setInterval(function (){
         $('#thisdiv').load(document.URL +  ' #thisdiv');
+        $('#txsdiv').load(document.URL +  ' #txsdiv');
 
 
 

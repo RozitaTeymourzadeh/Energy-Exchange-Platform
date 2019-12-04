@@ -46,7 +46,8 @@ func GetConsumeDevice() *ConsumeDevice {
 		consumeDevice.buyThreshold = consumeDevice.maxCharge/2 + consumeDevice.maxCharge/4
 		consumeDevice.hasAsked = false
 		consumeDevice.consumerCharge = consumeDevice.maxCharge/2 + rand.Intn(consumeDevice.maxCharge/2)
-		consumeDevice.consumerDischargeRate = 10 + rand.Intn(5)
+		r := rand.New(rand.NewSource(time.Now().Unix()))
+		consumeDevice.consumerDischargeRate = 4 + rand.Intn(r.Intn(10))
 		consumeDevice.require = 0
 		consumeDevice.isReceiving = 0
 		consumeDevice.toReceive = 0

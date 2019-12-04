@@ -170,14 +170,11 @@ func makeSupplyDecision() {
 	timeNow := time.Now()
 	duration := timeNow.Sub(offeredAtTime).Seconds()
 
-	if duration > 45 && hasOffered && isSupplying == 0 {
-		SetHasOffered(false)
-	}
-
 	if isSupplying == 0 && hasOffered == false {
 		fmt.Println("if GetIsSupplying() == 0")
 		surplus := GetSurplus()
 		sellRate := GetSellRate()
+
 		for _, cnTx := range OPENCONSUMETXS.Pool {
 			fmt.Println("in for _, cnTx := range OPENCONSUMETXS.Pool")
 			require, _ := strconv.Atoi(cnTx.ConsumerRequire)
@@ -197,6 +194,10 @@ func makeSupplyDecision() {
 				//SetHasOffered(true)
 			}
 		}
+	}
+
+	if duration > 45 && hasOffered && isSupplying == 0 {
+		SetHasOffered(false)
 	}
 
 }

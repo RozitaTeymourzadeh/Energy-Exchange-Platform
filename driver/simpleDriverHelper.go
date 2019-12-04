@@ -88,9 +88,6 @@ func driverConsumerRequireUpdate() {
 	timeNow := time.Now()
 	duration := timeNow.Sub(hasAskedAtTime)
 	toReceive := GetToReceive()
-	if hasAsked && toReceive == 0 && duration.Seconds() > 45 { // checking if 2 blocks have have increased in SBC
-		SetHasAsked(false) // set hash asked to false, so again ready to create a tx
-	}
 
 	threshold := GetBuyThreshold()
 	if consumerCharge < threshold {
@@ -103,9 +100,10 @@ func driverConsumerRequireUpdate() {
 				strconv.Itoa(GetRequire()), strconv.Itoa(GetConsumerCharge()), strconv.Itoa(GetConsumerDischargeRate()), strconv.Itoa(GetBuyRate()),
 				"", "", "", "", "", "", Balance)
 			go sendCnTxToAll(newTx) // sending tx to all peers
-
 		}
-
+	}
+	if hasAsked && toReceive == 0 && duration.Seconds() > 60 { // checking if 2 blocks have have increased in SBC
+		SetHasAsked(false) // set hash asked to false, so again ready to create a tx
 	}
 }
 
