@@ -75,7 +75,6 @@
     <div class="col-md-11">
         <div class="card">
             <div class="card-body">
-                <div id="IP"></div>
                 <h3><button class="btn btn-success" onclick="updateChart(0), updateChart(1), updateChart(2), updateChart(3)">Update</button>
                     <button class="btn btn-info" onclick="addValue(0), addValue(1),addValue(2),addValue(3)">Next</button>
                 </h3>
@@ -124,27 +123,31 @@
 
 <div class="row">
     <div class="column" style="background-color:#ccc;">
+        <h2> Sell Rate ($) </h2>
         <p id="sellRate1"></p>
     </div>
     <div class="column" style="background-color:#ddd;">
+        <h2> Buy Rate ($) </h2>
         <p id="buyRate1"></p>
     </div>
     <div class="column" style="background-color:#ccc;">
+        <h2> Sell Rate ($) </h2>
         <p id="sellRate2"></p>
     </div>
     <div class="column" style="background-color:#ddd;">
+        <h2> Buy Rate ($) </h2>
         <p id="buyRate2"></p>
     </div>
 </div>
 
 
 <script>
-    var deviveIp;
+    var deviceIp;
     function callback(response){
         console.log(response)
 
         document.getElementById("IP").innerHTML = response.IPv4;
-        deviceIP = response.IPv4;
+        deviceIp = response.IPv4;
     }
 
     $.ajax({
@@ -157,16 +160,15 @@
 
 <script>
     //const Url1= 'http://' + deviceIP +':7777/getsdreadings';
-    const Url1='http://10.0.0.92:7777/getsdreadings';
-    const Url2='http://10.0.0.92:7777/getcdreadings';
-    const Url3 = 'http://10.0.0.92:7777/sendSdDeviceInfo';
-    const Url4 = 'http://10.0.0.92:7777/sendCdDeviceInfo';
+    const Url1 = 'http://192.168.11.23:6686/getsdreadings';
+    const Url2 = 'http://192.168.11.23:6686/getcdreadings';
+    const Url3 = 'http://192.168.11.23:6686/sendSdDeviceInfo';
+    const Url4 = 'http://192.168.11.23:6686/sendCdDeviceInfo';
 
-
-    const Url5='http://10.0.0.204:8888/getsdreadings';
-    const Url6 ='http://10.0.0.204:8888/getcdreadings';
-    const Url7 = 'http://10.0.0.204:8888/sendSdDeviceInfo';
-    const Url8 = 'http://10.0.0.204:8888/sendCdDeviceInfo';
+    const Url5 = 'http://192.168.11.192:8888/getsdreadings';
+    const Url6 = 'http://192.168.11.192:8888/getcdreadings';
+    const Url7 = 'http://192.168.11.192:8888/sendSdDeviceInfo';
+    const Url8 = 'http://192.168.11.192:8888/sendCdDeviceInfo';
 
     let sdInfo;
     let cdInfo;
@@ -221,16 +223,16 @@
             success: function (responseData, textStatus, jqXHR) {
                 console.log('[responseData]',responseData);
                 if(flag == 1){
-                    document.getElementById('sdInfo1').innerHTML = responseData.DeviceName.toString();
+                    document.getElementById('sdInfo1').innerHTML = responseData.DeviceAddress.toString();
                     document.getElementById('sellRate1').innerHTML = responseData.SellRate.toString();
                 } else if (flag == 0) {
-                    document.getElementById('cdInfo1').innerHTML = responseData.DeviceName.toString();
+                    document.getElementById('cdInfo1').innerHTML = responseData.DeviceAddress.toString();
                     document.getElementById('buyRate1').innerHTML = responseData.BuyRate.toString();
                 } else if (flag == 3) {
-                    document.getElementById('cdInfo2').innerHTML = responseData.DeviceName.toString();
-                    document.getElementById('buyRate2').innerHTML = responseData.BuyRate.toString();
+                    document.getElementById('sdInfo2').innerHTML = responseData.DeviceAddress.toString();
+                    document.getElementById('sellRate2').innerHTML = responseData.SellRate.toString();
                 } else if (flag == 2) {
-                    document.getElementById('cdInfo2').innerHTML = responseData.DeviceName.toString();
+                    document.getElementById('cdInfo2').innerHTML = responseData.DeviceAddress.toString();
                     document.getElementById('buyRate2').innerHTML = responseData.BuyRate.toString();
                 }
             },
@@ -261,7 +263,7 @@
                 getData(URLS[i], i, newcharge2);
             } else if (i == 2) {
                 getData(URLS[i], i, newcharge3);
-            } else if (i == 4) {
+            } else if (i == 3) {
                 getData(URLS[i], i, newcharge4);
             }
         }
