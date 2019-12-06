@@ -11,11 +11,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
     <link href='https://fonts.googleapis.com/css?family=Rosario:400' rel='stylesheet' type='text/css'>
 
     <!-- Latest compiled and minified plotly.js JavaScript -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!--<script src="../js/plotly.js"></script>-->
 
     <title>{{.Title}}</title>
 
@@ -101,7 +102,7 @@
                         <td>{{ $sequence.Surplus }}</td>
                         <td>{{ $sequence.SupplyRate }}</td>
                         <td>{{ $sequence.SupplierChargeRate }}</td>
-                        <td>{{ $sequence.SupplierCharge }}</td>
+                        <td><b>{{ $sequence.SupplierCharge }}</b></td>
                         <td>{{ $sequence.SellRate }}</td>
 
                     </tr>
@@ -140,7 +141,7 @@
                         <td>{{ $sequence.Require }}</td>
                         <td>{{ $sequence.ToReceiveRate }}</td>
                         <td>{{ $sequence.ConsumerDischargeRate }}</td>
-                        <td>{{ $sequence.ConsumerCharge }}</td>
+                        <td><b>{{ $sequence.ConsumerCharge }}</b></td>
                         <td>{{ $sequence.BuyRate }}</td>
                     </tr>
                 {{ end }}
@@ -205,7 +206,7 @@
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
+<script>window.jQuery || document.write('<script src="../js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
 
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
@@ -235,7 +236,7 @@
             headers: { },
             type: 'get',
             success: function (responseData) {
-                // console.log(responseData[0]);
+                // console.log(responseData);
                 sdvalue = responseData[0];
             },
             error: function (responseData) {
@@ -322,7 +323,7 @@
             mode: 'lines+markers',
             line: {color: '#396AB1',width: 3},
             marker: {
-                size: 6
+                size: 5
             }
         }, {
             x: [time],
@@ -331,7 +332,7 @@
             mode: 'lines+markers',
             line: {color: '#948B3D',width: 3},
             marker: {
-                size: 6
+                size: 5
             }
         }],
         layout,
@@ -351,7 +352,7 @@
             y: [[getSdData()],[getCdData()]]
         };
 
-        Plotly.extendTraces('chart', update, [0,1])
+        Plotly.extendTraces('chart', update, [0,1]);
 
         cnt++;
 

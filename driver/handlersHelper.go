@@ -25,12 +25,12 @@ func GetSelfDevices() {
 		if strings.HasPrefix(device.Name, "Supply") {
 			SetSupplyDeviceName(device.Name)
 			SetSupplyDeviceId(device.Id)
-			SetSupplyDeviceAddress(GetNodeId().Address + ":" + GetNodeId().Port)
+			SetSupplyDeviceAddress(GetNodeId().GetAddressPort())
 		}
 		if strings.HasPrefix(device.Name, "Consume") {
 			SetConsumeDeviceName(device.Name)
 			SetConsumeDeviceId(device.Id)
-			SetConsumeDeviceAddress(GetNodeId().Address + ":" + GetNodeId().Port)
+			SetConsumeDeviceAddress(GetNodeId().GetAddressPort())
 		}
 	}
 }

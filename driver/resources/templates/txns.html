@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
     <link href='https://fonts.googleapis.com/css?family=Rosario:400' rel='stylesheet' type='text/css'>
 
     <!-- Latest compiled and minified plotly.js JavaScript -->
@@ -49,13 +49,16 @@
                 <thead class="thead-dark">
                 <tr>
                     <th scope="col">Latest</th>
-                    <th scope="col">Transaction Type</th>
-                    <th scope="col">Supplier Address</th>
-                    <th scope="col">Supplier Name</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Timestamp</th>
                     <th scope="col">Consumer Address</th>
-                    <th scope="col">Consumer Name</th>
-                    <th scope="col">Consumer Require(kWh)</th>
-                    <th scope="col">Supplier ToSupply(kWh)</th>
+                    <th scope="col">Consumer Require(kW)</th>
+                    <th scope="col">Consumer Charge(kW)</th>
+                    <th scope="col">Consumer Discharge Rate(kWh)</th>
+                    <th scope="col">BuyRate($)</th>
+                    <th scope="col">Supplier Address</th>
+                    <th scope="col">Supplier To Supply(kW)</th>
+                    <th scope="col">Supplier Supply Rate(kWh)</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -63,12 +66,15 @@
                     <tr>
                         <th scope="row">{{ $i }}</th>
                         <td>{{ $sequence.EventType }}</td>
-                        <td>{{ $sequence.SupplierAddress }}</td>
-                        <td>{{ $sequence.SupplierName }}</td>
+                        <td>{{ $sequence.Timestamp }}</td>
                         <td>{{ $sequence.ConsumerAddress }}</td>
-                        <td>{{ $sequence.ConsumerName }}</td>
                         <td>{{ $sequence.ConsumerRequire }}</td>
+                        <td>{{ $sequence.ConsumerCharge }}</td>
+                        <td>{{ $sequence.ConsumerDischargeRate }}</td>
+                        <td>{{ $sequence.BuyRate }}</td>
+                        <td>{{ $sequence.SupplierAddress }}</td>
                         <td>{{ $sequence.SupplierToSupply }}</td>
+                        <td>{{ $sequence.SupplierSupplyRate }}</td>
                     </tr>
                 {{ end }}
                 </tbody>
@@ -80,7 +86,7 @@
 
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
+<script>window.jQuery || document.write('<script src="../js/vendor/jquery-3.4.1.min.js"><\/script>')</script>
 
 <!-- Optional JavaScript -->
 <script>

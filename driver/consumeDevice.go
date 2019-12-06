@@ -42,6 +42,8 @@ func GetConsumeDevice() *ConsumeDevice {
 			last100CDReadings: []int{},
 		}
 
+		consumeDevice.ConsumeDeviceAddress = GetNodeId().GetAddressPort()
+
 		consumeDevice.maxCharge = 1000
 		consumeDevice.buyThreshold = consumeDevice.maxCharge/2 + consumeDevice.maxCharge/4
 		consumeDevice.hasAsked = false

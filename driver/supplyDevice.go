@@ -43,6 +43,8 @@ func GetSupplyDevice() *SupplyDevice {
 			last100SDReadings: []int{},
 		}
 
+		supplyDevice.SupplyDeviceAddress = GetNodeId().GetAddressPort()
+
 		supplyDevice.maxCharge = 1000
 		supplyDevice.sellThreshold = supplyDevice.maxCharge / 3
 		supplyDevice.hasOffered = false
