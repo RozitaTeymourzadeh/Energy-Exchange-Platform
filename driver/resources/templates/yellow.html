@@ -160,11 +160,10 @@
 
 <script>
     //const Url1= 'http://' + deviceIP +':7777/getsdreadings';
-    const Url1 = 'http://192.168.11.94:4444/getsdreadings';
-    const Url2 = 'http://192.168.11.94:4444/getcdreadings';
-    const Url3 = 'http://192.168.11.94:4444/sendSdDeviceInfo';
-    const Url4 = 'http://192.168.11.94:4444/sendCdDeviceInfo';
-
+    const Url1 = 'http://192.168.11.23:6686/getsdreadings';
+    const Url2 = 'http://192.168.11.23:6686/getcdreadings';
+    const Url3 = 'http://192.168.11.23:6686/sendSdDeviceInfo';
+    const Url4 = 'http://192.168.11.23:6686/sendCdDeviceInfo';
 
     const Url5 = 'http://192.168.11.192:8888/getsdreadings';
     const Url6 = 'http://192.168.11.192:8888/getcdreadings';
@@ -243,9 +242,9 @@
         });
     }
 
-    $.getJSON('http://ipinfo.io', function(data){
+        $.getJSON('http://ipinfo.io', function(data){
         console.log("[Client IP:]",data);
-    });
+        });
 
 
 
