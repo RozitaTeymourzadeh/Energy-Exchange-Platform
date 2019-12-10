@@ -28,9 +28,9 @@ var Heart HeartBeatData
 var ifStarted bool
 
 //var FRONT_SERVER = "http://192.168.1.106:7787"
-var TA_SERVER = "http://192.168.1.106:6686"
-var FIRST_PEER = "192.168.1.106:6686" //
-var SELF_ADDR = "192.168.1.106:6686"  //"localhost:6686"
+var TA_SERVER = "http://192.168.11.20:6686"
+var FIRST_PEER = "192.168.11.20:6686" //
+var SELF_ADDR = "192.168.11.20:6686"  //"localhost:6686"
 var REGISTER_SERVER = TA_SERVER + "/peer"
 var ASK_PEERS = "/block"
 var EDGEX_IP = "localhost"

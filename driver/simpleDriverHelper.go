@@ -30,8 +30,10 @@ func driverSupplierChargeUpdate() {
 	if supplierCharge < 0 {
 		supplierCharge = 0
 	}
-	if supplierCharge > 1000 {
-		supplierCharge = 1000
+
+	max := GetSupplierMaxCharge()
+	if supplierCharge > max {
+		supplierCharge = max
 	}
 
 	SetSupplierCharge(supplierCharge)
@@ -62,8 +64,10 @@ func driverConsumerChargeUpdate() {
 	if consumerCharge < 0 {
 		consumerCharge = 0
 	}
-	if consumerCharge > 1000 {
-		consumerCharge = 1000
+
+	max := GetConsumerMaxCharge()
+	if consumerCharge > max {
+		consumerCharge = max
 	}
 
 	SetConsumerCharge(consumerCharge)
