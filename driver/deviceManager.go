@@ -82,13 +82,6 @@ func Run() {
 	http.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("js"))))
 	//http.Handle("/mp3/", http.StripPrefix("/mp3/", http.FileServer(http.Dir("mp3"))))
 
-	//} else {
-	//
-	//	// // // // //
-	//	SetNodeId(ip, port, TA_SERVER, edgeXAddress)
-	//	// // // // //
-	//}
-
 	go startProcess()
 
 	// listen and serve at ip and port

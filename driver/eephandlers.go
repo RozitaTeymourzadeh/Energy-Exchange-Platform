@@ -21,19 +21,14 @@ import (
 	"net/http"
 )
 
-//var INIT_SERVER_ADDRESS = "http://localhost:6686"
-//changes in init for arg of port provided
-//var SELFID = ds.NewtNodeId("localhost", 6686)
-
 // data structure to hold readings
 var DeviceEventsDS = NewDeviceEvents()
 
 //var Devices = ds.NewDevices()
 var APPNAME = "PowerFlow : Energy Exchange Platform"
-var DEVICELIST = NewDeviceList() //todo is blockchain variable
+var DEVICELIST = NewDeviceList()
 var SELFDEVICES = NewDeviceMap()
 
-// //DEVICEBOARD - // GetSupplyDeviceBoard() // GetConsumeDeviceBoard() - init in
 var SUPPLYDEVICEDETAILS = make([]DeviceTypeDetails, 0)
 var CONSUMEDEVICEDETAILS = make([]DeviceTypeDetails, 0)
 var TRANSACTIONS = make([]Transaction, 0)
@@ -47,27 +42,15 @@ var OPENCONSUMETXS = NewTransactionPool() //make(map[string]Transaction)
 
 func init() {
 	//	// This function will be executed before everything else.
-	//
-	//	SELF_ADDR = SELF_ADDR_PREFIX + os.Args[1]
-	//	fmt.Println("Node : ", SELF_ADDR)
-
 }
 
 // eep handler
 func Eep(w http.ResponseWriter, r *http.Request) {
-
-	//DEVICELIST = getAllDevices( /*data.GetNodeId().ConnectingAddress*/ )
-	//SUPPLYDEVICEDETAILS = generateDeviceTypeBoard("supply")
-	//CONSUMEDEVICEDETAILS = generateDeviceTypeBoard("consume")
-
 	_, _ = w.Write([]byte("PowerFlow : Energy Exchange Platform"))
 }
 
 // Index handler
 func Index(w http.ResponseWriter, r *http.Request) {
-	//pageVars := resources.PageVars{
-	//	Title: "Energy Trading Platform",
-	//}
 
 	p := PageVars{
 		Title:                 APPNAME,
@@ -80,8 +63,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		CdReadings:            GetLast100CDReadings(),
 	}
 
-	//x := p.SupplyDevicesDetails
-	//fmt.Println(len(x))
 	render(w, "home.html", p)
 }
 
@@ -89,7 +70,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 func render(w http.ResponseWriter, tmpl string, pageVars PageVars) {
 
 	tmpl = fmt.Sprintf("../../driver/resources/templates/%s", tmpl) // prefix the name passed in with templates/
-	t, err := template.ParseFiles(tmpl)                             //parse the template file held in the templates folder
+	t, err := template.ParseFiles(tmpl)                             // parse the template file held in the templates folder
 
 	if err != nil { // if there is an error
 		pwd, _ := os.Getwd()
@@ -104,6 +85,7 @@ func render(w http.ResponseWriter, tmpl string, pageVars PageVars) {
 	}
 }
 
+// Show Latest Device Data
 func ShowLatestDeviceData(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
@@ -121,27 +103,14 @@ func ShowLatestDeviceData(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// Show All Latest Device Data
 func ShowAllLatestDeviceData(w http.ResponseWriter, r *http.Request) {
 
 	_, _ = w.Write([]byte(DeviceEventsDS.Show()))
 
 }
 
-//func Register(w http.ResponseWriter, r *http.Request) {
-//	fmt.Println("In registration service")
-//	if r.Method == http.MethodPost {
-//		defer r.Body.Close()
-//		bytesRead, _ := ioutil.ReadAll(r.Body)
-//		rInfo := data.PeerInfoFromJSON(bytesRead)
-//		data.GetNodeId().AddPeer(rInfo)
-//		fmt.Println(data.GetNodeId().GetPeers())
-//		w.WriteHeader(200)
-//	} else {
-//		w.WriteHeader(405)
-//	}
-//
-//}
-
+// Show Peers
 func ShowPeers(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	str := "["
@@ -153,6 +122,7 @@ func ShowPeers(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(str))
 }
 
+// Read Device Data
 func ReadDeviceData(w http.ResponseWriter, r *http.Request) {
 
 	vars := mux.Vars(r)
@@ -173,16 +143,6 @@ func ReadDeviceData(w http.ResponseWriter, r *http.Request) {
 		//fmt.Println(string(coreDataEvent.CoreDataEventToJson()))
 		DeviceEventsDS.AddToDeviceEvents(coreDataEvent)
 	}
-
-	//// todo: remove below code to  different endpoint
-	//latestCde, err := DeviceEventsDS.GetLatestDeviceResourceNameEventForDevice("Supply-Device-01", "randomsuppliernumber")
-	//if err != nil {
-	//	fmt.Println("Error in getting latest CoreEventData for a device")
-	//}
-	//
-	//_, _ = w.Write(([]byte)(latestCde.Readings[0].Device + " : " + latestCde.Readings[0].Value))
-
-	//_ , _ = w.Write([]byte(DeviceEventsDS.ShowDevice(vars["deviceName"])))
 	_, _ = w.Write([]byte(DeviceEventsDS.ShowDeviceEvents(vars["deviceName"])))
 
 }
@@ -191,13 +151,13 @@ func ReadDeviceData(w http.ResponseWriter, r *http.Request) {
 func countGoRoutines() int {
 	return runtime.NumGoroutine()
 }
-
 func getGoroutinesCountHandler(w http.ResponseWriter, r *http.Request) {
 	// Get the count of number of go routines running.
 	count := countGoRoutines()
 	w.Write([]byte(strconv.Itoa(count)))
 }
 
+// show Open Consumer Tx
 func OpenConsumerTx(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	sb := strings.Builder{}
@@ -208,6 +168,7 @@ func OpenConsumerTx(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(sb.String()))
 }
 
+// Send Last 100 SD Readings
 func SendLast100SDReadings(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "Authorization")
 	readings := GetLast100SDReadings()
@@ -224,6 +185,7 @@ func SendLast100SDReadings(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Send Last 100 CD Readings
 func SendLast100CDReadings(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	readings := GetLast100CDReadings()
@@ -239,6 +201,7 @@ func SendLast100CDReadings(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Send Sd Device Info
 func SendSdDeviceInfo(w http.ResponseWriter, r *http.Request) {
 	//w.Header().Set("Access-Control-Allow-Origin", "*")
 	devicesInfo := generateSupplyDeviceTypeBoard("supply")
@@ -255,6 +218,7 @@ func SendSdDeviceInfo(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Send Cd DeviceInfo
 func SendCdDeviceInfo(w http.ResponseWriter, r *http.Request) {
 	//w.Header().Set("Access-Control-Allow-Origin", "*")
 	devicesInfo := generateConsumeDeviceTypeBoard("supply")

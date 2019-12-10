@@ -118,7 +118,7 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 		log.Println("sellRate value: ", GetSellRate())
 		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetSellRate()))
 		res[0] = cv
-	} // dynamic
+	}
 
 	//consume device
 	//data.GetConsumeDevice()
@@ -127,7 +127,7 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 		log.Println("consumerCharge value: ", int32(GetConsumerCharge()))
 		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetConsumerCharge()))
 		res[0] = cv
-	} //dynamic
+	}
 	if reqs[0].DeviceResourceName == "consumerDischargeRate" { // consumer rate
 		log.Println("consumerDischargeRate value: ", int32(GetConsumerDischargeRate()))
 		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetConsumerDischargeRate()))
@@ -138,7 +138,7 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 		log.Println("require value: ", int32(GetRequire()))
 		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetRequire()))
 		res[0] = cv
-	} //todo : bc tx
+	}
 	if reqs[0].DeviceResourceName == "isReceiving" { // consumer require units
 		log.Println("isReceiving value: ", int32(GetIsReceiving()))
 		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetIsReceiving()))
@@ -154,7 +154,7 @@ func (s *SimpleDriver) HandleReadCommands(deviceName string, protocols map[strin
 		log.Println("buyRate value: ", GetBuyRate())
 		cv, _ := dsModels.NewInt32Value(reqs[0].DeviceResourceName, now, int32(GetBuyRate()))
 		res[0] = cv
-	} // dynamic
+	}
 
 	// supply switch
 	if reqs[0].DeviceResourceName == "SSwitchButton" { //supplier Switch device
@@ -248,73 +248,3 @@ func (s *SimpleDriver) RemoveDevice(deviceName string, protocols map[string]cont
 	s.lc.Debug(fmt.Sprintf("Device %s is removed", deviceName))
 	return nil
 }
-
-//// GenerateOnceAndReadFromFileAfter
-//func generateOnceAndReadFromFileAfter(count int32, maxVal int, filename string, change int) int {
-//	fmt.Println("Event count is : ", count)
-//	var val int
-//	if count <= 1 {
-//		parser.DeleteFile(filename)
-//		val = 0
-//		if maxVal > 0 {
-//			val = rand.Intn(maxVal)
-//		}
-//		//fmt.Println("Writing to file generated value : ", strconv.Itoa(val))
-//		parser.WriteFile(filename, strconv.Itoa(val))
-//
-//	} else {
-//
-//		fileValue := parser.ReadFile(filename)
-//		fmt.Println("fileValue : ", fileValue)
-//		fileVal, err := strconv.Atoi(fileValue)
-//		if err != nil {
-//			fmt.Println(errors.New("cannot convert file reading to int"))
-//		}
-//		if fileVal+change >= 0 {
-//			val = fileVal + change
-//		} else if fileVal+change < 0 {
-//			val = 0
-//		}
-//
-//		//fmt.Println("Writing to added value : ", int32(val))
-//		parser.OverWriteFile(filename, strconv.Itoa(val)) //(fmt.Sprint(reading)/*strconv.Itoa(reading)*/)
-//
-//		//return reading
-//	}
-//	return val
-//}
-//
-//// GenerateOnceAndReadFromFileAfter
-//func writeAndReadFromFileAfter(count int32, val int, filename string, change int) int {
-//	fmt.Println("Event count is : ", count)
-//	//var val int
-//	if count <= 1 {
-//		parser.DeleteFile(filename)
-//		//val = 0
-//		//if maxVal > 0 {
-//		//	val = rand.Intn(maxVal)
-//		//}
-//		//fmt.Println("Writing to file generated value : ", strconv.Itoa(val))
-//		parser.WriteFile(filename, strconv.Itoa(val))
-//
-//	} else {
-//
-//		fileValue := parser.ReadFile(filename)
-//		fmt.Println("fileValue : ", fileValue)
-//		fileVal, err := strconv.Atoi(fileValue)
-//		if err != nil {
-//			fmt.Println(errors.New("cannot convert file reading to int"))
-//		}
-//		if fileVal+change >= 0 {
-//			val = fileVal + change
-//		} else if fileVal+change < 0 {
-//			val = 0
-//		}
-//
-//		//fmt.Println("Writing to added value : ", int32(val))
-//		parser.OverWriteFile(filename, strconv.Itoa(val)) //(fmt.Sprint(reading)/*strconv.Itoa(reading)*/)
-//
-//		//return reading
-//	}
-//	return val
-//}

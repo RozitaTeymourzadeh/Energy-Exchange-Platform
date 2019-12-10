@@ -8,6 +8,7 @@ import (
 	"time"
 )
 
+// updates supplier charge
 func driverSupplierChargeUpdate() {
 	supplierCharge := GetSupplierCharge()
 	supplierChargeRate := GetSupplierChargeRate()
@@ -37,6 +38,7 @@ func driverSupplierChargeUpdate() {
 	AddToLast100SDReadings(supplierCharge)
 }
 
+// updates consumer charge
 func driverConsumerChargeUpdate() {
 	consumerCharge := GetConsumerCharge()
 	consumerDischargeRate := GetConsumerDischargeRate()
@@ -68,6 +70,7 @@ func driverConsumerChargeUpdate() {
 	AddToLast100CDReadings(consumerCharge)
 }
 
+// updates surplus
 func driverSupplierSurplusUpdate() {
 	supplierCharge := GetSupplierCharge()
 	//max := data.GetSupplierMaxCharge()
@@ -80,6 +83,7 @@ func driverSupplierSurplusUpdate() {
 
 }
 
+// update consumer requirement
 func driverConsumerRequireUpdate() {
 	consumerCharge := GetConsumerCharge()
 	//max := data.GetConsumerMaxCharge()
@@ -107,6 +111,7 @@ func driverConsumerRequireUpdate() {
 	}
 }
 
+// send req tx to all miners
 func sendCnTxToAll(newTx Transaction) {
 	body, err := newTx.TransactionToJSON()
 	if err == nil {
@@ -124,6 +129,7 @@ func sendCnTxToAll(newTx Transaction) {
 
 }
 
+// updates sell rate
 func driverSellRateUpdate() {
 	sellRate := GetSellRate()
 	sellBaseRate := float64(GetSellBaseRate())
@@ -140,6 +146,7 @@ func driverSellRateUpdate() {
 
 }
 
+// updates buy rate
 func driverBuyRateUpdate() {
 	buyRate := GetBuyRate()
 	buyBaseRate := float64(GetBuyBaseRate())

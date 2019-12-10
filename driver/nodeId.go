@@ -57,17 +57,3 @@ func (nid *nodeId) AddPeer(rInfo PeerInfo) {
 	nid.Peers = append(nid.Peers, rInfo)
 	fmt.Println("Size of peers : ", len(nid.Peers))
 }
-
-//// constructor for NodeId
-//func NewtNodeId(address string, port int) NodeId {
-//	nid := NodeId{}
-//	nid.Separator = ":"
-//	nid.Address = address
-//	nid.Port = string(port)
-//	return nid
-//}
-
-//// address and port
-//func (nid *NodeId)SplitAddressAndPort() []string {
-//	return strings.Split(addressAndPort, separator)
-//}

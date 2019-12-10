@@ -16,16 +16,6 @@ import (
 * Data structure for transaction data
 *
  */
-//type Transaction struct {
-//	PublicKey   		*rsa.PublicKey `json:"publicKey"`
-//	EventId     		string			`json:"eventId"`
-//	EventName     		string			`json:"eventName"`
-//	Timestamp  			int64			`json:"eventDate"`
-//	EventDescription    string			`json:"eventDescription"`
-//	TransactionFee    	int				`json:"transactionFee"`
-//	Balance				int				`json:"balance"`
-//}
-
 type Transaction struct {
 	EventType string `json:"eventType"` // require , supply
 	EventId   string `json:"eventId"`
@@ -215,12 +205,6 @@ func (txp *TransactionPool) GetOneTxFromPool(TxPool TransactionPool, userBalance
 				return &tx
 				//}
 			}
-			//if userBalance >= transactionObject.EventFee {
-			//	transactionObject.Balance = transactionObject.Balance - transactionObject.EventFee
-			//	//TODO check how to add
-			//	//fmt.Println("transactionObject.Balance:",transactionObject.Balance)
-			//	return &transactionObject
-			//}
 		}
 	}
 	return nil
