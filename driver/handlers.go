@@ -580,13 +580,6 @@ func Event(w http.ResponseWriter, r *http.Request) {
 	log.Println(".....Event method .....")
 
 	switch r.Method {
-	//case "GET":
-	//dir, err := os.Getwd()
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//fmt.Println("PWD:",dir)
-	//http.ServeFile(w, r, "Event.html")
 	case "POST":
 		//read request body
 		body, err := readRequestBody(r)
